@@ -131,6 +131,7 @@ namespace ZoomPictureBoxTest {
         }
 
         private void aboutZoomPictureBoxToolStripMenuItem_Click(object sender, EventArgs e) {
+            MessageBox.Show(this, ZoomPictureBox.VersionHistory, "About ZoomPictureBox");
         }
     }
 }

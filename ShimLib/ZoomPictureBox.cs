@@ -13,6 +13,27 @@ using System.Diagnostics;
 
 namespace ShimLib {
     public class ZoomPictureBox : Control {
+        public const string VersionHistory = 
+@"ZoomPictureBox .NET 컨트롤
+
+v1.0.0.0 - 20200115
+1. 기본 기능 완성
+2. 버전정보 추가
+
+v0.1.0.1 - 20191201
+1. 기본 알고리즘 구현
+
+v0.0.0.0 - 20191001
+1. 설계
+  - Native 이미지 버퍼 표시 기능
+  - 아주 큰 이미지도 표시 가능
+  - 마우스 줌, 마우스 패닝 기능
+  - 확대 되었을때 픽셀값 표시
+  - 마우스 이동시 커서 위치의 픽셀좌표와 픽셀값 표시
+  - C, C# 모두 구현하여 속도 비교 테스트
+  - 닷넷 컨트롤로 구현하여 폼디자이너에서 사용하기 쉽게 만듦
+";
+
         // 디스플레이용 버퍼
         private int dispBW;
         private int dispBH;
