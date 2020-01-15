@@ -7,9 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ShimLib {
-    [StructLayout(LayoutKind.Sequential, Pack = 2)]
+    [StructLayout(LayoutKind.Sequential, Pack=2)]
     public struct BITMAPFILEHEADER {
         public ushort bfType;
         public uint bfSize;
@@ -31,15 +32,6 @@ namespace ShimLib {
         public int biYPelsPerMeter;
         public uint biClrUsed;
         public uint biClrImportant;
-    }
-
-    public static class IntPtrExt {
-        public static IntPtr Plus(this IntPtr pointer, int offset) {
-            return Plus(pointer, (long)offset);
-        }
-        public static IntPtr Plus(this IntPtr pointer, long offset) {
-            return (IntPtr)((long)pointer + offset);
-        }
     }
 
     public class Util {
@@ -97,11 +89,11 @@ namespace ShimLib {
 
         // 8bit bmp 파일 버퍼에 로드
         public unsafe static T StreamReadStructure<T>(Stream sr) {
-            int size = Marshal.SizeOf(typeof(T));
+            int size = Marshal.SizeOf<T>();
             byte[] buf = new byte[size];
             sr.Read(buf, 0, size);
             fixed (byte* ptr = buf) {
-                T obj = (T)Marshal.PtrToStructure((IntPtr)ptr, typeof(T));
+                T obj = Marshal.PtrToStructure<T>((IntPtr)ptr);
                 return obj;
             }
         }
@@ -122,7 +114,7 @@ namespace ShimLib {
             BITMAPINFOHEADER ih = StreamReadStructure<BITMAPINFOHEADER>(hFile);
             if (ih.biBitCount != 8) {   // 컬러비트 체크
                 hFile.Dispose();
-                return false;
+                return  false;
             }
 
             hFile.Seek(fh.bfOffBits, SeekOrigin.Begin);
@@ -134,17 +126,17 @@ namespace ShimLib {
             // bw가 4로 나눠 떨어지지 않을경우 padding처리 해야 함
             // int stride = (bw+3)/4*4;buf + y * bw
             int fstep = (fbw + 3) / 4 * 4;
-
+    
             byte[] fbuf = new byte[fbh * fstep];
             hFile.Read(fbuf, 0, fbh * fstep);
 
             // 대상버퍼 width/height 소스버퍼 width/height 중 작은거 만큼 카피
             int minh = Math.Min(bh, fbh);
             int minw = Math.Min(bw, fbw);
-
+    
             // bmp파일은 위아래가 뒤집혀 있으므로 파일에서 아래 라인부터 읽어서 버퍼에 쓴다
             for (int y = 0; y < minh; y++) {
-                Marshal.Copy(fbuf, (fbh - y - 1) * fstep, buf.Plus(y * bw), minw);
+                Marshal.Copy(fbuf, (fbh-y-1) * fstep, buf + y * bw, minw); 
             }
 
             hFile.Dispose();
@@ -154,10 +146,10 @@ namespace ShimLib {
         // 8bit 버퍼 bmp 파일에 저장
         static byte[] grayPalette = Enumerable.Range(0, 1024).Select(i => i % 4 == 3 ? (byte)0xff : (byte)(i / 4)).ToArray();
         public unsafe static void StreamWriteStructure<T>(Stream sr, T obj) {
-            int size = Marshal.SizeOf(typeof(T));
+            int size = Marshal.SizeOf<T>();
             byte[] buf = new byte[size];
             fixed (byte* ptr = buf) {
-                Marshal.StructureToPtr(obj, (IntPtr)ptr, false);
+                Marshal.StructureToPtr<T>(obj, (IntPtr)ptr, false);
             }
             sr.Write(buf, 0, size);
         }
@@ -202,12 +194,12 @@ namespace ShimLib {
             // bmp파일은 파일 저장시 라인당 4byte padding을 한다.
             // bw가 4로 나눠 떨어지지 않을경우 padding처리 해야 함
             int paddingSize = fstep - bw;
-            byte[] paddingBuf = { 0, 0, 0, 0 };
+            byte[] paddingBuf = {0,0,0,0};
 
-            byte[] fbuf = new byte[bh * fstep];
+            byte[] fbuf = new byte[bh * fstep]; 
             // bmp파일은 위아래가 뒤집혀 있으므로 버퍼 아래라인 부터 읽어서 파일에 쓴다
             for (int y = bh - 1; y >= 0; y--) {
-                Marshal.Copy(buf.Plus(y * bw), fbuf, (bh - y - 1) * fstep, bw);
+                Marshal.Copy(buf + y * bw, fbuf, (bh - y - 1) * fstep, bw);
                 if (paddingSize > 0)
                     Array.Copy(paddingBuf, 0, fbuf, (bh - y - 1) * fstep + bw, paddingSize);
             }
@@ -231,15 +223,15 @@ namespace ShimLib {
                 bytepp = 4;
             long bufSize = (long)bw * bh * bytepp;
             imgBuf = Marshal.AllocHGlobal(new IntPtr(bufSize));
-
+                
             BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bw, bh), ImageLockMode.ReadOnly, bmp.PixelFormat);
             int copySize = bw * bytepp;
             for (int y = 0; y < bh; y++) {
-                IntPtr dstPtr = imgBuf.Plus(bw * y * bytepp);
-                IntPtr srcPtr = bmpData.Scan0.Plus(bmpData.Stride * y);
+                IntPtr dstPtr = imgBuf + bw * y * bytepp;
+                IntPtr srcPtr = bmpData.Scan0 + bmpData.Stride * y;
                 Util.memcpy(dstPtr, srcPtr, copySize);
             }
-
+                
             bmp.UnlockBits(bmpData);
         }
 
@@ -261,11 +253,11 @@ namespace ShimLib {
             int paddingSize = bmpData.Stride - bw * bytepp;
             byte[] paddingBuf = Enumerable.Repeat((byte)0, 4).ToArray();
             for (int y = 0; y < bh; y++) {
-                IntPtr srcPtr = imgBuf.Plus(bw * y * bytepp);
-                IntPtr dstPtr = bmpData.Scan0.Plus(bmpData.Stride * y);
+                IntPtr srcPtr = imgBuf + bw * y * bytepp;
+                IntPtr dstPtr = bmpData.Scan0 + bmpData.Stride * y;
                 Util.memcpy(dstPtr, srcPtr, copySize);
                 if (paddingSize > 0)
-                    Marshal.Copy(paddingBuf, 0, dstPtr.Plus(copySize), paddingSize);
+                    Marshal.Copy(paddingBuf, 0, dstPtr + copySize, paddingSize);
             }
             bmp.UnlockBits(bmpData);
             if (bmp.PixelFormat == PixelFormat.Format8bppIndexed) {
@@ -277,7 +269,7 @@ namespace ShimLib {
             }
             return bmp;
         }
-
+        
         // hra Lolad
         public unsafe static void LoadHraFile(string fileName, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
             using (var sr = File.OpenRead(fileName))
@@ -359,7 +351,7 @@ namespace ShimLib {
                     if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
                     } else {
-                        byte* sp = &sptr[six * bytepp];
+                        byte *sp = &sptr[six * bytepp];
                         if (bytepp == 1) {          // 8bit gray
                             *dp = sp[0] | sp[0] << 8 | sp[0] << 16 | 0xff << 24;
                         } else if (bytepp == 2) {   // 16bit gray (*.hra)

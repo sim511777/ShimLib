@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 
@@ -24,27 +25,17 @@ namespace ShimLib {
 
         // 이미지용 버퍼
         [Browsable(false)]
-        public int ImgBW { get; private set; }
+        public int ImgBW { get; private set; } = 0;
         [Browsable(false)]
-        public int ImgBH { get; private set; }
+        public int ImgBH { get; private set; } = 0;
         [Browsable(false)]
-        public IntPtr ImgBuf { get; private set; }
+        public IntPtr ImgBuf { get; private set; } = IntPtr.Zero;
         [Browsable(false)]
-        public int ImgBytepp { get; private set; }
+        public int ImgBytepp { get; private set; } = 1;
 
         // 생성자
         public ZoomPictureBox() {
             DoubleBuffered = true;
-            ImgBW = 0;
-            ImgBH = 0;
-            ImgBuf = IntPtr.Zero;
-            ImgBytepp = 1;
-            UseDrawPixelValue = true;
-            UseDrawInfo = true;
-            UseDrawCenterLine = true;
-            UseDrawDrawTime = true;
-            UseMouseMove = true;
-            UseMouseWheelZoom = true;
         }
 
         // 소멸자
@@ -53,14 +44,14 @@ namespace ShimLib {
         }
 
         // 화면 표시 옵션
-        public bool UseDrawPixelValue { get; set; }
-        public bool UseDrawInfo { get; set; }
-        public bool UseDrawCenterLine { get; set; }
-        public bool UseDrawDrawTime { get; set; }
+        public bool UseDrawPixelValue { get; set; } = true;
+        public bool UseDrawInfo { get; set; } = true;
+        public bool UseDrawCenterLine { get; set; } = true;
+        public bool UseDrawDrawTime { get; set; } = true;
 
         // 마우스 동작 옵션
-        public bool UseMouseMove { get; set; }
-        public bool UseMouseWheelZoom { get; set; }
+        public bool UseMouseMove { get; set; } = true;
+        public bool UseMouseWheelZoom { get; set; } = true;
 
         // 줌 파라미터
         // ZoomLevel = 0 => ZoomFactor = 1;
@@ -73,15 +64,11 @@ namespace ShimLib {
             c = (ZoomLevel % 2 != 0) ? 3 : 1;
         }
         public double GetZoomFactor() {
-            int exp_num;
-            int c;
-            GetZoomFactorComponents(out exp_num, out c);
+            GetZoomFactorComponents(out int exp_num, out int c);
             return c * Math.Pow(2, exp_num);
         }
         private string GetZoomText() {
-            int exp_num;
-            int c;
-            GetZoomFactorComponents(out exp_num, out c);
+            GetZoomFactorComponents(out int exp_num, out int c);
             return (exp_num >= 0) ? (c * (int)Math.Pow(2, exp_num)).ToString() : c.ToString() + "/" + ((int)Math.Pow(2, -exp_num)).ToString();
         }
 
@@ -152,15 +139,14 @@ namespace ShimLib {
             
             if (UseDrawDrawTime) {
                 var freqMs = 1000.0/Stopwatch.Frequency;
-                string info = string.Format(
-@"CopyImage : {0:0.0}ms
-DrawImage : {1:0.0}ms
-PixelValue : {2:0.0}ms
-CenterLine : {3:0.0}ms
-OnPaint : {4:0.0}ms
-CursorInfo : {5:0.0}ms
-Total : {6:0.0}ms",
-                    (t1-t0)*freqMs, (t2-t1)*freqMs, (t3-t2)*freqMs, (t4-t3)*freqMs, (t5-t4)*freqMs, (t6-t5)*freqMs, (t6-t0)*freqMs);
+                string info =
+$@"CopyImage : {(t1-t0)*freqMs:0.0}ms
+DrawImage : {(t2-t1)*freqMs:0.0}ms
+PixelValue : {(t3-t2)*freqMs:0.0}ms
+CenterLine : {(t4-t3)*freqMs:0.0}ms
+OnPaint : {(t5-t4)*freqMs:0.0}ms
+CursorInfo : {(t6-t5)*freqMs:0.0}ms
+Total : {(t6-t0)*freqMs:0.0}ms";
                 DrawDrawTime(g, info);
             }
         }
@@ -326,7 +312,7 @@ Total : {6:0.0}ms",
             int imgX = (int)Math.Floor(ptImg.X);
             int imgY = (int)Math.Floor(ptImg.Y);
             string pixelVal = GetImagePixelValueText(imgX, imgY);
-            string info = string.Format("zoom={0} ({1},{2})={3}", GetZoomText(), imgX, imgY, pixelVal);
+            string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
 
             var rect = g.MeasureString(info, defaultFont);
             g.FillRectangle(Brushes.White, 0, 0, rect.Width, rect.Height);
@@ -385,7 +371,7 @@ Total : {6:0.0}ms",
                 return Marshal.ReadByte(ptr).ToString();
             if (ImgBytepp == 2)
                 return (Marshal.ReadByte(ptr, 1) | Marshal.ReadByte(ptr) << 8).ToString();
-            return string.Format("{0},{1},{2}", Marshal.ReadByte(ptr, 2), Marshal.ReadByte(ptr, 1), Marshal.ReadByte(ptr, 0));
+            return $"{Marshal.ReadByte(ptr, 2)},{Marshal.ReadByte(ptr, 1)},{Marshal.ReadByte(ptr, 0)}";
         }
 
         // 이미지 픽셀값 평균 리턴 (0~255)
