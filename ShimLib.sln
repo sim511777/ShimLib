@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.960
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib", "ShimLib\ShimLib.csproj", "{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoomPictureBoxTest", "ZoomPictureBoxTest\ZoomPictureBoxTest.csproj", "{46D807CA-D440-444B-9DE9-CC600B1B44EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
