@@ -360,8 +360,8 @@ Total : {(t6-t0)*freqMs:0.0}ms";
             double ZoomFactor = GetZoomFactor();
             float x = (float)((rect.X - PtPanning.X) / ZoomFactor);
             float y = (float)((rect.Y - PtPanning.Y) / ZoomFactor);
-            float width = (float)Math.Floor(rect.Width / ZoomFactor);
-            float height = (float)Math.Floor(rect.Height / ZoomFactor);
+            float width = (float)(rect.Width / ZoomFactor);
+            float height = (float)(rect.Height / ZoomFactor);
             return new RectangleF(x, y, width, height);
         }
 
