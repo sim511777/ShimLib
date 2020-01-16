@@ -127,6 +127,7 @@ namespace ZoomPictureBoxTest {
             pbxDraw.UseDrawDrawTime = showDrawTimeToolStripMenuItem.Checked;
             pbxDraw.UseMouseMove = mousePanningToolStripMenuItem.Checked;
             pbxDraw.UseMouseWheelZoom = wheelZoomToolStripMenuItem.Checked;
+            pbxDraw.UseInterPorlation = useInterpolationToolStripMenuItem.Checked;
             pbxDraw.Invalidate();
         }
 

@@ -365,5 +365,84 @@ namespace ShimLib {
                 }
             }
         }
+
+        // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
+        public unsafe static void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor) {
+            // 인덱스 버퍼 생성
+            int[] siys = new int[dbh];
+            int[] sixs = new int[dbw];
+            float[] sity0s = new float[dbh];
+            float[] sity1s = new float[dbh];
+            float[] sitx0s = new float[dbw];
+            float[] sitx1s = new float[dbw];
+            for (int y = 0; y < dbh; y++) {
+                float siy = (float)((y - pany) / zoom) - 0.5f;
+                siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy > sbh-1) ? -1 : (int)siy;
+                sity1s[y] = siy - siys[y];
+                sity0s[y] = 1.0f - sity1s[y];
+            }
+            for (int x = 0; x < dbw; x++) {
+                float six = (float)((x - panx) / zoom) - 0.5f;
+                sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six > sbw-1) ? -1 : (int)six;
+                sitx1s[x] = six - sixs[x];
+                sitx0s[x] = 1.0f - sitx1s[x];
+            }
+
+            // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
+            for (int y = 0; y < dbh; y++) {
+                int siy = siys[y];
+                byte* sptr = (byte*)sbuf.ToPointer() + (Int64)sbw * siy * bytepp;
+                int* dp = (int*)dbuf.ToPointer() + (Int64)dbw * y;
+                float ty0 = sity0s[y];
+                float ty1 = sity1s[y];
+                for (int x = 0; x < dbw; x++, dp++) {
+                    int six = sixs[x];
+                    if (siy == -1 || six == -1) {   // out of boundary of image
+                        *dp = bgColor;
+                    } else {
+                        byte *sp = &sptr[six * bytepp];
+                        float tx0 = sitx0s[x];
+                        float tx1 = sitx1s[x];
+                        if (bytepp == 1) {          // 8bit gray
+                            byte* sp1 = sp + 1;
+                            byte* sp2 = sp + sbw;
+                            byte* sp3 = sp2 + 1;
+                            float grayIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
+                            int gray = (int)grayIpl;
+                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
+                        } else if (bytepp == 2) {   // 16bit gray (*.hra)
+                            byte* sp1 = sp + 2;
+                            byte* sp2 = sp + sbw * 2;
+                            byte* sp3 = sp2 + 2;
+                            float grayIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
+                            int gray = (int)grayIpl;
+                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
+                        } else if (bytepp == 3) {   // 24bit bgr
+                            byte* sp1 = sp + 3;
+                            byte* sp2 = sp + sbw * 3;
+                            byte* sp3 = sp2 + 3;
+                            float blIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
+                            float grIpl = (sp[1] * tx0 + sp1[1] * tx1) * ty0 + (sp2[1] * tx0 + sp3[1] * tx1) * ty1;
+                            float reIpl = (sp[2] * tx0 + sp1[2] * tx1) * ty0 + (sp2[2] * tx0 + sp3[2] * tx1) * ty1;
+                            int blue = (int)blIpl;
+                            int green = (int)grIpl;
+                            int red = (int)reIpl;
+                            *dp = blue | green << 8 | red << 16 | 0xff << 24;
+                        } else if (bytepp == 4) {   // 32bit bgra
+                            byte* sp1 = sp + 4;
+                            byte* sp2 = sp + sbw * 4;
+                            byte* sp3 = sp2 + 4;
+                            float blIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
+                            float grIpl = (sp[1] * tx0 + sp1[1] * tx1) * ty0 + (sp2[1] * tx0 + sp3[1] * tx1) * ty1;
+                            float reIpl = (sp[2] * tx0 + sp1[2] * tx1) * ty0 + (sp2[2] * tx0 + sp3[2] * tx1) * ty1;
+                            int blue = (int)blIpl;
+                            int green = (int)grIpl;
+                            int red = (int)reIpl;
+                            *dp = blue | green << 8 | red << 16 | 0xff << 24;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

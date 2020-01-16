@@ -16,6 +16,10 @@ namespace ShimLib {
         public const string VersionHistory = 
 @"ZoomPictureBox .NET 컨트롤
 
+v1.0.0.1 - 20200116
+1. 확대시 선형보간 기능 추가
+2. DispToImg(Rectangle rect) 버그 수정 - Floor 하지 말아야 함
+
 v1.0.0.0 - 20200115
 1. 기본 기능 완성
 2. 버전정보 추가
@@ -69,6 +73,7 @@ v0.0.0.0 - 20191001
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = true;
+        public bool UseInterPorlation { get; set; } = false;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -137,7 +142,11 @@ v0.0.0.0 - 20191001
             var g = e.Graphics;
             var t0 = Stopwatch.GetTimestamp();
 
-            Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb());
+            if (UseInterPorlation)
+                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb());
+            else
+                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb());
+
             var t1 = Stopwatch.GetTimestamp();
 
             g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));

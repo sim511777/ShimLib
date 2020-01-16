@@ -24,8 +24,12 @@
         /// </summary>
         private void InitializeComponent() {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.pbxDraw = new ShimLib.ZoomPictureBox();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showPixelValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCursorInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -33,14 +37,11 @@
             this.showDrawTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mousePanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wheelZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.pbxDraw = new ShimLib.ZoomPictureBox();
+            this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,30 +58,55 @@
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // dlgOpenFile
+            // fileToolStripMenuItem
             // 
-            this.dlgOpenFile.FileName = "openFileDialog1";
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openFileToolStripMenuItem,
+            this.pasteFromClipboardToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // pbxDraw
+            // openFileToolStripMenuItem
             // 
-            this.pbxDraw.AllowDrop = true;
-            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
-            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
-            this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PtPanning = new System.Drawing.Point(0, 0);
-            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
-            this.pbxDraw.TabIndex = 1;
-            this.pbxDraw.Text = "zoomPictureBox1";
-            this.pbxDraw.UseDrawCenterLine = true;
-            this.pbxDraw.UseDrawDrawTime = true;
-            this.pbxDraw.UseDrawInfo = true;
-            this.pbxDraw.UseDrawPixelValue = true;
-            this.pbxDraw.UseMouseMove = true;
-            this.pbxDraw.UseMouseWheelZoom = true;
-            this.pbxDraw.ZoomLevel = 0;
-            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
-            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
+            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
+            this.openFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.openFileToolStripMenuItem.Text = "Open File";
+            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
+            // 
+            // pasteFromClipboardToolStripMenuItem
+            // 
+            this.pasteFromClipboardToolStripMenuItem.Name = "pasteFromClipboardToolStripMenuItem";
+            this.pasteFromClipboardToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.pasteFromClipboardToolStripMenuItem.Text = "Paste from Clipboard";
+            this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
+            // 
+            // zoomToolStripMenuItem
+            // 
+            this.zoomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zoomResetToolStripMenuItem,
+            this.zoomToImageToolStripMenuItem});
+            this.zoomToolStripMenuItem.Name = "zoomToolStripMenuItem";
+            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.zoomToolStripMenuItem.Text = "Zoom";
+            // 
+            // zoomResetToolStripMenuItem
+            // 
+            this.zoomResetToolStripMenuItem.Name = "zoomResetToolStripMenuItem";
+            this.zoomResetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.zoomResetToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.zoomResetToolStripMenuItem.Text = "Zoom Reset";
+            this.zoomResetToolStripMenuItem.Click += new System.EventHandler(this.zoomResetToolStripMenuItem_Click_1);
+            // 
+            // zoomToImageToolStripMenuItem
+            // 
+            this.zoomToImageToolStripMenuItem.Name = "zoomToImageToolStripMenuItem";
+            this.zoomToImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.zoomToImageToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.zoomToImageToolStripMenuItem.Text = "Zoom to Image";
+            this.zoomToImageToolStripMenuItem.Click += new System.EventHandler(this.zoomToImageToolStripMenuItem_Click_1);
             // 
             // optionToolStripMenuItem
             // 
@@ -90,7 +116,8 @@
             this.showDrawCenterLineToolStripMenuItem,
             this.showDrawTimeToolStripMenuItem,
             this.mousePanningToolStripMenuItem,
-            this.wheelZoomToolStripMenuItem});
+            this.wheelZoomToolStripMenuItem,
+            this.useInterpolationToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.optionToolStripMenuItem.Text = "Option";
@@ -161,56 +188,6 @@
             this.wheelZoomToolStripMenuItem.Text = "Wheel Zoom";
             this.wheelZoomToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openFileToolStripMenuItem,
-            this.pasteFromClipboardToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // zoomToolStripMenuItem
-            // 
-            this.zoomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.zoomResetToolStripMenuItem,
-            this.zoomToImageToolStripMenuItem});
-            this.zoomToolStripMenuItem.Name = "zoomToolStripMenuItem";
-            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
-            this.zoomToolStripMenuItem.Text = "Zoom";
-            // 
-            // openFileToolStripMenuItem
-            // 
-            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.openFileToolStripMenuItem.Text = "Open File";
-            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
-            // 
-            // pasteFromClipboardToolStripMenuItem
-            // 
-            this.pasteFromClipboardToolStripMenuItem.Name = "pasteFromClipboardToolStripMenuItem";
-            this.pasteFromClipboardToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.pasteFromClipboardToolStripMenuItem.Text = "Paste from Clipboard";
-            this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
-            // 
-            // zoomResetToolStripMenuItem
-            // 
-            this.zoomResetToolStripMenuItem.Name = "zoomResetToolStripMenuItem";
-            this.zoomResetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.zoomResetToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.zoomResetToolStripMenuItem.Text = "Zoom Reset";
-            this.zoomResetToolStripMenuItem.Click += new System.EventHandler(this.zoomResetToolStripMenuItem_Click_1);
-            // 
-            // zoomToImageToolStripMenuItem
-            // 
-            this.zoomToImageToolStripMenuItem.Name = "zoomToImageToolStripMenuItem";
-            this.zoomToImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.zoomToImageToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.zoomToImageToolStripMenuItem.Text = "Zoom to Image";
-            this.zoomToImageToolStripMenuItem.Click += new System.EventHandler(this.zoomToImageToolStripMenuItem_Click_1);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -225,6 +202,41 @@
             this.aboutZoomPictureBoxToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.aboutZoomPictureBoxToolStripMenuItem.Text = "About ZoomPictureBox";
             this.aboutZoomPictureBoxToolStripMenuItem.Click += new System.EventHandler(this.aboutZoomPictureBoxToolStripMenuItem_Click);
+            // 
+            // dlgOpenFile
+            // 
+            this.dlgOpenFile.FileName = "openFileDialog1";
+            // 
+            // pbxDraw
+            // 
+            this.pbxDraw.AllowDrop = true;
+            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
+            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
+            this.pbxDraw.Name = "pbxDraw";
+            this.pbxDraw.PtPanning = new System.Drawing.Point(0, 0);
+            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
+            this.pbxDraw.TabIndex = 1;
+            this.pbxDraw.Text = "zoomPictureBox1";
+            this.pbxDraw.UseDrawCenterLine = true;
+            this.pbxDraw.UseDrawDrawTime = true;
+            this.pbxDraw.UseDrawInfo = true;
+            this.pbxDraw.UseDrawPixelValue = true;
+            this.pbxDraw.UseInterPorlation = false;
+            this.pbxDraw.UseMouseMove = true;
+            this.pbxDraw.UseMouseWheelZoom = true;
+            this.pbxDraw.ZoomLevel = 0;
+            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
+            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
+            // 
+            // useInterpolationToolStripMenuItem
+            // 
+            this.useInterpolationToolStripMenuItem.CheckOnClick = true;
+            this.useInterpolationToolStripMenuItem.Name = "useInterpolationToolStripMenuItem";
+            this.useInterpolationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+            this.useInterpolationToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.useInterpolationToolStripMenuItem.Text = "Use Interpolation";
+            this.useInterpolationToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
             // FormMain
             // 
@@ -263,6 +275,7 @@
         private System.Windows.Forms.ToolStripMenuItem zoomToImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutZoomPictureBoxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useInterpolationToolStripMenuItem;
     }
 }
 
