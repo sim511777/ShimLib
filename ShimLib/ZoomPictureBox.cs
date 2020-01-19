@@ -179,13 +179,28 @@ v0.0.0.0 - 20191001
             if (UseDrawDrawTime) {
                 var freqMs = 1000.0/Stopwatch.Frequency;
                 string info =
-$@"CopyImage : {(t1-t0)*freqMs:0.0}ms
+$@"== Image ==
+{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp*8}bpp")}
+== Draw option ==
+DrawPixelValue : {(UseDrawPixelValue ? "O" : "X")}
+DrawInfo : {(UseDrawInfo ? "O" : "X")}
+DrawCenterLine : {(UseDrawCenterLine ? "O" : "X")}
+DrawDrawTime : {(UseDrawDrawTime ? "O" : "X")}
+InterPorlation : {(UseInterPorlation ? "O" : "X")}
+Parallel : {(UseParallel ? "O" : "X")}
+Native : {(UseNative ? "O" : "X")}
+== Mouse option ==
+MouseMove : {(UseMouseMove ? "O" : "X")}
+MouseWheelZoom : {(UseMouseWheelZoom ? "O" : "X")}
+== Draw time ==
+CopyImage : {(t1-t0)*freqMs:0.0}ms
 DrawImage : {(t2-t1)*freqMs:0.0}ms
 PixelValue : {(t3-t2)*freqMs:0.0}ms
 CenterLine : {(t4-t3)*freqMs:0.0}ms
 OnPaint : {(t5-t4)*freqMs:0.0}ms
 CursorInfo : {(t6-t5)*freqMs:0.0}ms
-Total : {(t6-t0)*freqMs:0.0}ms";
+Total : {(t6-t0)*freqMs:0.0}ms
+";
                 DrawDrawTime(g, info);
             }
         }
