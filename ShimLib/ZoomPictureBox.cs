@@ -16,6 +16,11 @@ namespace ShimLib {
         public const string VersionHistory = 
 @"ZoomPictureBox .NET 컨트롤
 
+v1.0.0.2 - 20200119
+1. 레스터라이즈 Parallel 라이브러리 사용해서멀티쓰레드 처리
+2. C++ dll 프로젝트 추가
+3. Draw Time 표시에 추가 정보 포함(이미지버퍼, 드로우옵션, 마우스옵션) 
+
 v1.0.0.1 - 20200116
 1. 확대시 선형보간 기능 추가
 2. DispToImg(Rectangle rect) 버그 수정 - Floor 하지 말아야 함
