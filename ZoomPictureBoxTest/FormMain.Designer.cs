@@ -37,11 +37,12 @@
             this.showDrawTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mousePanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wheelZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
-            this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +111,7 @@
             // 
             // optionToolStripMenuItem
             // 
+            this.optionToolStripMenuItem.CheckOnClick = true;
             this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showPixelValueToolStripMenuItem,
             this.showCursorInfoToolStripMenuItem,
@@ -117,7 +119,8 @@
             this.showDrawTimeToolStripMenuItem,
             this.mousePanningToolStripMenuItem,
             this.wheelZoomToolStripMenuItem,
-            this.useInterpolationToolStripMenuItem});
+            this.useInterpolationToolStripMenuItem,
+            this.userParallelToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.optionToolStripMenuItem.Text = "Option";
@@ -188,6 +191,15 @@
             this.wheelZoomToolStripMenuItem.Text = "Wheel Zoom";
             this.wheelZoomToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
+            // useInterpolationToolStripMenuItem
+            // 
+            this.useInterpolationToolStripMenuItem.CheckOnClick = true;
+            this.useInterpolationToolStripMenuItem.Name = "useInterpolationToolStripMenuItem";
+            this.useInterpolationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+            this.useInterpolationToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.useInterpolationToolStripMenuItem.Text = "Use Interpolation";
+            this.useInterpolationToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -207,6 +219,15 @@
             // 
             this.dlgOpenFile.FileName = "openFileDialog1";
             // 
+            // userParallelToolStripMenuItem
+            // 
+            this.userParallelToolStripMenuItem.CheckOnClick = true;
+            this.userParallelToolStripMenuItem.Name = "userParallelToolStripMenuItem";
+            this.userParallelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D8)));
+            this.userParallelToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.userParallelToolStripMenuItem.Text = "User Parallel";
+            this.userParallelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
+            // 
             // pbxDraw
             // 
             this.pbxDraw.AllowDrop = true;
@@ -225,18 +246,10 @@
             this.pbxDraw.UseInterPorlation = false;
             this.pbxDraw.UseMouseMove = true;
             this.pbxDraw.UseMouseWheelZoom = true;
+            this.pbxDraw.UseParallel = false;
             this.pbxDraw.ZoomLevel = 0;
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
-            // 
-            // useInterpolationToolStripMenuItem
-            // 
-            this.useInterpolationToolStripMenuItem.CheckOnClick = true;
-            this.useInterpolationToolStripMenuItem.Name = "useInterpolationToolStripMenuItem";
-            this.useInterpolationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
-            this.useInterpolationToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.useInterpolationToolStripMenuItem.Text = "Use Interpolation";
-            this.useInterpolationToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
             // FormMain
             // 
@@ -276,6 +289,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutZoomPictureBoxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useInterpolationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem userParallelToolStripMenuItem;
     }
 }
 

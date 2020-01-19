@@ -328,7 +328,7 @@ namespace ShimLib {
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사
-        public unsafe static void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor) {
+        public unsafe static void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siys = new int[dbh];
             int[] sixs = new int[dbw];
@@ -342,7 +342,7 @@ namespace ShimLib {
             }
 
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
-            for (int y = 0; y < dbh; y++) {
+            Action<int> rasterizeAction = (int y) => {
                 int siy = siys[y];
                 byte* sptr = (byte*)sbuf.ToPointer() + (Int64)sbw * siy * bytepp;
                 int* dp = (int*)dbuf.ToPointer() + (Int64)dbw * y;
@@ -363,11 +363,17 @@ namespace ShimLib {
                         }
                     }
                 }
+            };
+            if (useParallel) {
+                Parallel.For(0, dbh, rasterizeAction);
+            } else {
+                for (int y = 0; y < dbh; y++)
+                    rasterizeAction(y);
             }
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
-        public unsafe static void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor) {
+        public unsafe static void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siys = new int[dbh];
             int[] sixs = new int[dbw];
@@ -389,7 +395,7 @@ namespace ShimLib {
             }
 
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
-            for (int y = 0; y < dbh; y++) {
+            Action<int> rasterizeAction = (int y) => {
                 int siy = siys[y];
                 byte* sptr = (byte*)sbuf.ToPointer() + (Int64)sbw * siy * bytepp;
                 int* dp = (int*)dbuf.ToPointer() + (Int64)dbw * y;
@@ -442,6 +448,13 @@ namespace ShimLib {
                         }
                     }
                 }
+            };
+
+            if (useParallel) {
+                Parallel.For(0, dbh, rasterizeAction);
+            } else {
+                for (int y = 0; y < dbh; y++)
+                    rasterizeAction(y);
             }
         }
     }

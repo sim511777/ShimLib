@@ -74,6 +74,7 @@ v0.0.0.0 - 20191001
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = true;
         public bool UseInterPorlation { get; set; } = false;
+        public bool UseParallel { get; set; } = false;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -143,9 +144,9 @@ v0.0.0.0 - 20191001
             var t0 = Stopwatch.GetTimestamp();
 
             if (UseInterPorlation)
-                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb());
+                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             else
-                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb());
+                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
 
             var t1 = Stopwatch.GetTimestamp();
 
