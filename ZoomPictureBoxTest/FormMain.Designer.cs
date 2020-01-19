@@ -39,11 +39,12 @@
             this.wheelZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useNativeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
-            this.useNativeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,12 +115,13 @@
             // 
             this.optionToolStripMenuItem.CheckOnClick = true;
             this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mousePanningToolStripMenuItem,
+            this.wheelZoomToolStripMenuItem,
+            this.toolStripSeparator1,
             this.showPixelValueToolStripMenuItem,
             this.showCursorInfoToolStripMenuItem,
             this.showDrawCenterLineToolStripMenuItem,
             this.showDrawTimeToolStripMenuItem,
-            this.mousePanningToolStripMenuItem,
-            this.wheelZoomToolStripMenuItem,
             this.useInterpolationToolStripMenuItem,
             this.userParallelToolStripMenuItem,
             this.useNativeToolStripMenuItem});
@@ -177,7 +179,6 @@
             this.mousePanningToolStripMenuItem.CheckOnClick = true;
             this.mousePanningToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mousePanningToolStripMenuItem.Name = "mousePanningToolStripMenuItem";
-            this.mousePanningToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
             this.mousePanningToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.mousePanningToolStripMenuItem.Text = "Mouse Panning";
             this.mousePanningToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
@@ -188,7 +189,6 @@
             this.wheelZoomToolStripMenuItem.CheckOnClick = true;
             this.wheelZoomToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.wheelZoomToolStripMenuItem.Name = "wheelZoomToolStripMenuItem";
-            this.wheelZoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
             this.wheelZoomToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.wheelZoomToolStripMenuItem.Text = "Wheel Zoom";
             this.wheelZoomToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
@@ -197,7 +197,7 @@
             // 
             this.useInterpolationToolStripMenuItem.CheckOnClick = true;
             this.useInterpolationToolStripMenuItem.Name = "useInterpolationToolStripMenuItem";
-            this.useInterpolationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+            this.useInterpolationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
             this.useInterpolationToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.useInterpolationToolStripMenuItem.Text = "Use Interpolation";
             this.useInterpolationToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
@@ -206,10 +206,19 @@
             // 
             this.userParallelToolStripMenuItem.CheckOnClick = true;
             this.userParallelToolStripMenuItem.Name = "userParallelToolStripMenuItem";
-            this.userParallelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D8)));
+            this.userParallelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
             this.userParallelToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.userParallelToolStripMenuItem.Text = "User Parallel";
             this.userParallelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
+            // 
+            // useNativeToolStripMenuItem
+            // 
+            this.useNativeToolStripMenuItem.CheckOnClick = true;
+            this.useNativeToolStripMenuItem.Name = "useNativeToolStripMenuItem";
+            this.useNativeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+            this.useNativeToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.useNativeToolStripMenuItem.Text = "Use Native";
+            this.useNativeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -254,14 +263,10 @@
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             // 
-            // useNativeToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.useNativeToolStripMenuItem.CheckOnClick = true;
-            this.useNativeToolStripMenuItem.Name = "useNativeToolStripMenuItem";
-            this.useNativeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D9)));
-            this.useNativeToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.useNativeToolStripMenuItem.Text = "Use Native";
-            this.useNativeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(239, 6);
             // 
             // FormMain
             // 
@@ -303,6 +308,7 @@
         private System.Windows.Forms.ToolStripMenuItem useInterpolationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userParallelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useNativeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
