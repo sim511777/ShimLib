@@ -377,21 +377,17 @@ namespace ShimLib {
             // 인덱스 버퍼 생성
             int[] siys = new int[dbh];
             int[] sixs = new int[dbw];
-            float[] sity0s = new float[dbh];
-            float[] sity1s = new float[dbh];
-            float[] sitx0s = new float[dbw];
-            float[] sitx1s = new float[dbw];
+            float[] sitys = new float[dbh];
+            float[] sitxs = new float[dbw];
             for (int y = 0; y < dbh; y++) {
                 float siy = (float)((y - pany) / zoom) - 0.5f;
                 siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy > sbh-1) ? -1 : (int)siy;
-                sity1s[y] = siy - siys[y];
-                sity0s[y] = 1.0f - sity1s[y];
+                sitys[y] = siys[y] + 1.0f - siy;
             }
             for (int x = 0; x < dbw; x++) {
                 float six = (float)((x - panx) / zoom) - 0.5f;
                 sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six > sbw-1) ? -1 : (int)six;
-                sitx1s[x] = six - sixs[x];
-                sitx0s[x] = 1.0f - sitx1s[x];
+                sitxs[x] = sixs[x] + 1.0f - six;
             }
 
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
@@ -399,16 +395,16 @@ namespace ShimLib {
                 int siy = siys[y];
                 byte* sptr = (byte*)sbuf.ToPointer() + (Int64)sbw * siy * bytepp;
                 int* dp = (int*)dbuf.ToPointer() + (Int64)dbw * y;
-                float ty0 = sity0s[y];
-                float ty1 = sity1s[y];
+                float ty0 = sitys[y];
+                float ty1 = 1.0f - ty0;
                 for (int x = 0; x < dbw; x++, dp++) {
                     int six = sixs[x];
                     if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
                     } else {
                         byte *sp = &sptr[six * bytepp];
-                        float tx0 = sitx0s[x];
-                        float tx1 = sitx1s[x];
+                        float tx0 = sitxs[x];
+                        float tx1 = 1.0f - tx0;
                         if (bytepp == 1) {          // 8bit gray
                             byte* sp1 = sp + 1;
                             byte* sp2 = sp + sbw;
