@@ -75,6 +75,7 @@ v0.0.0.0 - 20191001
         public bool UseDrawDrawTime { get; set; } = true;
         public bool UseInterPorlation { get; set; } = false;
         public bool UseParallel { get; set; } = false;
+        public bool UseNative { get; set; } = false;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -143,10 +144,17 @@ v0.0.0.0 - 20191001
             var g = e.Graphics;
             var t0 = Stopwatch.GetTimestamp();
 
-            if (UseInterPorlation)
-                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-            else
-                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+            if (UseNative) {
+                if (UseInterPorlation)
+                    UtilNativeDll.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                else
+                    UtilNativeDll.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+            } else {
+                if (UseInterPorlation)
+                    Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                else
+                    Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+            }
 
             var t1 = Stopwatch.GetTimestamp();
 
