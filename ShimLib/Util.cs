@@ -344,8 +344,8 @@ namespace ShimLib {
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
             Action<int> rasterizeAction = (int y) => {
                 int siy = siys[y];
-                byte* sptr = (byte*)sbuf.ToPointer() + (Int64)sbw * siy * bytepp;
-                int* dp = (int*)dbuf.ToPointer() + (Int64)dbw * y;
+                byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
+                int* dp = (int*)dbuf + (Int64)dbw * y;
                 for (int x = 0; x < dbw; x++, dp++) {
                     int six = sixs[x];
                     if (siy == -1 || six == -1) {   // out of boundary of image
@@ -398,8 +398,8 @@ namespace ShimLib {
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
             Action<int> rasterizeAction = (int y) => {
                 int siy = siys[y];
-                byte* sptr = (byte*)sbuf.ToPointer() + (Int64)sbw * siy * bytepp;
-                int* dp = (int*)dbuf.ToPointer() + (Int64)dbw * y;
+                byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
+                int* dp = (int*)dbuf + (Int64)dbw * y;
                 float ty0 = sitys[y];
                 float ty1 = 1.0f - ty0;
                 for (int x = 0; x < dbw; x++, dp++) {
