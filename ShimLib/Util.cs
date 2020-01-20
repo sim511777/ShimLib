@@ -351,13 +351,13 @@ namespace ShimLib {
                     if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
                     } else {
-                        byte *sp = &sptr[six * bytepp];
+                        byte* sp = &sptr[six * bytepp];
                         if (bytepp == 1) {          // 8bit gray
-                            int gray = sp[0];
-                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
+                            int v = sp[0];
+                            *dp = v | v << 8 | v << 16 | 0xff << 24;
                         } else if (bytepp == 2) {   // 16bit gray (*.hra)
-                            int gray = sp[0];
-                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
+                            int v = sp[0];
+                            *dp = v | v << 8 | v << 16 | 0xff << 24;
                         } else if (bytepp == 3) {   // 24bit bgr
                             *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
                         } else if (bytepp == 4) {   // 32bit bgra
@@ -366,6 +366,7 @@ namespace ShimLib {
                     }
                 }
             };
+
             if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
             } else {
@@ -383,12 +384,12 @@ namespace ShimLib {
             float[] sitxs = new float[dbw];
             for (int y = 0; y < dbh; y++) {
                 float siy = (float)((y - pany) / zoom) - 0.5f;
-                siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy > sbh-1) ? -1 : (int)siy;
+                siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy > sbh - 1) ? -1 : (int)siy;
                 sitys[y] = siys[y] + 1.0f - siy;
             }
             for (int x = 0; x < dbw; x++) {
                 float six = (float)((x - panx) / zoom) - 0.5f;
-                sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six > sbw-1) ? -1 : (int)six;
+                sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six > sbw - 1) ? -1 : (int)six;
                 sitxs[x] = sixs[x] + 1.0f - six;
             }
 
@@ -407,21 +408,21 @@ namespace ShimLib {
                     if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
                     } else {
-                        byte *sp00 = &sptr[six * bytepp];
+                        byte* sp00 = &sptr[six * bytepp];
                         float tx0 = sitxs[x];
                         float tx1 = 1.0f - tx0;
                         if (bytepp == 1) {          // 8bit gray
                             byte* sp01 = sp00 + 1;
                             byte* sp10 = sp00 + sbw;
                             byte* sp11 = sp10 + 1;
-                            int gray = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
-                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
+                            int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
+                            *dp = v | v << 8 | v << 16 | 0xff << 24;
                         } else if (bytepp == 2) {   // 16bit gray (*.hra)
                             byte* sp01 = sp00 + 2;
                             byte* sp10 = sp00 + sbw2;
                             byte* sp11 = sp10 + 2;
-                            int gray = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
-                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
+                            int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
+                            *dp = v | v << 8 | v << 16 | 0xff << 24;
                         } else if (bytepp == 3) {   // 24bit bgr
                             byte* sp01 = sp00 + 3;
                             byte* sp10 = sp00 + sbw3;
