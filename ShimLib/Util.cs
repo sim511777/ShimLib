@@ -353,9 +353,11 @@ namespace ShimLib {
                     } else {
                         byte *sp = &sptr[six * bytepp];
                         if (bytepp == 1) {          // 8bit gray
-                            *dp = sp[0] | sp[0] << 8 | sp[0] << 16 | 0xff << 24;
+                            int gray = sp[0];
+                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
                         } else if (bytepp == 2) {   // 16bit gray (*.hra)
-                            *dp = sp[0] | sp[0] << 8 | sp[0] << 16 | 0xff << 24;
+                            int gray = sp[0];
+                            *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
                         } else if (bytepp == 3) {   // 24bit bgr
                             *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
                         } else if (bytepp == 4) {   // 32bit bgra
@@ -390,6 +392,9 @@ namespace ShimLib {
                 sitxs[x] = sixs[x] + 1.0f - six;
             }
 
+            int sbw2 = sbw * 2;
+            int sbw3 = sbw * 3;
+            int sbw4 = sbw * 4;
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
             Action<int> rasterizeAction = (int y) => {
                 int siy = siys[y];
@@ -402,45 +407,37 @@ namespace ShimLib {
                     if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
                     } else {
-                        byte *sp = &sptr[six * bytepp];
+                        byte *sp00 = &sptr[six * bytepp];
                         float tx0 = sitxs[x];
                         float tx1 = 1.0f - tx0;
                         if (bytepp == 1) {          // 8bit gray
-                            byte* sp1 = sp + 1;
-                            byte* sp2 = sp + sbw;
-                            byte* sp3 = sp2 + 1;
-                            float grayIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
-                            int gray = (int)grayIpl;
+                            byte* sp01 = sp00 + 1;
+                            byte* sp10 = sp00 + sbw;
+                            byte* sp11 = sp10 + 1;
+                            int gray = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                             *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
                         } else if (bytepp == 2) {   // 16bit gray (*.hra)
-                            byte* sp1 = sp + 2;
-                            byte* sp2 = sp + sbw * 2;
-                            byte* sp3 = sp2 + 2;
-                            float grayIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
-                            int gray = (int)grayIpl;
+                            byte* sp01 = sp00 + 2;
+                            byte* sp10 = sp00 + sbw2;
+                            byte* sp11 = sp10 + 2;
+                            int gray = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                             *dp = gray | gray << 8 | gray << 16 | 0xff << 24;
                         } else if (bytepp == 3) {   // 24bit bgr
-                            byte* sp1 = sp + 3;
-                            byte* sp2 = sp + sbw * 3;
-                            byte* sp3 = sp2 + 3;
-                            float blIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
-                            float grIpl = (sp[1] * tx0 + sp1[1] * tx1) * ty0 + (sp2[1] * tx0 + sp3[1] * tx1) * ty1;
-                            float reIpl = (sp[2] * tx0 + sp1[2] * tx1) * ty0 + (sp2[2] * tx0 + sp3[2] * tx1) * ty1;
-                            int blue = (int)blIpl;
-                            int green = (int)grIpl;
-                            int red = (int)reIpl;
-                            *dp = blue | green << 8 | red << 16 | 0xff << 24;
+                            byte* sp01 = sp00 + 3;
+                            byte* sp10 = sp00 + sbw3;
+                            byte* sp11 = sp10 + 3;
+                            int b = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
+                            int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
+                            int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
+                            *dp = b | g << 8 | r << 16 | 0xff << 24;
                         } else if (bytepp == 4) {   // 32bit bgra
-                            byte* sp1 = sp + 4;
-                            byte* sp2 = sp + sbw * 4;
-                            byte* sp3 = sp2 + 4;
-                            float blIpl = (sp[0] * tx0 + sp1[0] * tx1) * ty0 + (sp2[0] * tx0 + sp3[0] * tx1) * ty1;
-                            float grIpl = (sp[1] * tx0 + sp1[1] * tx1) * ty0 + (sp2[1] * tx0 + sp3[1] * tx1) * ty1;
-                            float reIpl = (sp[2] * tx0 + sp1[2] * tx1) * ty0 + (sp2[2] * tx0 + sp3[2] * tx1) * ty1;
-                            int blue = (int)blIpl;
-                            int green = (int)grIpl;
-                            int red = (int)reIpl;
-                            *dp = blue | green << 8 | red << 16 | 0xff << 24;
+                            byte* sp01 = sp00 + 4;
+                            byte* sp10 = sp00 + sbw4;
+                            byte* sp11 = sp10 + 4;
+                            int b = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
+                            int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
+                            int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
+                            *dp = b | g << 8 | r << 16 | 0xff << 24;
                         }
                     }
                 }
