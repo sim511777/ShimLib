@@ -370,8 +370,7 @@ namespace ShimLib {
             if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
             } else {
-                for (int y = 0; y < dbh; y++)
-                    rasterizeAction(y);
+                for (int y = 0; y < dbh; y++) rasterizeAction(y);
             }
         }
 
@@ -447,8 +446,7 @@ namespace ShimLib {
             if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
             } else {
-                for (int y = 0; y < dbh; y++)
-                    rasterizeAction(y);
+                for (int y = 0; y < dbh; y++) rasterizeAction(y);
             }
         }
     }

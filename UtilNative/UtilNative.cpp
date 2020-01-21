@@ -5,6 +5,8 @@
 #include "framework.h"
 #include "UtilNative.h"
 
+using namespace std;
+using namespace Concurrency;
 
 // 내보낸 함수의 예제입니다.
 UTILNATIVE_API int fnUtilNative(void)
@@ -27,7 +29,7 @@ UTILNATIVE_API void CopyImageBufferZoom(void* sbuf, int sbw, int sbh, void* dbuf
     }
 
     // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
-    auto rasterizeAction = [=](int y) {
+    function<void(int)> rasterizeAction = [=](int y) {
         int siy = siys[y];
         BYTE* sptr = (BYTE*)sbuf + (INT64)sbw * siy * bytepp;
         int* dp = (int*)dbuf + (INT64)dbw * y;
@@ -35,21 +37,17 @@ UTILNATIVE_API void CopyImageBufferZoom(void* sbuf, int sbw, int sbh, void* dbuf
             int six = sixs[x];
             if (siy == -1 || six == -1) {   // out of boundary of image
                 *dp = bgColor;
-            }
-            else {
+            } else {
                 BYTE* sp = &sptr[six * bytepp];
                 if (bytepp == 1) {          // 8bit gray
                     int v = sp[0];
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
-                }
-                else if (bytepp == 2) {   // 16bit gray (*.hra)
+                } else if (bytepp == 2) {   // 16bit gray (*.hra)
                     int v = sp[0];
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
-                }
-                else if (bytepp == 3) {   // 24bit bgr
+                } else if (bytepp == 3) {   // 24bit bgr
                     *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
-                }
-                else if (bytepp == 4) {   // 32bit bgra
+                } else if (bytepp == 4) {   // 32bit bgra
                     *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
                 }
             }
@@ -58,10 +56,8 @@ UTILNATIVE_API void CopyImageBufferZoom(void* sbuf, int sbw, int sbh, void* dbuf
 
     if (useParallel) {
         parallel_for(0, dbh, 1, rasterizeAction);
-    }
-    else {
-        for (int y = 0; y < dbh; y++)
-            rasterizeAction(y);
+    } else {
+        for (int y = 0; y < dbh; y++) rasterizeAction(y);
     }
 
     delete[] siys;
@@ -90,7 +86,7 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
     int sbw3 = sbw * 3;
     int sbw4 = sbw * 4;
     // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
-    auto rasterizeAction = [=](int y) {
+    function<void(int)> rasterizeAction = [=](int y) {
         int siy = siys[y];
         BYTE* sptr = (BYTE*)sbuf + (INT64)sbw * siy * bytepp;
         int* dp = (int*)dbuf + (INT64)dbw * y;
@@ -100,8 +96,7 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
             int six = sixs[x];
             if (siy == -1 || six == -1) {   // out of boundary of image
                 *dp = bgColor;
-            }
-            else {
+            } else {
                 BYTE* sp00 = &sptr[six * bytepp];
                 float tx0 = sitxs[x];
                 float tx1 = 1.0f - tx0;
@@ -111,15 +106,13 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
                     BYTE* sp11 = sp10 + 1;
                     int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
-                }
-                else if (bytepp == 2) {   // 16bit gray (*.hra)
+                } else if (bytepp == 2) {   // 16bit gray (*.hra)
                     BYTE* sp01 = sp00 + 2;
                     BYTE* sp10 = sp00 + sbw2;
                     BYTE* sp11 = sp10 + 2;
                     int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
-                }
-                else if (bytepp == 3) {   // 24bit bgr
+                } else if (bytepp == 3) {   // 24bit bgr
                     BYTE* sp01 = sp00 + 3;
                     BYTE* sp10 = sp00 + sbw3;
                     BYTE* sp11 = sp10 + 3;
@@ -127,8 +120,7 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
                     int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
                     int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
                     *dp = b | g << 8 | r << 16 | 0xff << 24;
-                }
-                else if (bytepp == 4) {   // 32bit bgra
+                } else if (bytepp == 4) {   // 32bit bgra
                     BYTE* sp01 = sp00 + 4;
                     BYTE* sp10 = sp00 + sbw4;
                     BYTE* sp11 = sp10 + 4;
@@ -143,10 +135,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
 
     if (useParallel) {
         parallel_for(0, dbh, 1, rasterizeAction);
-    }
-    else {
-        for (int y = 0; y < dbh; y++)
-            rasterizeAction(y);
+    } else {
+        for (int y = 0; y < dbh; y++) rasterizeAction(y);
     }
 
     delete[] siys;

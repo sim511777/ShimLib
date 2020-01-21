@@ -5,4 +5,4 @@
 #include <windows.h>
 #include <math.h>
 #include <ppl.h>
-using namespace concurrency;
+#include <functional>
