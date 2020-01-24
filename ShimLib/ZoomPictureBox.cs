@@ -114,8 +114,6 @@ v0.0.0.0 - 20191001
             ImgBW = bw;
             ImgBH = bh;
             ImgBytepp = bytepp;
-
-            Invalidate();
         }
 
         // 사각형을 피팅 되도록 줌 변경
