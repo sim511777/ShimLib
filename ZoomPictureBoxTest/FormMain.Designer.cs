@@ -31,12 +31,13 @@
             this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mousePanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wheelZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.showPixelValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCursorInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDrawCenterLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDrawTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mousePanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wheelZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useNativeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +45,7 @@
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openFileToolStripMenuItem,
-            this.pasteFromClipboardToolStripMenuItem});
+            this.pasteFromClipboardToolStripMenuItem,
+            this.lennaToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -129,6 +131,31 @@
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.optionToolStripMenuItem.Text = "Option";
             // 
+            // mousePanningToolStripMenuItem
+            // 
+            this.mousePanningToolStripMenuItem.Checked = true;
+            this.mousePanningToolStripMenuItem.CheckOnClick = true;
+            this.mousePanningToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mousePanningToolStripMenuItem.Name = "mousePanningToolStripMenuItem";
+            this.mousePanningToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.mousePanningToolStripMenuItem.Text = "Mouse Panning";
+            this.mousePanningToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
+            // 
+            // wheelZoomToolStripMenuItem
+            // 
+            this.wheelZoomToolStripMenuItem.Checked = true;
+            this.wheelZoomToolStripMenuItem.CheckOnClick = true;
+            this.wheelZoomToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.wheelZoomToolStripMenuItem.Name = "wheelZoomToolStripMenuItem";
+            this.wheelZoomToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.wheelZoomToolStripMenuItem.Text = "Wheel Zoom";
+            this.wheelZoomToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(239, 6);
+            // 
             // showPixelValueToolStripMenuItem
             // 
             this.showPixelValueToolStripMenuItem.Checked = true;
@@ -172,26 +199,6 @@
             this.showDrawTimeToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.showDrawTimeToolStripMenuItem.Text = "Show Draw Time";
             this.showDrawTimeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // mousePanningToolStripMenuItem
-            // 
-            this.mousePanningToolStripMenuItem.Checked = true;
-            this.mousePanningToolStripMenuItem.CheckOnClick = true;
-            this.mousePanningToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mousePanningToolStripMenuItem.Name = "mousePanningToolStripMenuItem";
-            this.mousePanningToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.mousePanningToolStripMenuItem.Text = "Mouse Panning";
-            this.mousePanningToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // wheelZoomToolStripMenuItem
-            // 
-            this.wheelZoomToolStripMenuItem.Checked = true;
-            this.wheelZoomToolStripMenuItem.CheckOnClick = true;
-            this.wheelZoomToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.wheelZoomToolStripMenuItem.Name = "wheelZoomToolStripMenuItem";
-            this.wheelZoomToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.wheelZoomToolStripMenuItem.Text = "Wheel Zoom";
-            this.wheelZoomToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
             // useInterpolationToolStripMenuItem
             // 
@@ -263,10 +270,13 @@
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             // 
-            // toolStripSeparator1
+            // lennaToolStripMenuItem
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(239, 6);
+            this.lennaToolStripMenuItem.Name = "lennaToolStripMenuItem";
+            this.lennaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.lennaToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.lennaToolStripMenuItem.Text = "Lenna";
+            this.lennaToolStripMenuItem.Click += new System.EventHandler(this.lennaToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -309,6 +319,7 @@
         private System.Windows.Forms.ToolStripMenuItem userParallelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useNativeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem lennaToolStripMenuItem;
     }
 }
 

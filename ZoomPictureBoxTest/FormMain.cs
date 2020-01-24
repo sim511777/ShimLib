@@ -136,5 +136,11 @@ namespace ZoomPictureBoxTest {
         private void aboutZoomPictureBoxToolStripMenuItem_Click(object sender, EventArgs e) {
             MessageBox.Show(this, ZoomPictureBox.VersionHistory, "About ZoomPictureBox");
         }
+
+        private void lennaToolStripMenuItem_Click(object sender, EventArgs e) {
+            Util.BitmapToImageBuffer(Properties.Resources.Lenna, ref imgBuf, ref bw, ref bh, ref bytepp);
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
+            pbxDraw.Invalidate();
+        }
     }
 }
