@@ -142,5 +142,11 @@ namespace ZoomPictureBoxTest {
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
             pbxDraw.Invalidate();
         }
+
+        private void chessToolStripMenuItem_Click(object sender, EventArgs e) {
+            Util.BitmapToImageBuffer(Properties.Resources.Chess, ref imgBuf, ref bw, ref bh, ref bytepp);
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
+            pbxDraw.Invalidate();
+        }
     }
 }

@@ -27,6 +27,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +46,7 @@
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
-            this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +68,8 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openFileToolStripMenuItem,
             this.pasteFromClipboardToolStripMenuItem,
-            this.lennaToolStripMenuItem});
+            this.lennaToolStripMenuItem,
+            this.chessToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -87,6 +89,14 @@
             this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.pasteFromClipboardToolStripMenuItem.Text = "Paste from Clipboard";
             this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
+            // 
+            // lennaToolStripMenuItem
+            // 
+            this.lennaToolStripMenuItem.Name = "lennaToolStripMenuItem";
+            this.lennaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.lennaToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.lennaToolStripMenuItem.Text = "Lenna";
+            this.lennaToolStripMenuItem.Click += new System.EventHandler(this.lennaToolStripMenuItem_Click);
             // 
             // zoomToolStripMenuItem
             // 
@@ -270,13 +280,13 @@
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             // 
-            // lennaToolStripMenuItem
+            // chessToolStripMenuItem
             // 
-            this.lennaToolStripMenuItem.Name = "lennaToolStripMenuItem";
-            this.lennaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.lennaToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.lennaToolStripMenuItem.Text = "Lenna";
-            this.lennaToolStripMenuItem.Click += new System.EventHandler(this.lennaToolStripMenuItem_Click);
+            this.chessToolStripMenuItem.Name = "chessToolStripMenuItem";
+            this.chessToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.chessToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.chessToolStripMenuItem.Text = "Chess";
+            this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -320,6 +330,7 @@
         private System.Windows.Forms.ToolStripMenuItem useNativeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem lennaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chessToolStripMenuItem;
     }
 }
 
