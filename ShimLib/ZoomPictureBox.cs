@@ -13,8 +13,11 @@ using System.Diagnostics;
 
 namespace ShimLib {
     public class ZoomPictureBox : Control {
-        public const string VersionHistory = 
+        public const string VersionHistory =
 @"ZoomPictureBox .NET 컨트롤
+
+v1.0.0.3 - 20200127
+1. 필터링시 가장자리 0.5픽셀 처리 안하던것 처리하도록 수정
 
 v1.0.0.2 - 20200119
 1. 레스터라이즈 Parallel 라이브러리 사용해서멀티쓰레드 처리

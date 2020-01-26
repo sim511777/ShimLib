@@ -377,63 +377,70 @@ namespace ShimLib {
         // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
         public unsafe static void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
-            int[] siys = new int[dbh];
-            int[] sixs = new int[dbw];
-            float[] sitys = new float[dbh];
-            float[] sitxs = new float[dbw];
+            int[] siy0s = new int[dbh];
+            int[] siy1s = new int[dbh];
+            int[] six0s = new int[dbw];
+            int[] six1s = new int[dbw];
+            double[] sitys = new double[dbh];
+            double[] sitxs = new double[dbw];
             for (int y = 0; y < dbh; y++) {
-                float siy = (float)((y - pany) / zoom) - 0.5f;
-                siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy > sbh - 1) ? -1 : (int)siy;
-                sitys[y] = siys[y] + 1.0f - siy;
+                double siy = (double)((y - pany) / zoom) - 0.5;
+                if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh -0.5) {
+                    siy0s[y] = -1;
+                    continue;
+                }
+                int siy0 = (int)Math.Floor(siy);
+                int siy1 = siy0 + 1;
+                sitys[y] = siy1 - siy;
+                siy0s[y] = IntClamp(siy0, 0, sbh - 1);
+                siy1s[y] = IntClamp(siy1, 0, sbh - 1);
             }
             for (int x = 0; x < dbw; x++) {
-                float six = (float)((x - panx) / zoom) - 0.5f;
-                sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six > sbw - 1) ? -1 : (int)six;
-                sitxs[x] = sixs[x] + 1.0f - six;
+                double six = (double)((x - panx) / zoom) - 0.5;
+                if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5) {
+                    six0s[x] = -1;
+                    continue;
+                }
+                int six0 = (int)Math.Floor(six);
+                int six1 = six0 + 1;
+                sitxs[x] = six1 - six;
+                six0s[x] = IntClamp(six0, 0, sbw - 1);
+                six1s[x] = IntClamp(six1, 0, sbw - 1);
             }
 
-            int sbw2 = sbw * 2;
-            int sbw3 = sbw * 3;
-            int sbw4 = sbw * 4;
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
             Action<int> rasterizeAction = (int y) => {
-                int siy = siys[y];
-                byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
+                int siy0 = siy0s[y];
+                int siy1 = siy1s[y];
+                byte* sptr0 = (byte*)sbuf + (Int64)sbw * siy0 * bytepp;
+                byte* sptr1 = (byte*)sbuf + (Int64)sbw * siy1 * bytepp;
                 int* dp = (int*)dbuf + (Int64)dbw * y;
-                float ty0 = sitys[y];
-                float ty1 = 1.0f - ty0;
+                double ty0 = sitys[y];
+                double ty1 = 1.0 - ty0;
                 for (int x = 0; x < dbw; x++, dp++) {
-                    int six = sixs[x];
-                    if (siy == -1 || six == -1) {   // out of boundary of image
+                    int six0 = six0s[x];
+                    int six1 = six1s[x];
+                    if (siy0 == -1 || six0 == -1) {   // out of boundary of image
                         *dp = bgColor;
                     } else {
-                        byte* sp00 = &sptr[six * bytepp];
-                        float tx0 = sitxs[x];
-                        float tx1 = 1.0f - tx0;
+                        byte* sp00 = &sptr0[six0 * bytepp];
+                        byte* sp01 = &sptr0[six1 * bytepp];
+                        byte* sp10 = &sptr1[six0 * bytepp];
+                        byte* sp11 = &sptr1[six1 * bytepp];
+                        double tx0 = sitxs[x];
+                        double tx1 = 1.0 - tx0;
                         if (bytepp == 1) {          // 8bit gray
-                            byte* sp01 = sp00 + 1;
-                            byte* sp10 = sp00 + sbw;
-                            byte* sp11 = sp10 + 1;
                             int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
                         } else if (bytepp == 2) {   // 16bit gray (*.hra)
-                            byte* sp01 = sp00 + 2;
-                            byte* sp10 = sp00 + sbw2;
-                            byte* sp11 = sp10 + 2;
                             int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
                         } else if (bytepp == 3) {   // 24bit bgr
-                            byte* sp01 = sp00 + 3;
-                            byte* sp10 = sp00 + sbw3;
-                            byte* sp11 = sp10 + 3;
                             int b = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                             int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
                             int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
                             *dp = b | g << 8 | r << 16 | 0xff << 24;
                         } else if (bytepp == 4) {   // 32bit bgra
-                            byte* sp01 = sp00 + 4;
-                            byte* sp10 = sp00 + sbw4;
-                            byte* sp11 = sp10 + 4;
                             int b = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                             int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
                             int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
