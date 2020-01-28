@@ -78,10 +78,10 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
     int* siy1s = new int[dbh];
     int* six0s = new int[dbw];
     int* six1s = new int[dbw];
-	double* sity0s = new double[dbh];
-	double* sity1s = new double[dbh];
-	double* sitx0s = new double[dbw];
-	double* sitx1s = new double[dbw];
+	int* sity0s = new int[dbh];
+	int* sity1s = new int[dbh];
+	int* sitx0s = new int[dbw];
+	int* sitx1s = new int[dbw];
     for (int y = 0; y < dbh; y++) {
         double siy = (y - pany) / zoom - 0.5;
         if (sbuf == nullptr || siy < -0.5 || siy >= sbh - 0.5) {
@@ -90,8 +90,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         }
         int siy0 = (int)floor(siy);
         int siy1 = siy0 + 1;
-		sity0s[y] = siy1 - siy;
-		sity1s[y] = siy - siy0;
+		sity0s[y] = (int)((siy1 - siy) * 256);
+		sity1s[y] = (int)((siy - siy0) * 256);
         siy0s[y] = IntClamp(siy0, 0, sbh - 1);
         siy1s[y] = IntClamp(siy1, 0, sbh - 1);
     }
@@ -103,8 +103,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         }
         int six0 = (int)floor(six);
         int six1 = six0 + 1;
-		sitx0s[x] = six1 - six;
-		sitx1s[x] = six - six0;
+		sitx0s[x] = (int)((six1 - six) * 256);
+		sitx1s[x] = (int)((six - six0) * 256);
         six0s[x] = IntClamp(six0, 0, sbw - 1);
         six1s[x] = IntClamp(six1, 0, sbw - 1);
     }
@@ -116,8 +116,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         BYTE* sptr0 = (BYTE*)sbuf + (INT64)sbw * siy0 * bytepp;
         BYTE* sptr1 = (BYTE*)sbuf + (INT64)sbw * siy1 * bytepp;
         int* dp = (int*)dbuf + (INT64)dbw * y;
-        double ty0 = sity0s[y];
-        double ty1 = sity1s[y];
+        int ty0 = sity0s[y];
+        int ty1 = sity1s[y];
         for (int x = 0; x < dbw; x++, dp++) {
             int six0 = six0s[x];
             int six1 = six1s[x];
@@ -128,23 +128,27 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
                 BYTE* sp01 = &sptr0[six1 * bytepp];
                 BYTE* sp10 = &sptr1[six0 * bytepp];
                 BYTE* sp11 = &sptr1[six1 * bytepp];
-                double tx0 = sitx0s[x];
-                double tx1 = sitx1s[x];
+                int tx0 = sitx0s[x];
+                int tx1 = sitx1s[x];
+                int t00 = ty0 * tx0;
+                int t01 = ty0 * tx1;
+                int t10 = ty1 * tx0;
+                int t11 = ty1 * tx1;
                 if (bytepp == 1) {          // 8bit gray
-                    int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
+                    int v = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
                 } else if (bytepp == 2) {   // 16bit gray (*.hra)
-                    int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
+                    int v = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
                 } else if (bytepp == 3) {   // 24bit bgr
-                    int b = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
-                    int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
-                    int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
+                    int b = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
+                    int g = (sp00[1] * t00 + sp01[1] * t01 + sp10[1] * t10 + sp11[1] * t11) >> 16;
+                    int r = (sp00[2] * t00 + sp01[2] * t01 + sp10[2] * t10 + sp11[2] * t11) >> 16;
                     *dp = b | g << 8 | r << 16 | 0xff << 24;
                 } else if (bytepp == 4) {   // 32bit bgra
-                    int b = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
-                    int g = (int)((sp00[1] * tx0 + sp01[1] * tx1) * ty0 + (sp10[1] * tx0 + sp11[1] * tx1) * ty1);
-                    int r = (int)((sp00[2] * tx0 + sp01[2] * tx1) * ty0 + (sp10[2] * tx0 + sp11[2] * tx1) * ty1);
+                    int b = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
+                    int g = (sp00[1] * t00 + sp01[1] * t01 + sp10[1] * t10 + sp11[1] * t11) >> 16;
+                    int r = (sp00[2] * t00 + sp01[2] * t01 + sp10[2] * t10 + sp11[2] * t11) >> 16;
                     *dp = b | g << 8 | r << 16 | 0xff << 24;
                 }
             }
