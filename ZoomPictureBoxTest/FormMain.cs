@@ -38,8 +38,7 @@ namespace ZoomPictureBoxTest {
                 bmp.Dispose();
             }
 
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
-            pbxDraw.Invalidate();
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private void LoadClipboard() {
@@ -56,8 +55,7 @@ namespace ZoomPictureBoxTest {
             bmp.Dispose();
             img.Dispose();
 
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
-            pbxDraw.Invalidate();
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private string GetDragDataImageFile(IDataObject data) {
@@ -139,14 +137,12 @@ namespace ZoomPictureBoxTest {
 
         private void lennaToolStripMenuItem_Click(object sender, EventArgs e) {
             Util.BitmapToImageBuffer(Properties.Resources.Lenna, ref imgBuf, ref bw, ref bh, ref bytepp);
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
-            pbxDraw.Invalidate();
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private void chessToolStripMenuItem_Click(object sender, EventArgs e) {
             Util.BitmapToImageBuffer(Properties.Resources.Chess, ref imgBuf, ref bw, ref bh, ref bytepp);
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp);
-            pbxDraw.Invalidate();
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
     }
 }

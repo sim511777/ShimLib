@@ -18,6 +18,7 @@ namespace ShimLib {
 
 v1.0.0.3 - 20200127
 1. 필터링시 가장자리 0.5픽셀 처리 안하던것 처리하도록 수정
+2. SetImgBuf 함수에 bInvalidate 파라미터 추가
 
 v1.0.0.2 - 20200119
 1. 레스터라이즈 Parallel 라이브러리 사용해서멀티쓰레드 처리
@@ -112,11 +113,13 @@ v0.0.0.0 - 20191001
         public Point PtPanning { get; set; }
 
         // 이미지 버퍼 세팅
-        public void SetImgBuf(IntPtr buf, int bw, int bh, int bytepp) {
+        public void SetImgBuf(IntPtr buf, int bw, int bh, int bytepp, bool bInvalidate) {
             ImgBuf = buf;
             ImgBW = bw;
             ImgBH = bh;
             ImgBytepp = bytepp;
+            if (bInvalidate)
+                Invalidate();
         }
 
         // 사각형을 피팅 되도록 줌 변경
