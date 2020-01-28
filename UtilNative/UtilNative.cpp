@@ -78,8 +78,10 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
     int* siy1s = new int[dbh];
     int* six0s = new int[dbw];
     int* six1s = new int[dbw];
-    double* sitys = new double[dbh];
-    double* sitxs = new double[dbw];
+	double* sity0s = new double[dbh];
+	double* sity1s = new double[dbh];
+	double* sitx0s = new double[dbw];
+	double* sitx1s = new double[dbw];
     for (int y = 0; y < dbh; y++) {
         double siy = (y - pany) / zoom - 0.5;
         if (sbuf == nullptr || siy < -0.5 || siy >= sbh - 0.5) {
@@ -88,7 +90,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         }
         int siy0 = (int)floor(siy);
         int siy1 = siy0 + 1;
-        sitys[y] = siy1 - siy;
+		sity0s[y] = siy1 - siy;
+		sity1s[y] = siy - siy0;
         siy0s[y] = IntClamp(siy0, 0, sbh - 1);
         siy1s[y] = IntClamp(siy1, 0, sbh - 1);
     }
@@ -100,7 +103,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         }
         int six0 = (int)floor(six);
         int six1 = six0 + 1;
-        sitxs[x] = six1 - six;
+		sitx0s[x] = six1 - six;
+		sitx1s[x] = six - six0;
         six0s[x] = IntClamp(six0, 0, sbw - 1);
         six1s[x] = IntClamp(six1, 0, sbw - 1);
     }
@@ -112,8 +116,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         BYTE* sptr0 = (BYTE*)sbuf + (INT64)sbw * siy0 * bytepp;
         BYTE* sptr1 = (BYTE*)sbuf + (INT64)sbw * siy1 * bytepp;
         int* dp = (int*)dbuf + (INT64)dbw * y;
-        double ty0 = sitys[y];
-        double ty1 = 1.0 - ty0;
+        double ty0 = sity0s[y];
+        double ty1 = sity1s[y];
         for (int x = 0; x < dbw; x++, dp++) {
             int six0 = six0s[x];
             int six1 = six1s[x];
@@ -124,8 +128,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
                 BYTE* sp01 = &sptr0[six1 * bytepp];
                 BYTE* sp10 = &sptr1[six0 * bytepp];
                 BYTE* sp11 = &sptr1[six1 * bytepp];
-                double tx0 = sitxs[x];
-                double tx1 = 1.0 - tx0;
+                double tx0 = sitx0s[x];
+                double tx1 = sitx1s[x];
                 if (bytepp == 1) {          // 8bit gray
                     int v = (int)((sp00[0] * tx0 + sp01[0] * tx1) * ty0 + (sp10[0] * tx0 + sp11[0] * tx1) * ty1);
                     *dp = v | v << 8 | v << 16 | 0xff << 24;
@@ -157,6 +161,8 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
     delete[] siy1s;
     delete[] six0s;
     delete[] six1s;
-    delete[] sitys;
-    delete[] sitxs;
+	delete[] sity0s;
+	delete[] sity1s;
+	delete[] sitx0s;
+	delete[] sitx1s;
 }
