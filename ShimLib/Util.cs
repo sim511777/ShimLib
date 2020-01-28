@@ -328,7 +328,7 @@ namespace ShimLib {
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사
-        public unsafe static void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
+        public static unsafe void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siys = new int[dbh];
             int[] sixs = new int[dbw];
@@ -375,7 +375,7 @@ namespace ShimLib {
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
-        public unsafe static void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
+        public static unsafe void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, int panx, int pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siy0s = new int[dbh];
             int[] siy1s = new int[dbh];
@@ -384,7 +384,7 @@ namespace ShimLib {
             double[] sitys = new double[dbh];
             double[] sitxs = new double[dbw];
             for (int y = 0; y < dbh; y++) {
-                double siy = (double)((y - pany) / zoom) - 0.5;
+                double siy = (y - pany) / zoom - 0.5;
                 if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh -0.5) {
                     siy0s[y] = -1;
                     continue;
@@ -396,7 +396,7 @@ namespace ShimLib {
                 siy1s[y] = IntClamp(siy1, 0, sbh - 1);
             }
             for (int x = 0; x < dbw; x++) {
-                double six = (double)((x - panx) / zoom) - 0.5;
+                double six = (x - panx) / zoom - 0.5;
                 if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5) {
                     six0s[x] = -1;
                     continue;
