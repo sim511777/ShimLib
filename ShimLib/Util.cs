@@ -36,9 +36,8 @@ namespace ShimLib {
 
     public class Util {
         // 시간 측정 함수
-        public static double GetPastTimeMs(long timeStampStart) {
-            long timeStampEnd = Stopwatch.GetTimestamp();
-            return (timeStampEnd - timeStampStart) * 1000.0 / Stopwatch.Frequency;
+        public static double GetTimeMs() {
+            return Stopwatch.GetTimestamp() * 1000.0 / Stopwatch.Frequency;
         }
 
         // 범위 제한 함수

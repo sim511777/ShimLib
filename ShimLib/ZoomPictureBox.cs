@@ -151,7 +151,7 @@ v0.0.0.0 - 20191001
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
             var g = e.Graphics;
-            var t0 = Stopwatch.GetTimestamp();
+            var t0 = Util.GetTimeMs();
 
             if (UseNative) {
                 if (UseInterPorlation)
@@ -165,28 +165,27 @@ v0.0.0.0 - 20191001
                     Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PtPanning.X, PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             }
 
-            var t1 = Stopwatch.GetTimestamp();
+            var t1 = Util.GetTimeMs();
 
             g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
-            var t2 = Stopwatch.GetTimestamp();
+            var t2 = Util.GetTimeMs();
 
             if (UseDrawPixelValue)
                 DrawPixelValue(g);
-            var t3 = Stopwatch.GetTimestamp();
+            var t3 = Util.GetTimeMs();
 
             if (UseDrawCenterLine)
                 DrawCenterLine(g);
-            var t4 = Stopwatch.GetTimestamp();
+            var t4 = Util.GetTimeMs();
 
             base.OnPaint(e);
-            var t5 = Stopwatch.GetTimestamp();
+            var t5 = Util.GetTimeMs();
 
             if (UseDrawInfo)
                 DrawInfo(g);
-            var t6 = Stopwatch.GetTimestamp();
+            var t6 = Util.GetTimeMs();
             
             if (UseDrawDrawTime) {
-                var freqMs = 1000.0/Stopwatch.Frequency;
                 string info =
 $@"== Image ==
 {(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp*8}bpp")}
@@ -202,13 +201,13 @@ Native : {(UseNative ? "O" : "X")}
 MouseMove : {(UseMouseMove ? "O" : "X")}
 MouseWheelZoom : {(UseMouseWheelZoom ? "O" : "X")}
 == Draw time ==
-CopyImage : {(t1-t0)*freqMs:0.0}ms
-DrawImage : {(t2-t1)*freqMs:0.0}ms
-PixelValue : {(t3-t2)*freqMs:0.0}ms
-CenterLine : {(t4-t3)*freqMs:0.0}ms
-OnPaint : {(t5-t4)*freqMs:0.0}ms
-CursorInfo : {(t6-t5)*freqMs:0.0}ms
-Total : {(t6-t0)*freqMs:0.0}ms
+CopyImage : {t1-t0:0.0}ms
+DrawImage : {t2-t1:0.0}ms
+PixelValue : {t3-t2:0.0}ms
+CenterLine : {t4-t3:0.0}ms
+OnPaint : {t5-t4:0.0}ms
+CursorInfo : {t6-t5:0.0}ms
+Total : {t6-t0:0.0}ms
 ";
                 DrawDrawTime(g, info);
             }
