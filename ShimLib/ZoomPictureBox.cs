@@ -21,6 +21,7 @@ v1.0.0.4 - 20200129
 2. panning 좌표 FloatF 로 변경 하여 축소 확대시 위치 안벗어남
 3. Native.dll 불필요 해서 지움
 4. Quadruple 클릭시 버전정보창 띄움
+5. PtPanning 속성 숨김
 
 v1.0.0.3 - 20200127
 1. 필터링시 가장자리 0.5픽셀 처리 안하던것 처리하도록 수정
@@ -115,6 +116,7 @@ v0.0.0.0 - 20191001
         }
 
         // 패닝 파라미터
+        [Browsable(false)]
         public PointF PtPanning { get; set; }
 
         // 이미지 버퍼 세팅
