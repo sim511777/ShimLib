@@ -20,6 +20,7 @@ v1.0.0.4 - 20200129
 1. 필터링시 +0.5 offset 추가
 2. panning 좌표 FloatF 로 변경 하여 축소 확대시 위치 안벗어남
 3. Native.dll 불필요 해서 지움
+4. Quadruple 클릭시 버전정보창 띄움
 
 v1.0.0.3 - 20200127
 1. 필터링시 가장자리 0.5픽셀 처리 안하던것 처리하도록 수정
@@ -186,16 +187,19 @@ v0.0.0.0 - 20191001
                 string info =
 $@"== Image ==
 {(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp*8}bpp")}
+
 == Draw option ==
 DrawPixelValue : {(UseDrawPixelValue ? "O" : "X")}
 DrawInfo : {(UseDrawInfo ? "O" : "X")}
 DrawCenterLine : {(UseDrawCenterLine ? "O" : "X")}
 DrawDrawTime : {(UseDrawDrawTime ? "O" : "X")}
-InterPorlation : {(UseInterPorlation ? "O" : "X")}
+Interpolation : {(UseInterPorlation ? "O" : "X")}
 Parallel : {(UseParallel ? "O" : "X")}
+
 == Mouse option ==
 MouseMove : {(UseMouseMove ? "O" : "X")}
 MouseWheelZoom : {(UseMouseWheelZoom ? "O" : "X")}
+
 == Draw time ==
 CopyImage : {t1-t0:0.0}ms
 DrawImage : {t2-t1:0.0}ms
@@ -253,11 +257,30 @@ Total : {t6-t0:0.0}ms
 
         // 마우스 다운
         bool mouseDown = false;
+        private DateTime clickTimeOld = DateTime.Now;
+        private int quadrupleClickCount = 0;
+        private void CheckQuadrupleClick() {
+            var clickTimeNow = DateTime.Now;
+            var clickTimeSpan = clickTimeNow - clickTimeOld;
+            clickTimeOld = clickTimeNow;
+            if (clickTimeSpan.TotalMilliseconds > 300) {
+                quadrupleClickCount = 1;
+            } else {
+                quadrupleClickCount++;
+                if (quadrupleClickCount >= 4) {
+                    MessageBox.Show(this, ZoomPictureBox.VersionHistory, "ZoomPictureBox");
+                    quadrupleClickCount = 0;
+                }
+            }
+        }
+
         protected override void OnMouseDown(MouseEventArgs e) {
             base.OnMouseDown(e);
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left) {
                 mouseDown = true;
+                CheckQuadrupleClick();
+            }
         }
 
         // 마우스 무브
