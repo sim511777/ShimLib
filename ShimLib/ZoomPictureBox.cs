@@ -410,7 +410,7 @@ Total : {t6-t0:0.0}ms
         }
 
         // 표시 픽셀 좌표를 이미지 좌표로 변환
-        public PointF DispToImg(PointF pt) {
+        public PointF DispToImg(Point pt) {
             double ZoomFactor = GetZoomFactor();
             float x = (float)((pt.X - PtPanning.X) / ZoomFactor);
             float y = (float)((pt.Y - PtPanning.Y) / ZoomFactor);
@@ -418,7 +418,7 @@ Total : {t6-t0:0.0}ms
         }
 
         // 픽셀 사각형을 이미지 사각형으로 변환
-        public RectangleF DispToImg(RectangleF rect) {
+        public RectangleF DispToImg(Rectangle rect) {
             double ZoomFactor = GetZoomFactor();
             float x = (float)((rect.X - PtPanning.X) / ZoomFactor);
             float y = (float)((rect.Y - PtPanning.Y) / ZoomFactor);
@@ -428,21 +428,21 @@ Total : {t6-t0:0.0}ms
         }
 
         // 이미지 좌표를 표시 픽셀 좌표로 변환
-        public PointF ImgToDisp(PointF pt) {
+        public Point ImgToDisp(PointF pt) {
             double ZoomFactor = GetZoomFactor();
-            float x = (float)(pt.X * ZoomFactor + PtPanning.X);
-            float y = (float)(pt.Y * ZoomFactor + PtPanning.Y);
-            return new PointF(x, y);
+            int x = (int)Math.Floor(pt.X * ZoomFactor + PtPanning.X);
+            int y = (int)Math.Floor(pt.Y * ZoomFactor + PtPanning.Y);
+            return new Point(x, y);
         }
 
         // 이미지 사각형을 픽셀 사각형으로 변환
-        public RectangleF ImgToDisp(RectangleF rect) {
+        public Rectangle ImgToDisp(RectangleF rect) {
             double ZoomFactor = GetZoomFactor();
-            float x = (float)(rect.X * ZoomFactor + PtPanning.X);
-            float y = (float)(rect.Y * ZoomFactor + PtPanning.Y);
-            float width = (float)(rect.Width * ZoomFactor);
-            float height = (float)(rect.Height * ZoomFactor);
-            return new RectangleF(x, y, width, height);
+            int x = (int)Math.Floor(rect.X * ZoomFactor + PtPanning.X);
+            int y = (int)Math.Floor(rect.Y * ZoomFactor + PtPanning.Y);
+            int width = (int)Math.Floor(rect.Width * ZoomFactor);
+            int height = (int)Math.Floor(rect.Height * ZoomFactor);
+            return new Rectangle(x, y, width, height);
         }
 
         // 이미지 픽셀값 문자열 리턴
