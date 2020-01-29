@@ -83,7 +83,7 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
 	int* sitx0s = new int[dbw];
 	int* sitx1s = new int[dbw];
     for (int y = 0; y < dbh; y++) {
-        double siy = (y - pany) / zoom - 0.5;
+        double siy = (y + 0.5 - pany) / zoom - 0.5;
         if (sbuf == nullptr || siy < -0.5 || siy >= sbh - 0.5) {
             siy0s[y] = -1;
             continue;
@@ -96,7 +96,7 @@ UTILNATIVE_API void CopyImageBufferZoomIpl(void* sbuf, int sbw, int sbh, void* d
         siy1s[y] = IntClamp(siy1, 0, sbh - 1);
     }
     for (int x = 0; x < dbw; x++) {
-        double six = (x - panx) / zoom - 0.5;
+        double six = (x + 0.5 - panx) / zoom - 0.5;
         if (sbuf == nullptr || six < -0.5 || six >= sbw - 0.5) {
             six0s[x] = -1;
             continue;

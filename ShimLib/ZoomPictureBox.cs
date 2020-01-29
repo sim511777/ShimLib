@@ -16,6 +16,9 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ZoomPictureBox .NET 컨트롤
 
+v1.0.0.4 - 20200129
+1. 필터링시 +0.5 offset 추가
+
 v1.0.0.3 - 20200127
 1. 필터링시 가장자리 0.5픽셀 처리 안하던것 처리하도록 수정
 2. SetImgBuf 함수에 bInvalidate 파라미터 추가
