@@ -19,6 +19,7 @@ namespace ShimLib {
 v1.0.0.4 - 20200129
 1. 필터링시 +0.5 offset 추가
 2. panning 좌표 FloatF 로 변경 하여 축소 확대시 위치 안벗어남
+3. Native.dll 불필요 해서 지움
 
 v1.0.0.3 - 20200127
 1. 필터링시 가장자리 0.5픽셀 처리 안하던것 처리하도록 수정
@@ -88,7 +89,6 @@ v0.0.0.0 - 20191001
         public bool UseDrawDrawTime { get; set; } = true;
         public bool UseInterPorlation { get; set; } = false;
         public bool UseParallel { get; set; } = false;
-        public bool UseNative { get; set; } = false;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -157,17 +157,10 @@ v0.0.0.0 - 20191001
             var g = e.Graphics;
             var t0 = Util.GetTimeMs();
 
-            if (UseNative) {
-                if (UseInterPorlation)
-                    UtilNativeDll.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-                else
-                    UtilNativeDll.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-            } else {
-                if (UseInterPorlation)
-                    Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-                else
-                    Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-            }
+            if (UseInterPorlation)
+                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+            else
+                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
 
             var t1 = Util.GetTimeMs();
 
@@ -200,7 +193,6 @@ DrawCenterLine : {(UseDrawCenterLine ? "O" : "X")}
 DrawDrawTime : {(UseDrawDrawTime ? "O" : "X")}
 InterPorlation : {(UseInterPorlation ? "O" : "X")}
 Parallel : {(UseParallel ? "O" : "X")}
-Native : {(UseNative ? "O" : "X")}
 == Mouse option ==
 MouseMove : {(UseMouseMove ? "O" : "X")}
 MouseWheelZoom : {(UseMouseWheelZoom ? "O" : "X")}

@@ -23,12 +23,14 @@
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,12 +44,10 @@
             this.showDrawTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.useNativeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
-            this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,6 +108,14 @@
             this.chessToolStripMenuItem.Text = "Chess";
             this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
             // 
+            // lenna4ToolStripMenuItem
+            // 
+            this.lenna4ToolStripMenuItem.Name = "lenna4ToolStripMenuItem";
+            this.lenna4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.lenna4ToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.lenna4ToolStripMenuItem.Text = "Lenna4";
+            this.lenna4ToolStripMenuItem.Click += new System.EventHandler(this.lenna4ToolStripMenuItem_Click);
+            // 
             // zoomToolStripMenuItem
             // 
             this.zoomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -145,8 +153,7 @@
             this.showDrawCenterLineToolStripMenuItem,
             this.showDrawTimeToolStripMenuItem,
             this.useInterpolationToolStripMenuItem,
-            this.userParallelToolStripMenuItem,
-            this.useNativeToolStripMenuItem});
+            this.userParallelToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.optionToolStripMenuItem.Text = "Option";
@@ -238,15 +245,6 @@
             this.userParallelToolStripMenuItem.Text = "User Parallel";
             this.userParallelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
-            // useNativeToolStripMenuItem
-            // 
-            this.useNativeToolStripMenuItem.CheckOnClick = true;
-            this.useNativeToolStripMenuItem.Name = "useNativeToolStripMenuItem";
-            this.useNativeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
-            this.useNativeToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.useNativeToolStripMenuItem.Text = "Use Native";
-            this.useNativeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -273,7 +271,7 @@
             this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbxDraw.Location = new System.Drawing.Point(0, 24);
             this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PtPanning = new System.Drawing.Point(0, 0);
+            this.pbxDraw.PtPanning = ((System.Drawing.PointF)(resources.GetObject("pbxDraw.PtPanning")));
             this.pbxDraw.Size = new System.Drawing.Size(820, 511);
             this.pbxDraw.TabIndex = 1;
             this.pbxDraw.Text = "zoomPictureBox1";
@@ -284,19 +282,10 @@
             this.pbxDraw.UseInterPorlation = false;
             this.pbxDraw.UseMouseMove = true;
             this.pbxDraw.UseMouseWheelZoom = true;
-            this.pbxDraw.UseNative = false;
             this.pbxDraw.UseParallel = false;
             this.pbxDraw.ZoomLevel = 0;
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
-            // 
-            // lenna4ToolStripMenuItem
-            // 
-            this.lenna4ToolStripMenuItem.Name = "lenna4ToolStripMenuItem";
-            this.lenna4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.lenna4ToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.lenna4ToolStripMenuItem.Text = "Lenna4";
-            this.lenna4ToolStripMenuItem.Click += new System.EventHandler(this.lenna4ToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -337,7 +326,6 @@
         private System.Windows.Forms.ToolStripMenuItem aboutZoomPictureBoxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useInterpolationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userParallelToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem useNativeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem lennaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chessToolStripMenuItem;
