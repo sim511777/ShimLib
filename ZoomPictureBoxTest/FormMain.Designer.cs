@@ -47,11 +47,11 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.pbxDraw = new ShimLib.ZoomPictureBox();
             this.longImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wideImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.pbxDraw = new ShimLib.ZoomPictureBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,7 +88,6 @@
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openFileToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
@@ -145,16 +144,16 @@
             // zoomResetToolStripMenuItem
             // 
             this.zoomResetToolStripMenuItem.Name = "zoomResetToolStripMenuItem";
-            this.zoomResetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.zoomResetToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.zoomResetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D0)));
+            this.zoomResetToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.zoomResetToolStripMenuItem.Text = "Zoom Reset";
             this.zoomResetToolStripMenuItem.Click += new System.EventHandler(this.zoomResetToolStripMenuItem_Click_1);
             // 
             // zoomToImageToolStripMenuItem
             // 
             this.zoomToImageToolStripMenuItem.Name = "zoomToImageToolStripMenuItem";
-            this.zoomToImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.zoomToImageToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.zoomToImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D9)));
+            this.zoomToImageToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.zoomToImageToolStripMenuItem.Text = "Zoom to Image";
             this.zoomToImageToolStripMenuItem.Click += new System.EventHandler(this.zoomToImageToolStripMenuItem_Click_1);
             // 
@@ -281,30 +280,6 @@
             // 
             this.dlgOpenFile.FileName = "openFileDialog1";
             // 
-            // pbxDraw
-            // 
-            this.pbxDraw.AllowDrop = true;
-            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
-            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
-            this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PanX = 0D;
-            this.pbxDraw.PanY = 0D;
-            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
-            this.pbxDraw.TabIndex = 1;
-            this.pbxDraw.Text = "zoomPictureBox1";
-            this.pbxDraw.UseDrawCenterLine = true;
-            this.pbxDraw.UseDrawDrawTime = true;
-            this.pbxDraw.UseDrawInfo = true;
-            this.pbxDraw.UseDrawPixelValue = true;
-            this.pbxDraw.UseInterPorlation = false;
-            this.pbxDraw.UseMouseMove = true;
-            this.pbxDraw.UseMouseWheelZoom = true;
-            this.pbxDraw.UseParallel = false;
-            this.pbxDraw.ZoomLevel = 0;
-            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
-            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
-            // 
             // longImageToolStripMenuItem
             // 
             this.longImageToolStripMenuItem.Name = "longImageToolStripMenuItem";
@@ -330,6 +305,30 @@
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
+            // 
+            // pbxDraw
+            // 
+            this.pbxDraw.AllowDrop = true;
+            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
+            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
+            this.pbxDraw.Name = "pbxDraw";
+            this.pbxDraw.PanX = 0D;
+            this.pbxDraw.PanY = 0D;
+            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
+            this.pbxDraw.TabIndex = 1;
+            this.pbxDraw.Text = "zoomPictureBox1";
+            this.pbxDraw.UseDrawCenterLine = true;
+            this.pbxDraw.UseDrawDrawTime = true;
+            this.pbxDraw.UseDrawInfo = true;
+            this.pbxDraw.UseDrawPixelValue = true;
+            this.pbxDraw.UseInterPorlation = false;
+            this.pbxDraw.UseMouseMove = true;
+            this.pbxDraw.UseMouseWheelZoom = true;
+            this.pbxDraw.UseParallel = false;
+            this.pbxDraw.ZoomLevel = 0;
+            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
+            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             // 
             // FormMain
             // 
