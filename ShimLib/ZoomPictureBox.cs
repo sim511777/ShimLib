@@ -306,8 +306,7 @@ Total : {t6-t0:0.0}ms
             if (e.Button == MouseButtons.Left)
                 mouseDown = false;
 
-
-            if (e.Button == MouseButtons.Left) {
+            if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Control)) {
                 CheckQuadrupleClick();
             }
         }
