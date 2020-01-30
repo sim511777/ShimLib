@@ -48,7 +48,7 @@ namespace ShimLib {
         }
 
         // memset
-        public unsafe static IntPtr memset(IntPtr _Dst, int _Val, long _Size) {
+        public unsafe static IntPtr Memset(IntPtr _Dst, int _Val, long _Size) {
             byte valByte = (byte)_Val;
             byte* pdst = (byte*)_Dst.ToPointer();
             for (long i = 0; i < _Size; i++, pdst++) {
@@ -58,7 +58,7 @@ namespace ShimLib {
         }
 
         // memcpy
-        public unsafe static IntPtr memcpy(IntPtr _Dst, IntPtr _Src, long _Size) {
+        public unsafe static IntPtr Memcpy(IntPtr _Dst, IntPtr _Src, long _Size) {
             byte* psrc = (byte*)_Src.ToPointer();
             byte* pdst = (byte*)_Dst.ToPointer();
             for (long i = 0; i < _Size; i++, psrc++, pdst++) {
@@ -68,7 +68,7 @@ namespace ShimLib {
         }
 
         // memset 4byte
-        public unsafe static IntPtr memset4(IntPtr _Dst, uint _Val, long _Size) {
+        public unsafe static IntPtr Memset4(IntPtr _Dst, uint _Val, long _Size) {
             uint* pdst = (uint*)_Dst.ToPointer();
             for (long i = 0; i < _Size; i++, pdst++) {
                 *pdst = _Val;
@@ -77,7 +77,7 @@ namespace ShimLib {
         }
 
         // memcpy 4byte
-        public unsafe static IntPtr memcpy4(IntPtr _Dst, IntPtr _Src, long _Size) {
+        public unsafe static IntPtr Memcpy4(IntPtr _Dst, IntPtr _Src, long _Size) {
             uint* psrc = (uint*)_Src.ToPointer();
             uint* pdst = (uint*)_Dst.ToPointer();
             for (long i = 0; i < _Size; i++, psrc++, pdst++) {
@@ -107,7 +107,6 @@ namespace ShimLib {
 
             // 파일 헤더
             BITMAPFILEHEADER fh = StreamReadStructure<BITMAPFILEHEADER>(hFile);
-            uint bufSize = fh.bfSize - fh.bfOffBits;
 
             // 정보 헤더
             BITMAPINFOHEADER ih = StreamReadStructure<BITMAPINFOHEADER>(hFile);
@@ -143,7 +142,7 @@ namespace ShimLib {
         }
 
         // 8bit 버퍼 bmp 파일에 저장
-        static byte[] grayPalette = Enumerable.Range(0, 1024).Select(i => i % 4 == 3 ? (byte)0xff : (byte)(i / 4)).ToArray();
+        static readonly byte[] grayPalette = Enumerable.Range(0, 1024).Select(i => i % 4 == 3 ? (byte)0xff : (byte)(i / 4)).ToArray();
         public unsafe static void StreamWriteStructure<T>(Stream sr, T obj) {
             int size = Marshal.SizeOf<T>();
             byte[] buf = new byte[size];
@@ -228,7 +227,7 @@ namespace ShimLib {
             for (int y = 0; y < bh; y++) {
                 IntPtr dstPtr = imgBuf + bw * y * bytepp;
                 IntPtr srcPtr = bmpData.Scan0 + bmpData.Stride * y;
-                Util.memcpy(dstPtr, srcPtr, copySize);
+                Util.Memcpy(dstPtr, srcPtr, copySize);
             }
                 
             bmp.UnlockBits(bmpData);
@@ -254,7 +253,7 @@ namespace ShimLib {
             for (int y = 0; y < bh; y++) {
                 IntPtr srcPtr = imgBuf + bw * y * bytepp;
                 IntPtr dstPtr = bmpData.Scan0 + bmpData.Stride * y;
-                Util.memcpy(dstPtr, srcPtr, copySize);
+                Util.Memcpy(dstPtr, srcPtr, copySize);
                 if (paddingSize > 0)
                     Marshal.Copy(paddingBuf, 0, dstPtr + copySize, paddingSize);
             }
@@ -271,58 +270,70 @@ namespace ShimLib {
         
         // hra Lolad
         public unsafe static void LoadHraFile(string fileName, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
-            using (var sr = File.OpenRead(fileName))
-            using (var br = new BinaryReader(sr)) {
-                sr.Position = 252;
-                bytepp = br.ReadInt32();
-                bw = br.ReadInt32();
-                bh = br.ReadInt32();
+            Stream sr = null;
+            try {
+                sr = File.OpenRead(fileName);
+                using (var br = new BinaryReader(sr)) {
+                    sr = null;
+                    br.BaseStream.Position = 252;
+                    bytepp = br.ReadInt32();
+                    bw = br.ReadInt32();
+                    bh = br.ReadInt32();
 
-                int bufSize = bw * bh * bytepp;
-                imgBuf = Marshal.AllocHGlobal(bufSize);
+                    int bufSize = bw * bh * bytepp;
+                    imgBuf = Marshal.AllocHGlobal(bufSize);
 
-                byte[] fbuf = br.ReadBytes(bufSize);
-                for (int y = 0; y < bh; y++) {
-                    byte* dp = (byte*)imgBuf.ToPointer() + bw * bytepp * y;
-                    int idx = bw * bytepp * y;
-                    for (int x = 0; x < bw; x++, dp += bytepp, idx += bytepp) {
-                        if (bytepp == 1)
-                            dp[0] = fbuf[idx];
-                        else if (bytepp == 2) {
-                            dp[0] = fbuf[idx];
-                            dp[1] = fbuf[idx + 1];
+                    byte[] fbuf = br.ReadBytes(bufSize);
+                    for (int y = 0; y < bh; y++) {
+                        byte* dp = (byte*)imgBuf.ToPointer() + bw * bytepp * y;
+                        int idx = bw * bytepp * y;
+                        for (int x = 0; x < bw; x++, dp += bytepp, idx += bytepp) {
+                            if (bytepp == 1)
+                                dp[0] = fbuf[idx];
+                            else if (bytepp == 2) {
+                                dp[0] = fbuf[idx];
+                                dp[1] = fbuf[idx + 1];
+                            }
                         }
                     }
                 }
+            } finally {
+                sr?.Dispose();
             }
         }
 
         // hra save
         public unsafe static void SaveHraFile(string fileName, IntPtr imgBuf, int bw, int bh, int bytepp) {
-            using (var sr = File.OpenWrite(fileName))
-            using (var bwr = new BinaryWriter(sr)) {
-                for (int i = 0; i < 252; i++)
-                    bwr.Write((byte)0);
-                bwr.Write(bytepp);
-                bwr.Write(bw);
-                bwr.Write(bh);
+            Stream sr = null;
+            try {
+                sr = File.OpenWrite(fileName);
+                using (var bwr = new BinaryWriter(sr)) {
+                    sr = null;
+                    for (int i = 0; i < 252; i++)
+                        bwr.Write((byte)0);
+                    bwr.Write(bytepp);
+                    bwr.Write(bw);
+                    bwr.Write(bh);
 
-                int bufSize = bw * bh * bytepp;
-                byte[] fbuf = new byte[bufSize];
+                    int bufSize = bw * bh * bytepp;
+                    byte[] fbuf = new byte[bufSize];
 
-                for (int y = 0; y < bh; y++) {
-                    byte* sp = (byte*)imgBuf.ToPointer() + bw * bytepp * y;
-                    int idx = bw * bytepp * y;
-                    for (int x = 0; x < bw; x++, sp += bytepp, idx += bytepp) {
-                        if (bytepp == 1)
-                            fbuf[idx] = sp[0];
-                        else if (bytepp == 2) {
-                            fbuf[idx] = sp[0];
-                            fbuf[idx + 1] = sp[1];
+                    for (int y = 0; y < bh; y++) {
+                        byte* sp = (byte*)imgBuf.ToPointer() + bw * bytepp * y;
+                        int idx = bw * bytepp * y;
+                        for (int x = 0; x < bw; x++, sp += bytepp, idx += bytepp) {
+                            if (bytepp == 1)
+                                fbuf[idx] = sp[0];
+                            else if (bytepp == 2) {
+                                fbuf[idx] = sp[0];
+                                fbuf[idx + 1] = sp[1];
+                            }
                         }
                     }
+                    bwr.Write(fbuf);
                 }
-                bwr.Write(fbuf);
+            } finally {
+                sr?.Dispose();
             }
         }
 

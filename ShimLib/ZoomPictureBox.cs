@@ -16,8 +16,9 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ZoomPictureBox .NET 컨트롤
 
-v1.0.0.5 - 20200130
+v1.0.0.5 - 20200131
 1. Quadruple 클릭시 버전정보창 띄움 (마우스 다운이 아닌 마우스 업에서 처리)
+2. PtPanning => double PanX, PanY 로 변경
 
 v1.0.0.4 - 20200129
 1. 필터링시 +0.5 offset 추가
@@ -64,8 +65,8 @@ v0.0.0.0 - 20191001
         private Bitmap dispBmp;
 
         // 기본 폰트
-        private Font defaultFont = SystemFonts.DefaultFont;
-        private Font pixelFont = new Font("돋움", 8);
+        private readonly Font defaultFont = SystemFonts.DefaultFont;
+        private readonly Font pixelFont = new Font("돋움", 8);
 
         // 이미지용 버퍼
         [Browsable(false)]
@@ -82,9 +83,11 @@ v0.0.0.0 - 20191001
             DoubleBuffered = true;
         }
 
-        // 소멸자
-        ~ZoomPictureBox() {
+        protected override void Dispose(bool disposing) {
+            base.Dispose(disposing);
             FreeDispBuf();
+            pixelFont.Dispose();
+            defaultFont.Dispose();
         }
 
         // 화면 표시 옵션
@@ -139,10 +142,8 @@ v0.0.0.0 - 20191001
             double wantedZoomFactor = Math.Min(scale1, scale2);
             ZoomLevel = Util.IntClamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -20, 20);
             double ZoomFactor = GetZoomFactor();
-            float panX = (float)((ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
-            float panY = (float)((ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
-            PanX = 0;
-            PanY = 0;
+            PanX = (ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor;
+            PanY = (ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor;
         }
 
         // 줌 리셋
@@ -339,8 +340,9 @@ Total : {t6-t0:0.0}ms
             if (ImgBuf == IntPtr.Zero)
                 return;
 
-            Pen pen = new Pen(Color.Yellow);
-            pen.DashStyle = DashStyle.Dot;
+            Pen pen = new Pen(Color.Yellow) {
+                DashStyle = DashStyle.Dot
+            };
 
             var rect = ClientRectangle;
             var ptImgL = new PointF(0, ImgBH / 2);
@@ -361,7 +363,7 @@ Total : {t6-t0:0.0}ms
         }
 
         // 이미지 픽셀값 표시
-        Brush[] pseudo = {
+        private static readonly Brush[] pseudo = {
             Brushes.White,      // 0~31
             Brushes.LightCyan,  // 32~63
             Brushes.DodgerBlue, // 63~95
