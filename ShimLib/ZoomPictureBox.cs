@@ -143,7 +143,7 @@ v0.0.0.0 - 20191001
             double scale1 = (double)ClientRectangle.Width / width;
             double scale2 = (double)ClientRectangle.Height / height;
             double wantedZoomFactor = Math.Min(scale1, scale2);
-            ZoomLevel = Util.IntClamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -20, 20);
+            ZoomLevel = Util.IntClamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -40, 40);
             double ZoomFactor = GetZoomFactor();
             PanX = (ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor;
             PanY = (ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor;
