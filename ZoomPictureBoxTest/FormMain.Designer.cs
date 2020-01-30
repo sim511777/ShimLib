@@ -273,7 +273,8 @@
             this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbxDraw.Location = new System.Drawing.Point(0, 24);
             this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PtPanning = ((System.Drawing.PointF)(resources.GetObject("pbxDraw.PtPanning")));
+            this.pbxDraw.PanX = 0D;
+            this.pbxDraw.PanY = 0D;
             this.pbxDraw.Size = new System.Drawing.Size(820, 511);
             this.pbxDraw.TabIndex = 1;
             this.pbxDraw.Text = "zoomPictureBox1";

@@ -119,8 +119,8 @@ v0.0.0.0 - 20191001
         }
 
         // 패닝 파라미터
-        [Browsable(false)]
-        public PointF PtPanning { get; set; }
+        public double PanX { get; set; }
+        public double PanY { get; set; }
 
         // 이미지 버퍼 세팅
         public void SetImgBuf(IntPtr buf, int bw, int bh, int bytepp, bool bInvalidate) {
@@ -141,13 +141,15 @@ v0.0.0.0 - 20191001
             double ZoomFactor = GetZoomFactor();
             float panX = (float)((ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
             float panY = (float)((ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
-            PtPanning = new PointF(panX, panY);
+            PanX = 0;
+            PanY = 0;
         }
 
         // 줌 리셋
         public void ZoomReset() {
             ZoomLevel = 0;
-            PtPanning = PointF.Empty;
+            PanX = 0;
+            PanY = 0;
         }
 
         // 리사이즈 할때
@@ -164,9 +166,9 @@ v0.0.0.0 - 20191001
             var t0 = Util.GetTimeMs();
 
             if (UseInterPorlation)
-                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PanX, (int)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             else
-                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PtPanning.X, (int)PtPanning.Y, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PanX, (int)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
 
             var t1 = Util.GetTimeMs();
 
@@ -240,9 +242,9 @@ Total : {t6-t0:0.0}ms
         private void WheelScroll(MouseEventArgs e, bool vertical) {
             int scroll = (e.Delta > 0) ? 128 : -128;
             if (vertical)
-                PtPanning += new SizeF(0, scroll);
+                PanY += scroll;
             else
-                PtPanning += new SizeF(scroll, 0);
+                PanX += scroll;
         }
 
         // 휠 줌
@@ -255,9 +257,10 @@ Total : {t6-t0:0.0}ms
             var zoomFactorNew = GetZoomFactor();
 
             var zoomFactorDelta = zoomFactorNew / zoomFactorOld;
-            var ptX = (PtPanning.X - e.Location.X) * zoomFactorDelta + e.Location.X;
-            var ptY = (PtPanning.Y - e.Location.Y) * zoomFactorDelta + e.Location.Y;
-            PtPanning = new PointF((float)ptX, (float)ptY);
+            var ptX = (PanX - e.Location.X) * zoomFactorDelta + e.Location.X;
+            var ptY = (PanY - e.Location.Y) * zoomFactorDelta + e.Location.Y;
+            PanX = ptX;
+            PanY = ptY;
         }
 
         // 마우스 다운
@@ -275,8 +278,10 @@ Total : {t6-t0:0.0}ms
             base.OnMouseMove(e);
 
             var ptMouse = e.Location;
-            if (UseMouseMove && mouseDown)
-                PtPanning += ((Size)ptMouse - (Size)ptMouseLast);
+            if (UseMouseMove && mouseDown) {
+                PanX += ptMouse.X - ptMouseLast.X;
+                PanY += ptMouse.Y - ptMouseLast.Y;
+            }
 
             ptMouseLast = ptMouse;
             Invalidate();
@@ -417,16 +422,16 @@ Total : {t6-t0:0.0}ms
         // 표시 픽셀 좌표를 이미지 좌표로 변환
         public PointF DispToImg(Point pt) {
             double ZoomFactor = GetZoomFactor();
-            float x = (float)((pt.X - PtPanning.X) / ZoomFactor);
-            float y = (float)((pt.Y - PtPanning.Y) / ZoomFactor);
+            float x = (float)((pt.X - PanX) / ZoomFactor);
+            float y = (float)((pt.Y - PanY) / ZoomFactor);
             return new PointF(x, y);
         }
 
         // 픽셀 사각형을 이미지 사각형으로 변환
         public RectangleF DispToImg(Rectangle rect) {
             double ZoomFactor = GetZoomFactor();
-            float x = (float)((rect.X - PtPanning.X) / ZoomFactor);
-            float y = (float)((rect.Y - PtPanning.Y) / ZoomFactor);
+            float x = (float)((rect.X - PanX) / ZoomFactor);
+            float y = (float)((rect.Y - PanY) / ZoomFactor);
             float width = (float)(rect.Width / ZoomFactor);
             float height = (float)(rect.Height / ZoomFactor);
             return new RectangleF(x, y, width, height);
@@ -435,16 +440,16 @@ Total : {t6-t0:0.0}ms
         // 이미지 좌표를 표시 픽셀 좌표로 변환
         public Point ImgToDisp(PointF pt) {
             double ZoomFactor = GetZoomFactor();
-            int x = (int)Math.Floor(pt.X * ZoomFactor + PtPanning.X);
-            int y = (int)Math.Floor(pt.Y * ZoomFactor + PtPanning.Y);
+            int x = (int)Math.Floor(pt.X * ZoomFactor + PanX);
+            int y = (int)Math.Floor(pt.Y * ZoomFactor + PanY);
             return new Point(x, y);
         }
 
         // 이미지 사각형을 픽셀 사각형으로 변환
         public Rectangle ImgToDisp(RectangleF rect) {
             double ZoomFactor = GetZoomFactor();
-            int x = (int)Math.Floor(rect.X * ZoomFactor + PtPanning.X);
-            int y = (int)Math.Floor(rect.Y * ZoomFactor + PtPanning.Y);
+            int x = (int)Math.Floor(rect.X * ZoomFactor + PanX);
+            int y = (int)Math.Floor(rect.Y * ZoomFactor + PanY);
             int width = (int)Math.Floor(rect.Width * ZoomFactor);
             int height = (int)Math.Floor(rect.Height * ZoomFactor);
             return new Rectangle(x, y, width, height);
