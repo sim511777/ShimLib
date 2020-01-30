@@ -148,5 +148,10 @@ namespace ZoomPictureBoxTest {
             Util.BitmapToImageBuffer(Properties.Resources.Lenna4, ref imgBuf, ref bw, ref bh, ref bytepp);
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
+
+        private void coinsToolStripMenuItem_Click(object sender, EventArgs e) {
+            Util.BitmapToImageBuffer(Properties.Resources.Coins, ref imgBuf, ref bw, ref bh, ref bytepp);
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+        }
     }
 }

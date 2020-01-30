@@ -48,6 +48,7 @@
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
+            this.coinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,8 +71,9 @@
             this.openFileToolStripMenuItem,
             this.pasteFromClipboardToolStripMenuItem,
             this.lennaToolStripMenuItem,
-            this.chessToolStripMenuItem,
-            this.lenna4ToolStripMenuItem});
+            this.lenna4ToolStripMenuItem,
+            this.coinsToolStripMenuItem,
+            this.chessToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -95,7 +97,7 @@
             // lennaToolStripMenuItem
             // 
             this.lennaToolStripMenuItem.Name = "lennaToolStripMenuItem";
-            this.lennaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.lennaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
             this.lennaToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.lennaToolStripMenuItem.Text = "Lenna";
             this.lennaToolStripMenuItem.Click += new System.EventHandler(this.lennaToolStripMenuItem_Click);
@@ -103,7 +105,7 @@
             // chessToolStripMenuItem
             // 
             this.chessToolStripMenuItem.Name = "chessToolStripMenuItem";
-            this.chessToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.chessToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
             this.chessToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.chessToolStripMenuItem.Text = "Chess";
             this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
@@ -111,7 +113,7 @@
             // lenna4ToolStripMenuItem
             // 
             this.lenna4ToolStripMenuItem.Name = "lenna4ToolStripMenuItem";
-            this.lenna4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.lenna4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
             this.lenna4ToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.lenna4ToolStripMenuItem.Text = "Lenna4";
             this.lenna4ToolStripMenuItem.Click += new System.EventHandler(this.lenna4ToolStripMenuItem_Click);
@@ -287,6 +289,14 @@
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             // 
+            // coinsToolStripMenuItem
+            // 
+            this.coinsToolStripMenuItem.Name = "coinsToolStripMenuItem";
+            this.coinsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.coinsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.coinsToolStripMenuItem.Text = "Coins";
+            this.coinsToolStripMenuItem.Click += new System.EventHandler(this.coinsToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -330,6 +340,7 @@
         private System.Windows.Forms.ToolStripMenuItem lennaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chessToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lenna4ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem coinsToolStripMenuItem;
     }
 }
 
