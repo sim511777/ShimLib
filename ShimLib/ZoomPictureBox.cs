@@ -16,6 +16,9 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ZoomPictureBox .NET 컨트롤
 
+v1.0.0.5 - 20200130
+1. Quadruple 클릭시 버전정보창 띄움 (마우스 다운이 아닌 마우스 업에서 처리)
+
 v1.0.0.4 - 20200129
 1. 필터링시 +0.5 offset 추가
 2. panning 좌표 FloatF 로 변경 하여 축소 확대시 위치 안벗어남
@@ -244,21 +247,41 @@ Total : {t6-t0:0.0}ms
 
         // 휠 줌
         private void WheelZoom(MouseEventArgs e, bool fixPanning) {
-            var ptImg = DispToImg(e.Location);
-
-            var zoomFacotrOld = GetZoomFactor();
+            var zoomFactorOld = GetZoomFactor();
             ZoomLevel = Util.IntClamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -20, 20);
             if (fixPanning)
                 return;
-
+            
             var zoomFactorNew = GetZoomFactor();
-            float sizeX = (float)(ptImg.X * (zoomFacotrOld - zoomFactorNew));
-            float sizeY = (float)(ptImg.Y * (zoomFacotrOld - zoomFactorNew));
-            PtPanning += new SizeF(sizeX, sizeY);
+
+            var zoomFactorDelta = zoomFactorNew / zoomFactorOld;
+            var ptX = (PtPanning.X - e.Location.X) * zoomFactorDelta + e.Location.X;
+            var ptY = (PtPanning.Y - e.Location.Y) * zoomFactorDelta + e.Location.Y;
+            PtPanning = new PointF((float)ptX, (float)ptY);
         }
 
         // 마우스 다운
         bool mouseDown = false;
+        protected override void OnMouseDown(MouseEventArgs e) {
+            base.OnMouseDown(e);
+
+            if (e.Button == MouseButtons.Left)
+                mouseDown = true;
+        }
+
+        // 마우스 무브
+        Point ptMouseLast;
+        protected override void OnMouseMove(MouseEventArgs e) {
+            base.OnMouseMove(e);
+
+            var ptMouse = e.Location;
+            if (UseMouseMove && mouseDown)
+                PtPanning += ((Size)ptMouse - (Size)ptMouseLast);
+
+            ptMouseLast = ptMouse;
+            Invalidate();
+        }
+
         private DateTime clickTimeOld = DateTime.Now;
         private int quadrupleClickCount = 0;
         private void CheckQuadrupleClick() {
@@ -276,34 +299,17 @@ Total : {t6-t0:0.0}ms
             }
         }
 
-        protected override void OnMouseDown(MouseEventArgs e) {
-            base.OnMouseDown(e);
-
-            if (e.Button == MouseButtons.Left) {
-                mouseDown = true;
-                CheckQuadrupleClick();
-            }
-        }
-
-        // 마우스 무브
-        Point ptMouseLast;
-        protected override void OnMouseMove(MouseEventArgs e) {
-            base.OnMouseMove(e);
-
-            var ptMouse = e.Location;
-            if (UseMouseMove && mouseDown)
-                PtPanning += ((Size)ptMouse - (Size)ptMouseLast);
-
-            ptMouseLast = ptMouse;
-            Invalidate();
-        }
-
         // 마우스 업
         protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
 
             if (e.Button == MouseButtons.Left)
                 mouseDown = false;
+
+
+            if (e.Button == MouseButtons.Left) {
+                CheckQuadrupleClick();
+            }
         }
 
         // 표시 버퍼 생성
