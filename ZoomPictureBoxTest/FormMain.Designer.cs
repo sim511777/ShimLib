@@ -23,14 +23,14 @@
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.coinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +48,10 @@
             this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ZoomPictureBox();
-            this.coinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.longImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wideImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,10 +73,14 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openFileToolStripMenuItem,
             this.pasteFromClipboardToolStripMenuItem,
+            this.toolStripSeparator2,
             this.lennaToolStripMenuItem,
             this.lenna4ToolStripMenuItem,
             this.coinsToolStripMenuItem,
-            this.chessToolStripMenuItem});
+            this.chessToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.longImageToolStripMenuItem,
+            this.wideImageToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -102,14 +109,6 @@
             this.lennaToolStripMenuItem.Text = "Lenna";
             this.lennaToolStripMenuItem.Click += new System.EventHandler(this.lennaToolStripMenuItem_Click);
             // 
-            // chessToolStripMenuItem
-            // 
-            this.chessToolStripMenuItem.Name = "chessToolStripMenuItem";
-            this.chessToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.chessToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.chessToolStripMenuItem.Text = "Chess";
-            this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
-            // 
             // lenna4ToolStripMenuItem
             // 
             this.lenna4ToolStripMenuItem.Name = "lenna4ToolStripMenuItem";
@@ -117,6 +116,22 @@
             this.lenna4ToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.lenna4ToolStripMenuItem.Text = "Lenna4";
             this.lenna4ToolStripMenuItem.Click += new System.EventHandler(this.lenna4ToolStripMenuItem_Click);
+            // 
+            // coinsToolStripMenuItem
+            // 
+            this.coinsToolStripMenuItem.Name = "coinsToolStripMenuItem";
+            this.coinsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.coinsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.coinsToolStripMenuItem.Text = "Coins";
+            this.coinsToolStripMenuItem.Click += new System.EventHandler(this.coinsToolStripMenuItem_Click);
+            // 
+            // chessToolStripMenuItem
+            // 
+            this.chessToolStripMenuItem.Name = "chessToolStripMenuItem";
+            this.chessToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.chessToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.chessToolStripMenuItem.Text = "Chess";
+            this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
             // 
             // zoomToolStripMenuItem
             // 
@@ -290,13 +305,31 @@
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             // 
-            // coinsToolStripMenuItem
+            // longImageToolStripMenuItem
             // 
-            this.coinsToolStripMenuItem.Name = "coinsToolStripMenuItem";
-            this.coinsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.coinsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.coinsToolStripMenuItem.Text = "Coins";
-            this.coinsToolStripMenuItem.Click += new System.EventHandler(this.coinsToolStripMenuItem_Click);
+            this.longImageToolStripMenuItem.Name = "longImageToolStripMenuItem";
+            this.longImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.longImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.longImageToolStripMenuItem.Text = "Long Image";
+            this.longImageToolStripMenuItem.Click += new System.EventHandler(this.longImageToolStripMenuItem_Click);
+            // 
+            // wideImageToolStripMenuItem
+            // 
+            this.wideImageToolStripMenuItem.Name = "wideImageToolStripMenuItem";
+            this.wideImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.wideImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.wideImageToolStripMenuItem.Text = "Wide Image";
+            this.wideImageToolStripMenuItem.Click += new System.EventHandler(this.wideImageToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
             // 
             // FormMain
             // 
@@ -342,6 +375,10 @@
         private System.Windows.Forms.ToolStripMenuItem chessToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lenna4ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem coinsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem longImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wideImageToolStripMenuItem;
     }
 }
 

@@ -19,6 +19,9 @@ namespace ShimLib {
 v1.0.0.5 - 20200131
 1. Quadruple 클릭시 버전정보창 띄움 (마우스 다운이 아닌 마우스 업에서 처리)
 2. PtPanning => double PanX, PanY 로 변경
+3. 더 큰 이미지 (2000000width) 표시시 CenterLine 오버플로우 다운 수정
+4. 더 큰 이미지 (2000000width) 표시시 PanX, PanY int타입 오버플로우로 발생하는 계산 에러 수정
+5. 더 큰 이미지 (2000000width) 표시를 위해서 zoom레벨 (1/10000000x) ~ (1000000x)로 수정
 
 v1.0.0.4 - 20200129
 1. 필터링시 +0.5 offset 추가
@@ -167,9 +170,9 @@ v0.0.0.0 - 20191001
             var t0 = Util.GetTimeMs();
 
             if (UseInterPorlation)
-                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PanX, (int)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             else
-                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (int)PanX, (int)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
 
             var t1 = Util.GetTimeMs();
 
@@ -251,7 +254,7 @@ Total : {t6-t0:0.0}ms
         // 휠 줌
         private void WheelZoom(MouseEventArgs e, bool fixPanning) {
             var zoomFactorOld = GetZoomFactor();
-            ZoomLevel = Util.IntClamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -20, 20);
+            ZoomLevel = Util.IntClamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -40, 40);
             if (fixPanning)
                 return;
             
@@ -351,14 +354,16 @@ Total : {t6-t0:0.0}ms
             var ptDispR = ImgToDisp(ptImgR);
             ptDispL.X = Util.IntClamp((int)ptDispL.X, -1, rect.Width);
             ptDispR.X = Util.IntClamp((int)ptDispR.X, -1, rect.Width);
-            g.DrawLine(pen, ptDispL, ptDispR);
+            if ( ptDispL.Y >= 0 && ptDispL.Y < rect.Height)
+                g.DrawLine(pen, ptDispL, ptDispR);
             var ptImgT = new PointF(ImgBW / 2, 0);
             var ptImgB = new PointF(ImgBW / 2, ImgBH);
             var ptDispT = ImgToDisp(ptImgT);
             var ptDispB = ImgToDisp(ptImgB);
             ptDispT.Y = Util.IntClamp((int)ptDispT.Y, -1, rect.Height);
             ptDispB.Y = Util.IntClamp((int)ptDispB.Y, -1, rect.Height);
-            g.DrawLine(pen, ptDispT, ptDispB);
+            if (ptDispT.X >= 0 && ptDispT.X < rect.Width)
+                g.DrawLine(pen, ptDispT, ptDispB);
             pen.Dispose();
         }
 

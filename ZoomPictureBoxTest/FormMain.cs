@@ -134,24 +134,49 @@ namespace ZoomPictureBoxTest {
             MessageBox.Show(this, ZoomPictureBox.VersionHistory, "About ZoomPictureBox");
         }
 
-        private void lennaToolStripMenuItem_Click(object sender, EventArgs e) {
-            Util.BitmapToImageBuffer(Properties.Resources.Lenna, ref imgBuf, ref bw, ref bh, ref bytepp);
+        private void LoadBitmap(Bitmap bmp) {
+            if (imgBuf != IntPtr.Zero)
+                Marshal.FreeHGlobal(imgBuf);
+            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+        }
+
+        private void lennaToolStripMenuItem_Click(object sender, EventArgs e) {
+            LoadBitmap(Properties.Resources.Lenna);
         }
 
         private void chessToolStripMenuItem_Click(object sender, EventArgs e) {
-            Util.BitmapToImageBuffer(Properties.Resources.Chess, ref imgBuf, ref bw, ref bh, ref bytepp);
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+            LoadBitmap(Properties.Resources.Chess);
         }
 
         private void lenna4ToolStripMenuItem_Click(object sender, EventArgs e) {
-            Util.BitmapToImageBuffer(Properties.Resources.Lenna4, ref imgBuf, ref bw, ref bh, ref bytepp);
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+            LoadBitmap(Properties.Resources.Lenna4);
         }
 
         private void coinsToolStripMenuItem_Click(object sender, EventArgs e) {
-            Util.BitmapToImageBuffer(Properties.Resources.Coins, ref imgBuf, ref bw, ref bh, ref bytepp);
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+            LoadBitmap(Properties.Resources.Coins);
+        }
+
+        private void longImageToolStripMenuItem_Click(object sender, EventArgs e) {
+            GenerateBitmap(256, 4000000);
+        }
+
+        private void wideImageToolStripMenuItem_Click(object sender, EventArgs e) {
+            GenerateBitmap(4000000, 256);
+        }
+
+        private unsafe void GenerateBitmap(int bw, int bh) {
+            if (imgBuf != IntPtr.Zero)
+                Marshal.FreeHGlobal(imgBuf);
+            long cb = (long)bw * bh;
+            imgBuf = Marshal.AllocHGlobal((IntPtr)cb);
+            for (long y = 0; y < bh; y++) {
+                byte* ptr = (byte*)imgBuf + y * bw;
+                for (long x = 0; x < bw; x++) {
+                    ptr[x] = (byte)((x + y) % 256);
+                }
+            }
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, 1, true);
         }
     }
 }
