@@ -22,6 +22,7 @@ v1.0.0.5 - 20200131
 3. 더 큰 이미지 (2000000width) 표시시 CenterLine 오버플로우 다운 수정
 4. 더 큰 이미지 (2000000width) 표시시 PanX, PanY int타입 오버플로우로 발생하는 계산 에러 수정
 5. 더 큰 이미지 (2000000width) 표시를 위해서 zoom레벨 (1/10000000x) ~ (1000000x)로 수정
+6. DrawString()시 Control.Font 사용
 
 v1.0.0.4 - 20200129
 1. 필터링시 +0.5 offset 추가
@@ -67,10 +68,6 @@ v0.0.0.0 - 20191001
         private IntPtr dispBuf;
         private Bitmap dispBmp;
 
-        // 기본 폰트
-        private readonly Font defaultFont = SystemFonts.DefaultFont;
-        private readonly Font pixelFont = new Font("돋움", 8);
-
         // 이미지용 버퍼
         [Browsable(false)]
         public int ImgBW { get; private set; } = 0;
@@ -89,8 +86,6 @@ v0.0.0.0 - 20191001
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
             FreeDispBuf();
-            pixelFont.Dispose();
-            defaultFont.Dispose();
         }
 
         // 화면 표시 옵션
@@ -400,7 +395,7 @@ Total : {t6-t0:0.0}ms
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
-                    g.DrawString(pixelValText.ToString(), pixelFont, brush, ptDisp.X, ptDisp.Y);
+                    g.DrawString(pixelValText.ToString(), Font, brush, ptDisp.X, ptDisp.Y);
                 }
             }
         }
@@ -414,16 +409,16 @@ Total : {t6-t0:0.0}ms
             string pixelVal = GetImagePixelValueText(imgX, imgY);
             string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
 
-            var rect = g.MeasureString(info, defaultFont);
+            var rect = g.MeasureString(info, Font);
             g.FillRectangle(Brushes.White, 0, 0, rect.Width, rect.Height);
-            g.DrawString(info, defaultFont, Brushes.Black, 0, 0);
+            g.DrawString(info, Font, Brushes.Black, 0, 0);
         }
 
         // 렌더링 시간 표시
         private void DrawDrawTime(Graphics g, string info) {
-            var rect = g.MeasureString(info, defaultFont);
+            var rect = g.MeasureString(info, Font);
             g.FillRectangle(Brushes.White, ClientSize.Width - 150, 0, rect.Width, rect.Height);
-            g.DrawString(info, defaultFont, Brushes.Black, ClientSize.Width - 150, 0);
+            g.DrawString(info, Font, Brushes.Black, ClientSize.Width - 150, 0);
         }
 
         // 표시 픽셀 좌표를 이미지 좌표로 변환
