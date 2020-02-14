@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using PointD = System.Windows.Point;
 
 namespace ShimLib {
     public class ImageBox : Control {
@@ -343,22 +344,22 @@ Total : {t6-t0:0.0}ms
             };
 
             var rect = ClientRectangle;
-            var ptImgL = new PointF(0, ImgBH / 2);
-            var ptImgR = new PointF(ImgBW, ImgBH / 2);
+            var ptImgL = new PointD(0, ImgBH / 2);
+            var ptImgR = new PointD(ImgBW, ImgBH / 2);
             var ptDispL = ImgToDisp(ptImgL);
             var ptDispR = ImgToDisp(ptImgR);
             ptDispL.X = Util.IntClamp((int)ptDispL.X, -1, rect.Width);
             ptDispR.X = Util.IntClamp((int)ptDispR.X, -1, rect.Width);
             if ( ptDispL.Y >= 0 && ptDispL.Y < rect.Height)
-                g.DrawLine(pen, ptDispL, ptDispR);
-            var ptImgT = new PointF(ImgBW / 2, 0);
-            var ptImgB = new PointF(ImgBW / 2, ImgBH);
+                g.DrawLine(pen, ptDispL.ToFloat(), ptDispR.ToFloat());
+            var ptImgT = new PointD(ImgBW / 2, 0);
+            var ptImgB = new PointD(ImgBW / 2, ImgBH);
             var ptDispT = ImgToDisp(ptImgT);
             var ptDispB = ImgToDisp(ptImgB);
             ptDispT.Y = Util.IntClamp((int)ptDispT.Y, -1, rect.Height);
             ptDispB.Y = Util.IntClamp((int)ptDispB.Y, -1, rect.Height);
             if (ptDispT.X >= 0 && ptDispT.X < rect.Width)
-                g.DrawLine(pen, ptDispT, ptDispB);
+                g.DrawLine(pen, ptDispT.ToFloat(), ptDispB.ToFloat());
             pen.Dispose();
         }
 
@@ -379,8 +380,8 @@ Total : {t6-t0:0.0}ms
             if (ZoomFactor < 20 * pixeValFactor)
                 return;
 
-            var ptDisp1 = Point.Empty;
-            var ptDisp2 = (Point)ClientSize;
+            var ptDisp1 = new PointD(0, 0);
+            var ptDisp2 = new PointD(ClientSize.Width, ClientSize.Height);
             var ptImg1 = DispToImg(ptDisp1);
             var ptImg2 = DispToImg(ptDisp2);
             int imgX1 = Util.IntClamp((int)Math.Floor(ptImg1.X), 0, ImgBW-1);
@@ -390,8 +391,8 @@ Total : {t6-t0:0.0}ms
 
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
-                    var ptImg = new PointF(imgX, imgY);
-                    var ptDisp = ImgToDisp(ptImg);
+                    var ptImg = new PointD(imgX, imgY);
+                    var ptDisp = ImgToDisp(ptImg).ToFloat();
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
@@ -403,7 +404,7 @@ Total : {t6-t0:0.0}ms
         // 좌상단 정보 표시
         private void DrawInfo(Graphics g) {
             Point ptCur = ptMouseLast;
-            PointF ptImg = DispToImg(ptCur);
+            PointD ptImg = DispToImg(ptCur.ToDouble());
             int imgX = (int)Math.Floor(ptImg.X);
             int imgY = (int)Math.Floor(ptImg.Y);
             string pixelVal = GetImagePixelValueText(imgX, imgY);
@@ -422,39 +423,19 @@ Total : {t6-t0:0.0}ms
         }
 
         // 표시 픽셀 좌표를 이미지 좌표로 변환
-        public PointF DispToImg(Point pt) {
+        public PointD DispToImg(PointD pt) {
             double ZoomFactor = GetZoomFactor();
-            float x = (float)((pt.X - PanX) / ZoomFactor);
-            float y = (float)((pt.Y - PanY) / ZoomFactor);
-            return new PointF(x, y);
-        }
-
-        // 픽셀 사각형을 이미지 사각형으로 변환
-        public RectangleF DispToImg(Rectangle rect) {
-            double ZoomFactor = GetZoomFactor();
-            float x = (float)((rect.X - PanX) / ZoomFactor);
-            float y = (float)((rect.Y - PanY) / ZoomFactor);
-            float width = (float)(rect.Width / ZoomFactor);
-            float height = (float)(rect.Height / ZoomFactor);
-            return new RectangleF(x, y, width, height);
+            double x = ((pt.X - PanX) / ZoomFactor);
+            double y = ((pt.Y - PanY) / ZoomFactor);
+            return new PointD(x, y);
         }
 
         // 이미지 좌표를 표시 픽셀 좌표로 변환
-        public Point ImgToDisp(PointF pt) {
+        public PointD ImgToDisp(PointD pt) {
             double ZoomFactor = GetZoomFactor();
-            int x = (int)Math.Floor(pt.X * ZoomFactor + PanX);
-            int y = (int)Math.Floor(pt.Y * ZoomFactor + PanY);
-            return new Point(x, y);
-        }
-
-        // 이미지 사각형을 픽셀 사각형으로 변환
-        public Rectangle ImgToDisp(RectangleF rect) {
-            double ZoomFactor = GetZoomFactor();
-            int x = (int)Math.Floor(rect.X * ZoomFactor + PanX);
-            int y = (int)Math.Floor(rect.Y * ZoomFactor + PanY);
-            int width = (int)Math.Floor(rect.Width * ZoomFactor);
-            int height = (int)Math.Floor(rect.Height * ZoomFactor);
-            return new Rectangle(x, y, width, height);
+            double x = Math.Floor(pt.X * ZoomFactor + PanX);
+            double y = Math.Floor(pt.Y * ZoomFactor + PanY);
+            return new PointD(x, y);
         }
 
         // 이미지 픽셀값 문자열 리턴
@@ -479,6 +460,24 @@ Total : {t6-t0:0.0}ms
             if (ImgBytepp == 2)
                 return Marshal.ReadByte(ptr);
             return ((int)Marshal.ReadByte(ptr, 2) + (int)Marshal.ReadByte(ptr, 1) + (int)Marshal.ReadByte(ptr, 0)) / 3;
+        }
+    }
+
+    public static class PointDExtension {
+        public static PointD ToDouble(this PointF pt) {
+            return new PointD(pt.X, pt.Y);
+        }
+
+        public static PointD ToDouble(this Point pt) {
+            return new PointD(pt.X, pt.Y);
+        }
+
+        public static PointF ToFloat(this PointD pt) {
+            return new PointF((float)pt.X, (float)pt.Y);
+        }
+
+        public static Point ToInt(this PointD pt) {
+            return new Point((int)pt.X, (int)pt.Y);
         }
     }
 }
