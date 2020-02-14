@@ -41,9 +41,9 @@ namespace ShimLib {
         }
 
         // 범위 제한 함수
-        public static int IntClamp(int value, int min, int max) {
-            if (value < min) return min;
-            if (value > max) return max;
+        public static T Clamp<T>(T value, T min, T max) where T : IComparable {
+            if (value.CompareTo(min) < 0) return min;
+            if (value.CompareTo(max) > 0) return max;
             return value;
         }
 
@@ -405,8 +405,8 @@ namespace ShimLib {
                 int siy1 = siy0 + 1;
                 sity0s[y] = (int)((siy1 - siy) * 256);
                 sity1s[y] = (int)((siy - siy0) * 256);
-                siy0s[y] = IntClamp(siy0, 0, sbh - 1);
-                siy1s[y] = IntClamp(siy1, 0, sbh - 1);
+                siy0s[y] = Clamp(siy0, 0, sbh - 1);
+                siy1s[y] = Clamp(siy1, 0, sbh - 1);
             }
             for (int x = 0; x < dbw; x++) {
                 double six = (x + 0.5 - panx) / zoom - 0.5;
@@ -418,8 +418,8 @@ namespace ShimLib {
                 int six1 = six0 + 1;
                 sitx0s[x] = (int)((six1 - six) * 256);
                 sitx1s[x] = (int)((six - six0) * 256);
-                six0s[x] = IntClamp(six0, 0, sbw - 1);
-                six1s[x] = IntClamp(six1, 0, sbw - 1);
+                six0s[x] = Clamp(six0, 0, sbw - 1);
+                six1s[x] = Clamp(six1, 0, sbw - 1);
             }
 
             // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기

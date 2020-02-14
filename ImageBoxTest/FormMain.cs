@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PointD = System.Windows.Point;
 
 namespace ImageBoxTest {
     public partial class FormMain : Form {
@@ -177,6 +178,18 @@ namespace ImageBoxTest {
                 }
             }
             pbxDraw.SetImgBuf(imgBuf, bw, bh, 1, true);
+        }
+
+        private void pbxDraw_Paint(object sender, PaintEventArgs e) {
+            //ImageGraphics ig = new ImageGraphics(pbxDraw, e.Graphics);
+            //ig.DrawLine(1, 1, 2, 2, Pens.Lime);
+            //ig.DrawLine(1, 2, 2, 1, Pens.Red);
+            //ig.DrawRectangle(2, 2, 3, 3, Pens.Red, true, Brushes.Lime);
+            //ig.DrawRectangle(2, 2, 3, 3, Pens.Red, false, Brushes.Red);
+            //ig.DrawEllipse(3, 3, 4, 4, Pens.Red, true, Brushes.Lime);
+            //ig.DrawEllipse(3, 3, 4, 4, Pens.Red, false, Brushes.Red);
+            //ig.DrawCross(10, 10, 20, Pens.Lime, false);
+            //ig.DrawPlus(10, 10, 20, Pens.Red, true);
         }
     }
 }

@@ -27,10 +27,14 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.longImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wideImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,10 +51,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.longImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wideImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.pbxDraw = new ShimLib.ImageBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -100,6 +100,11 @@
             this.pasteFromClipboardToolStripMenuItem.Text = "Paste from Clipboard";
             this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
+            // 
             // lennaToolStripMenuItem
             // 
             this.lennaToolStripMenuItem.Name = "lennaToolStripMenuItem";
@@ -131,6 +136,27 @@
             this.chessToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.chessToolStripMenuItem.Text = "Chess";
             this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
+            // 
+            // longImageToolStripMenuItem
+            // 
+            this.longImageToolStripMenuItem.Name = "longImageToolStripMenuItem";
+            this.longImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.longImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.longImageToolStripMenuItem.Text = "Long Image";
+            this.longImageToolStripMenuItem.Click += new System.EventHandler(this.longImageToolStripMenuItem_Click);
+            // 
+            // wideImageToolStripMenuItem
+            // 
+            this.wideImageToolStripMenuItem.Name = "wideImageToolStripMenuItem";
+            this.wideImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.wideImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.wideImageToolStripMenuItem.Text = "Wide Image";
+            this.wideImageToolStripMenuItem.Click += new System.EventHandler(this.wideImageToolStripMenuItem_Click);
             // 
             // zoomToolStripMenuItem
             // 
@@ -272,39 +298,13 @@
             // aboutImageBoxToolStripMenuItem
             // 
             this.aboutImageBoxToolStripMenuItem.Name = "aboutImageBoxToolStripMenuItem";
-            this.aboutImageBoxToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.aboutImageBoxToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.aboutImageBoxToolStripMenuItem.Text = "About ImageBox";
             this.aboutImageBoxToolStripMenuItem.Click += new System.EventHandler(this.aboutImageBoxToolStripMenuItem_Click);
             // 
             // dlgOpenFile
             // 
             this.dlgOpenFile.FileName = "openFileDialog1";
-            // 
-            // longImageToolStripMenuItem
-            // 
-            this.longImageToolStripMenuItem.Name = "longImageToolStripMenuItem";
-            this.longImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.longImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.longImageToolStripMenuItem.Text = "Long Image";
-            this.longImageToolStripMenuItem.Click += new System.EventHandler(this.longImageToolStripMenuItem_Click);
-            // 
-            // wideImageToolStripMenuItem
-            // 
-            this.wideImageToolStripMenuItem.Name = "wideImageToolStripMenuItem";
-            this.wideImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.wideImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.wideImageToolStripMenuItem.Text = "Wide Image";
-            this.wideImageToolStripMenuItem.Click += new System.EventHandler(this.wideImageToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
             // 
             // pbxDraw
             // 
@@ -329,6 +329,7 @@
             this.pbxDraw.ZoomLevel = 0;
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
+            this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
             // FormMain
             // 

@@ -16,6 +16,10 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox .NET 컨트롤
+v1.0.0.6 - 20200214
+1. ImageBox로 이름 변경
+2. ImgToDisp(), DIspToImg() 함수 PointD 타입으로 변경
+3. ImageGraphics 클래스 추가 및 테스트
 
 v1.0.0.5 - 20200131
 1. Quadruple 클릭시 버전정보창 띄움 (마우스 다운이 아닌 마우스 업에서 처리)
@@ -139,7 +143,7 @@ v0.0.0.0 - 20191001
             double scale1 = (double)ClientRectangle.Width / width;
             double scale2 = (double)ClientRectangle.Height / height;
             double wantedZoomFactor = Math.Min(scale1, scale2);
-            ZoomLevel = Util.IntClamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -40, 40);
+            ZoomLevel = Util.Clamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -40, 40);
             double ZoomFactor = GetZoomFactor();
             PanX = (ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor;
             PanY = (ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor;
@@ -162,32 +166,31 @@ v0.0.0.0 - 20191001
 
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
-            var g = e.Graphics;
             var t0 = Util.GetTimeMs();
 
             if (UseInterPorlation)
                 Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             else
                 Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-
             var t1 = Util.GetTimeMs();
 
-            g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
             var t2 = Util.GetTimeMs();
 
+            var ig = new ImageGraphics(this, e.Graphics);
             if (UseDrawPixelValue)
-                DrawPixelValue(g);
+                DrawPixelValue(ig);
             var t3 = Util.GetTimeMs();
 
             if (UseDrawCenterLine)
-                DrawCenterLine(g);
+                DrawCenterLine(ig);
             var t4 = Util.GetTimeMs();
 
             base.OnPaint(e);
             var t5 = Util.GetTimeMs();
 
             if (UseDrawInfo)
-                DrawInfo(g);
+                DrawInfo(ig);
             var t6 = Util.GetTimeMs();
             
             if (UseDrawDrawTime) {
@@ -216,7 +219,7 @@ OnPaint : {t5-t4:0.0}ms
 CursorInfo : {t6-t5:0.0}ms
 Total : {t6-t0:0.0}ms
 ";
-                DrawDrawTime(g, info);
+                DrawDrawTime(ig, info);
             }
         }
 
@@ -250,7 +253,7 @@ Total : {t6-t0:0.0}ms
         // 휠 줌
         private void WheelZoom(MouseEventArgs e, bool fixPanning) {
             var zoomFactorOld = GetZoomFactor();
-            ZoomLevel = Util.IntClamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -40, 40);
+            ZoomLevel = Util.Clamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -40, 40);
             if (fixPanning)
                 return;
             
@@ -335,7 +338,7 @@ Total : {t6-t0:0.0}ms
         }
 
         // 중심선 표시
-        private void DrawCenterLine(Graphics g) {
+        private void DrawCenterLine(ImageGraphics ig) {
             if (ImgBuf == IntPtr.Zero)
                 return;
 
@@ -343,24 +346,33 @@ Total : {t6-t0:0.0}ms
                 DashStyle = DashStyle.Dot
             };
 
-            var rect = ClientRectangle;
-            var ptImgL = new PointD(0, ImgBH / 2);
-            var ptImgR = new PointD(ImgBW, ImgBH / 2);
-            var ptDispL = ImgToDisp(ptImgL);
-            var ptDispR = ImgToDisp(ptImgR);
-            ptDispL.X = Util.IntClamp((int)ptDispL.X, -1, rect.Width);
-            ptDispR.X = Util.IntClamp((int)ptDispR.X, -1, rect.Width);
-            if ( ptDispL.Y >= 0 && ptDispL.Y < rect.Height)
-                g.DrawLine(pen, ptDispL.ToFloat(), ptDispR.ToFloat());
-            var ptImgT = new PointD(ImgBW / 2, 0);
-            var ptImgB = new PointD(ImgBW / 2, ImgBH);
-            var ptDispT = ImgToDisp(ptImgT);
-            var ptDispB = ImgToDisp(ptImgB);
-            ptDispT.Y = Util.IntClamp((int)ptDispT.Y, -1, rect.Height);
-            ptDispB.Y = Util.IntClamp((int)ptDispB.Y, -1, rect.Height);
-            if (ptDispT.X >= 0 && ptDispT.X < rect.Width)
-                g.DrawLine(pen, ptDispT.ToFloat(), ptDispB.ToFloat());
-            pen.Dispose();
+            PointD ptLeft = new PointD(0, ImgBH / 2);
+            PointD ptRight = new PointD(ImgBW, ImgBH/ 2);
+            PointD ptdLeft = ImgToDisp(ptLeft);
+            PointD ptdRight = ImgToDisp(ptRight);
+
+            int ClientWidth = ClientSize.Width;
+            int ClientHeight = ClientSize.Height;
+            if (ptdLeft.Y >= 0 && ptdLeft.Y < ClientHeight && ptdRight.X >= 0 && ptdLeft.X < ClientWidth) {
+                ptdLeft.X = Util.Clamp(ptdLeft.X, 0, ClientWidth);
+                ptdRight.X = Util.Clamp(ptdRight.X, 0, ClientWidth);
+                ptLeft = DispToImg(ptdLeft);
+                ptRight = DispToImg(ptdRight);
+                ig.DrawLine(ptLeft, ptRight, pen);
+            }
+
+            PointD ptTop = new PointD(ImgBW/ 2, 0);
+            PointD ptBottom = new PointD(ImgBW/ 2, ImgBH);
+            PointD ptdTop = ImgToDisp(ptTop);
+            PointD ptdBottom = ImgToDisp(ptBottom);
+
+            if (ptdTop.X >= 0 && ptdTop.X < ClientWidth && ptdBottom.Y >= 0 && ptTop.Y < ClientHeight) {
+                ptdTop.Y = Util.Clamp(ptdTop.Y, 0, ClientHeight);
+                ptdBottom.Y = Util.Clamp(ptdBottom.Y, 0, ClientHeight);
+                ptTop = DispToImg(ptdTop);
+                ptBottom = DispToImg(ptdBottom);
+                ig.DrawLine(ptTop, ptBottom, pen);
+            }
         }
 
         // 이미지 픽셀값 표시
@@ -374,7 +386,7 @@ Total : {t6-t0:0.0}ms
             Brushes.Red    ,    // 192~223
             Brushes.Black,      // 224~255
         };
-        private void DrawPixelValue(Graphics g) {
+        private void DrawPixelValue(ImageGraphics ig) {
             double ZoomFactor = GetZoomFactor();
             double pixeValFactor = (ImgBytepp == 1) ? 1 : ((ImgBytepp == 2 ? 5.0/3 : 3));
             if (ZoomFactor < 20 * pixeValFactor)
@@ -384,25 +396,23 @@ Total : {t6-t0:0.0}ms
             var ptDisp2 = new PointD(ClientSize.Width, ClientSize.Height);
             var ptImg1 = DispToImg(ptDisp1);
             var ptImg2 = DispToImg(ptDisp2);
-            int imgX1 = Util.IntClamp((int)Math.Floor(ptImg1.X), 0, ImgBW-1);
-            int imgY1 = Util.IntClamp((int)Math.Floor(ptImg1.Y), 0, ImgBH-1);
-            int imgX2 = Util.IntClamp((int)Math.Floor(ptImg2.X), 0, ImgBW-1);
-            int imgY2 = Util.IntClamp((int)Math.Floor(ptImg2.Y), 0, ImgBH-1);
+            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW-1);
+            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH-1);
+            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW-1);
+            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH-1);
 
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
-                    var ptImg = new PointD(imgX, imgY);
-                    var ptDisp = ImgToDisp(ptImg).ToFloat();
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
-                    g.DrawString(pixelValText.ToString(), Font, brush, ptDisp.X, ptDisp.Y);
+                    ig.DrawString(pixelValText, new PointD(imgX, imgY), brush);
                 }
             }
         }
 
         // 좌상단 정보 표시
-        private void DrawInfo(Graphics g) {
+        private void DrawInfo(ImageGraphics ig) {
             Point ptCur = ptMouseLast;
             PointD ptImg = DispToImg(ptCur.ToDouble());
             int imgX = (int)Math.Floor(ptImg.X);
@@ -410,23 +420,19 @@ Total : {t6-t0:0.0}ms
             string pixelVal = GetImagePixelValueText(imgX, imgY);
             string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
 
-            var rect = g.MeasureString(info, Font);
-            g.FillRectangle(Brushes.White, 0, 0, rect.Width, rect.Height);
-            g.DrawString(info, Font, Brushes.Black, 0, 0);
+            ig.DrawStringScreen(info, 0, 0, Brushes.Black, true, Brushes.White);
         }
 
         // 렌더링 시간 표시
-        private void DrawDrawTime(Graphics g, string info) {
-            var rect = g.MeasureString(info, Font);
-            g.FillRectangle(Brushes.White, ClientSize.Width - 150, 0, rect.Width, rect.Height);
-            g.DrawString(info, Font, Brushes.Black, ClientSize.Width - 150, 0);
+        private void DrawDrawTime(ImageGraphics ig, string info) {
+            ig.DrawStringScreen(info, ClientSize.Width - 150, 0, Brushes.Black, true, Brushes.White);
         }
 
         // 표시 픽셀 좌표를 이미지 좌표로 변환
         public PointD DispToImg(PointD pt) {
             double ZoomFactor = GetZoomFactor();
-            double x = ((pt.X - PanX) / ZoomFactor);
-            double y = ((pt.Y - PanY) / ZoomFactor);
+            double x = (pt.X - PanX) / ZoomFactor;
+            double y = (pt.Y - PanY) / ZoomFactor;
             return new PointD(x, y);
         }
 
