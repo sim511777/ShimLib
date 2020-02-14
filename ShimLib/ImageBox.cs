@@ -100,6 +100,7 @@ v0.0.0.0 - 20191001
         public bool UseDrawDrawTime { get; set; } = true;
         public bool UseInterPorlation { get; set; } = false;
         public bool UseParallel { get; set; } = false;
+        public int PixelValueDispZoomFactor { get; set; } = 20;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -396,8 +397,8 @@ Total : {t6-t0:0.0}ms
         };
         private void DrawPixelValue(ImageGraphics ig) {
             double ZoomFactor = GetZoomFactor();
-            double pixeValFactor = (ImgBytepp == 1) ? 1 : ((ImgBytepp == 2 ? 5.0/3 : 3));
-            if (ZoomFactor < 20 * pixeValFactor)
+            double pixeValFactor = (ImgBytepp == 4) ? 3 : ImgBytepp;
+            if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
                 return;
 
             var ptDisp1 = new PointD(0, 0);

@@ -51,9 +51,9 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.pbxDraw = new ShimLib.ImageBox();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbxDraw = new ShimLib.ImageBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -309,31 +309,6 @@
             // 
             this.dlgOpenFile.FileName = "openFileDialog1";
             // 
-            // pbxDraw
-            // 
-            this.pbxDraw.AllowDrop = true;
-            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
-            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
-            this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PanX = 0D;
-            this.pbxDraw.PanY = 0D;
-            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
-            this.pbxDraw.TabIndex = 1;
-            this.pbxDraw.Text = "imageBox1";
-            this.pbxDraw.UseDrawCenterLine = true;
-            this.pbxDraw.UseDrawDrawTime = true;
-            this.pbxDraw.UseDrawInfo = true;
-            this.pbxDraw.UseDrawPixelValue = true;
-            this.pbxDraw.UseInterPorlation = false;
-            this.pbxDraw.UseMouseMove = true;
-            this.pbxDraw.UseMouseWheelZoom = true;
-            this.pbxDraw.UseParallel = false;
-            this.pbxDraw.ZoomLevel = 0;
-            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
-            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
-            this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
-            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -349,6 +324,32 @@
             this.drawTestToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.drawTestToolStripMenuItem.Text = "DrawTest";
             this.drawTestToolStripMenuItem.Click += new System.EventHandler(this.drawTestToolStripMenuItem_Click);
+            // 
+            // pbxDraw
+            // 
+            this.pbxDraw.AllowDrop = true;
+            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
+            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
+            this.pbxDraw.Name = "pbxDraw";
+            this.pbxDraw.PanX = 0D;
+            this.pbxDraw.PanY = 0D;
+            this.pbxDraw.PixelValueDispZoomFactor = 20;
+            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
+            this.pbxDraw.TabIndex = 1;
+            this.pbxDraw.Text = "imageBox1";
+            this.pbxDraw.UseDrawCenterLine = true;
+            this.pbxDraw.UseDrawDrawTime = true;
+            this.pbxDraw.UseDrawInfo = true;
+            this.pbxDraw.UseDrawPixelValue = true;
+            this.pbxDraw.UseInterPorlation = false;
+            this.pbxDraw.UseMouseMove = true;
+            this.pbxDraw.UseMouseWheelZoom = true;
+            this.pbxDraw.UseParallel = false;
+            this.pbxDraw.ZoomLevel = 0;
+            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
+            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
+            this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
             // FormMain
             // 
