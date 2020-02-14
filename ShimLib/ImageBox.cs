@@ -20,6 +20,8 @@ v1.0.0.6 - 20200214
 1. ImageBox로 이름 변경
 2. ImgToDisp(), DIspToImg() 함수 PointD 타입으로 변경
 3. ImageGraphics 클래스 추가 및 테스트
+4. immediate 드로잉 마우스 Move시에 안지워지도록 수정
+5. PixelValueDispZoomFactor 속성 추가
 
 v1.0.0.5 - 20200131
 1. Quadruple 클릭시 버전정보창 띄움 (마우스 다운이 아닌 마우스 업에서 처리)
@@ -427,7 +429,7 @@ Total : {t6-t0:0.0}ms
             int imgX = (int)Math.Floor(ptImg.X);
             int imgY = (int)Math.Floor(ptImg.Y);
             string pixelVal = GetImagePixelValueText(imgX, imgY);
-            string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
+            string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal} ...";
 
             ig.DrawStringScreen(info, 0, 0, Brushes.Black, true, Brushes.White);
         }
