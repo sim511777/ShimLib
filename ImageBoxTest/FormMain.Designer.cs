@@ -52,6 +52,8 @@
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +63,7 @@
             this.fileToolStripMenuItem,
             this.zoomToolStripMenuItem,
             this.optionToolStripMenuItem,
+            this.testToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -331,6 +334,22 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.drawTestToolStripMenuItem});
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.testToolStripMenuItem.Text = "Test";
+            // 
+            // drawTestToolStripMenuItem
+            // 
+            this.drawTestToolStripMenuItem.Name = "drawTestToolStripMenuItem";
+            this.drawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.drawTestToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.drawTestToolStripMenuItem.Text = "DrawTest";
+            this.drawTestToolStripMenuItem.Click += new System.EventHandler(this.drawTestToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -379,6 +398,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem longImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wideImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem drawTestToolStripMenuItem;
     }
 }
 

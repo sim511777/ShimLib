@@ -191,5 +191,16 @@ namespace ImageBoxTest {
             //ig.DrawCross(10, 10, 20, Pens.Lime, false);
             //ig.DrawPlus(10, 10, 20, Pens.Red, true);
         }
+
+        private void drawTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            using (Graphics g = pbxDraw.CreateGraphics()) {
+                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
+                for (int y = 0; y < 50; y++) {
+                    for (int x = 0; x < 50; x++) {
+                        ig.DrawEllipse(x, y, x + 1, y + 1, Pens.Red);
+                    }
+                }
+            }
+        }
     }
 }

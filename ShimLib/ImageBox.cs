@@ -284,10 +284,18 @@ Total : {t6-t0:0.0}ms
             if (UseMouseMove && mouseDown) {
                 PanX += ptMouse.X - ptMouseLast.X;
                 PanY += ptMouse.Y - ptMouseLast.Y;
+                ptMouseLast = ptMouse;
+                Invalidate();
+            } else {
+                ptMouseLast = ptMouse;
             }
 
-            ptMouseLast = ptMouse;
-            Invalidate();
+            if (UseDrawInfo) {
+                using (Graphics g = this.CreateGraphics()) {
+                    ImageGraphics ig = new ImageGraphics(this, g);
+                    DrawInfo(ig);
+                }
+            }
         }
 
         private DateTime clickTimeOld = DateTime.Now;
