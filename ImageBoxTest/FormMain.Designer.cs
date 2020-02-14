@@ -1,4 +1,4 @@
-﻿namespace ZoomPictureBoxTest {
+﻿namespace ImageBoxTest {
     partial class FormMain {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -45,13 +45,13 @@
             this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutZoomPictureBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.longImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wideImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.pbxDraw = new ShimLib.ZoomPictureBox();
+            this.pbxDraw = new ShimLib.ImageBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -264,17 +264,17 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutZoomPictureBoxToolStripMenuItem});
+            this.aboutImageBoxToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // aboutZoomPictureBoxToolStripMenuItem
+            // aboutImageBoxToolStripMenuItem
             // 
-            this.aboutZoomPictureBoxToolStripMenuItem.Name = "aboutZoomPictureBoxToolStripMenuItem";
-            this.aboutZoomPictureBoxToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.aboutZoomPictureBoxToolStripMenuItem.Text = "About ZoomPictureBox";
-            this.aboutZoomPictureBoxToolStripMenuItem.Click += new System.EventHandler(this.aboutZoomPictureBoxToolStripMenuItem_Click);
+            this.aboutImageBoxToolStripMenuItem.Name = "aboutImageBoxToolStripMenuItem";
+            this.aboutImageBoxToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.aboutImageBoxToolStripMenuItem.Text = "About ImageBox";
+            this.aboutImageBoxToolStripMenuItem.Click += new System.EventHandler(this.aboutImageBoxToolStripMenuItem_Click);
             // 
             // dlgOpenFile
             // 
@@ -317,7 +317,7 @@
             this.pbxDraw.PanY = 0D;
             this.pbxDraw.Size = new System.Drawing.Size(820, 511);
             this.pbxDraw.TabIndex = 1;
-            this.pbxDraw.Text = "zoomPictureBox1";
+            this.pbxDraw.Text = "imageBox1";
             this.pbxDraw.UseDrawCenterLine = true;
             this.pbxDraw.UseDrawDrawTime = true;
             this.pbxDraw.UseDrawInfo = true;
@@ -339,7 +339,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
-            this.Text = "ZoomPictureBox Test";
+            this.Text = "ImageBox Test";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -349,7 +349,7 @@
 
         #endregion
 
-        private ShimLib.ZoomPictureBox pbxDraw;
+        private ShimLib.ImageBox pbxDraw;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
         private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
@@ -366,7 +366,7 @@
         private System.Windows.Forms.ToolStripMenuItem zoomResetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoomToImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutZoomPictureBoxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutImageBoxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useInterpolationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userParallelToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;

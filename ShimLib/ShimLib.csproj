@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZoomPictureBox.cs">
+    <Compile Include="ImageBox.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

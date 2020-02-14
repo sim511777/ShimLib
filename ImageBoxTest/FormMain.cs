@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZoomPictureBoxTest {
+namespace ImageBoxTest {
     public partial class FormMain : Form {
         static string[] extList = { ".bmp", ".jpg", ".png", ".hra", ".tif" };
         private IntPtr imgBuf;
@@ -130,8 +130,8 @@ namespace ZoomPictureBoxTest {
             pbxDraw.Invalidate();
         }
 
-        private void aboutZoomPictureBoxToolStripMenuItem_Click(object sender, EventArgs e) {
-            MessageBox.Show(this, ZoomPictureBox.VersionHistory, "About ZoomPictureBox");
+        private void aboutImageBoxToolStripMenuItem_Click(object sender, EventArgs e) {
+            MessageBox.Show(this, ImageBox.VersionHistory, "About ImageBox");
         }
 
         private void LoadBitmap(Bitmap bmp) {

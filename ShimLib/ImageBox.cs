@@ -12,9 +12,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 namespace ShimLib {
-    public class ZoomPictureBox : Control {
+    public class ImageBox : Control {
         public const string VersionHistory =
-@"ZoomPictureBox .NET 컨트롤
+@"ImageBox .NET 컨트롤
 
 v1.0.0.5 - 20200131
 1. Quadruple 클릭시 버전정보창 띄움 (마우스 다운이 아닌 마우스 업에서 처리)
@@ -79,7 +79,7 @@ v0.0.0.0 - 20191001
         public int ImgBytepp { get; private set; } = 1;
 
         // 생성자
-        public ZoomPictureBox() {
+        public ImageBox() {
             DoubleBuffered = true;
         }
 
@@ -297,7 +297,7 @@ Total : {t6-t0:0.0}ms
             } else {
                 quadrupleClickCount++;
                 if (quadrupleClickCount >= 4) {
-                    MessageBox.Show(this, ZoomPictureBox.VersionHistory, "ZoomPictureBox");
+                    MessageBox.Show(this, ImageBox.VersionHistory, "ImageBox");
                     quadrupleClickCount = 0;
                 }
             }
