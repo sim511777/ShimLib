@@ -48,12 +48,13 @@
             this.showDrawTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.immediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.drawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbxDraw = new ShimLib.ImageBox();
+            this.retainedimmediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -290,6 +291,23 @@
             this.userParallelToolStripMenuItem.Text = "User Parallel";
             this.userParallelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.immediateDrawTestToolStripMenuItem,
+            this.retainedimmediateDrawTestToolStripMenuItem});
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.testToolStripMenuItem.Text = "Test";
+            // 
+            // immediateDrawTestToolStripMenuItem
+            // 
+            this.immediateDrawTestToolStripMenuItem.Name = "immediateDrawTestToolStripMenuItem";
+            this.immediateDrawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.immediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.immediateDrawTestToolStripMenuItem.Text = "Immediate Draw Test";
+            this.immediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.immediateDrawTestToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -308,22 +326,6 @@
             // dlgOpenFile
             // 
             this.dlgOpenFile.FileName = "openFileDialog1";
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawTestToolStripMenuItem});
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
-            this.testToolStripMenuItem.Text = "Test";
-            // 
-            // drawTestToolStripMenuItem
-            // 
-            this.drawTestToolStripMenuItem.Name = "drawTestToolStripMenuItem";
-            this.drawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.drawTestToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.drawTestToolStripMenuItem.Text = "DrawTest";
-            this.drawTestToolStripMenuItem.Click += new System.EventHandler(this.drawTestToolStripMenuItem_Click);
             // 
             // pbxDraw
             // 
@@ -350,6 +352,15 @@
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
+            // 
+            // retainedimmediateDrawTestToolStripMenuItem
+            // 
+            this.retainedimmediateDrawTestToolStripMenuItem.CheckOnClick = true;
+            this.retainedimmediateDrawTestToolStripMenuItem.Name = "retainedimmediateDrawTestToolStripMenuItem";
+            this.retainedimmediateDrawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.retainedimmediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.retainedimmediateDrawTestToolStripMenuItem.Text = "Retained Draw Test";
+            this.retainedimmediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.retainedimmediateDrawTestToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -400,7 +411,8 @@
         private System.Windows.Forms.ToolStripMenuItem longImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wideImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem drawTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem immediateDrawTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem retainedimmediateDrawTestToolStripMenuItem;
     }
 }
 

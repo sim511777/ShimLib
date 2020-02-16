@@ -190,17 +190,33 @@ namespace ImageBoxTest {
             //ig.DrawEllipse(3, 3, 4, 4, Pens.Red, false, Brushes.Red);
             //ig.DrawCross(10, 10, 20, Pens.Lime, false);
             //ig.DrawPlus(10, 10, 20, Pens.Red, true);
-        }
-
-        private void drawTestToolStripMenuItem_Click(object sender, EventArgs e) {
-            using (Graphics g = pbxDraw.CreateGraphics()) {
-                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
-                for (int y = 0; y < 50; y++) {
-                    for (int x = 0; x < 50; x++) {
+            
+            if (retainedimmediateDrawTestToolStripMenuItem.Checked) {
+                ImageGraphics ig = new ImageGraphics(pbxDraw, e.Graphics);
+                for (int y = 0; y < 100; y++) {
+                    for (int x = 0; x < 100; x++) {
                         ig.DrawEllipse(x, y, x + 1, y + 1, Pens.Red);
                     }
                 }
             }
+        }
+
+        private void immediateDrawTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            using (Graphics g = pbxDraw.CreateGraphics()) {
+                var st = Util.GetTimeMs();
+                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
+                for (int y = 0; y < 100; y++) {
+                    for (int x = 0; x < 100; x++) {
+                        ig.DrawEllipse(x, y, x + 1, y + 1, Pens.Lime);
+                    }
+                }
+                var dt = Util.GetTimeMs() - st;
+                ig.DrawStringScreen(dt.ToString(), 200, 0, Brushes.Black, true, Brushes.White);
+            }
+        }
+
+        private void retainedimmediateDrawTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            pbxDraw.Invalidate();
         }
     }
 }
