@@ -16,6 +16,9 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox .NET 컨트롤
+v1.0.0.7 - 20200217
+1. DrawInfo() 깜빡이 않게 더블버퍼 처리
+
 v1.0.0.6 - 20200214
 1. ImageBox로 이름 변경
 2. ImgToDisp(), DIspToImg() 함수 PointD 타입으로 변경
@@ -99,7 +102,7 @@ v0.0.0.0 - 20191001
         public bool UseDrawPixelValue { get; set; } = true;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
-        public bool UseDrawDrawTime { get; set; } = true;
+        public bool UseDrawDrawTime { get; set; } = false;
         public bool UseInterPorlation { get; set; } = false;
         public bool UseParallel { get; set; } = false;
         public int PixelValueDispZoomFactor { get; set; } = 20;
@@ -429,9 +432,16 @@ Total : {t6-t0:0.0}ms
             int imgX = (int)Math.Floor(ptImg.X);
             int imgY = (int)Math.Floor(ptImg.Y);
             string pixelVal = GetImagePixelValueText(imgX, imgY);
-            string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal} ...";
+            string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
 
-            ig.DrawStringScreen(info, 0, 0, Brushes.Black, true, Brushes.White);
+            var size = ig.g.MeasureString("0", ig.imgBox.Font);
+            using (Bitmap bmp = new Bitmap(250, (int)size.Height)) {
+                using (Graphics g = Graphics.FromImage(bmp)) {
+                    g.FillRectangle(Brushes.Black, 0, 0, 250, size.Height);
+                    g.DrawString(info, ig.imgBox.Font, Brushes.White, 0, 0);
+                }
+                ig.g.DrawImage(bmp, 2, 2);
+            }
         }
 
         // 렌더링 시간 표시

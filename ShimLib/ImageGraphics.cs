@@ -8,8 +8,8 @@ using PointD = System.Windows.Point;
 
 namespace ShimLib {
     public class ImageGraphics {
-        private ImageBox imgBox;
-        private Graphics g;
+        public ImageBox imgBox { get; private set; }
+        public Graphics g { get; private set; }
         public ImageGraphics(ImageBox _imgBox, Graphics _g) {
             imgBox = _imgBox;
             g = _g;
