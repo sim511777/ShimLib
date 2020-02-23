@@ -88,14 +88,22 @@ v0.0.0.0 - 20191001
         [Browsable(false)]
         public int ImgBytepp { get; private set; } = 1;
 
+        private Graphics graphics;
+        private BufferedGraphicsContext bufferedGraphicsContext;
+        private BufferedGraphics bufferedGraphics;
+
         // 생성자
         public ImageBox() {
-            DoubleBuffered = true;
+            graphics = CreateGraphics();
+            bufferedGraphicsContext = BufferedGraphicsManager.Current;
         }
 
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
             FreeDispBuf();
+
+            bufferedGraphicsContext.Dispose();
+            graphics.Dispose();
         }
 
         // 화면 표시 옵션
@@ -172,6 +180,19 @@ v0.0.0.0 - 20191001
 
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
+            Invalidate();
+        }
+
+        // Invalidate() 재정의
+        public new void Invalidate() {
+            DrawGraphics(bufferedGraphics.Graphics);    // draw items to backbuffer
+            bufferedGraphics.Render();                  // draw backbuffer to frontbuffer
+            graphics.DrawString("aaa", this.Font, Brushes.Black, 100, 100);
+            graphics.DrawEllipse(Pens.Lime, 100, 100, 100, 100);
+        }
+
+        // 그리기 함수 따로 빼냄
+        private void DrawGraphics(Graphics g) {
             var t0 = Util.GetTimeMs();
 
             if (UseInterPorlation)
@@ -180,10 +201,10 @@ v0.0.0.0 - 20191001
                 Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             var t1 = Util.GetTimeMs();
 
-            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
             var t2 = Util.GetTimeMs();
 
-            var ig = new ImageGraphics(this, e.Graphics);
+            var ig = new ImageGraphics(this, g);
             if (UseDrawPixelValue)
                 DrawPixelValue(ig);
             var t3 = Util.GetTimeMs();
@@ -192,13 +213,13 @@ v0.0.0.0 - 20191001
                 DrawCenterLine(ig);
             var t4 = Util.GetTimeMs();
 
-            base.OnPaint(e);
+            base.OnPaint(new PaintEventArgs(g, this.ClientRectangle));
             var t5 = Util.GetTimeMs();
 
             if (UseDrawInfo)
                 DrawInfo(ig);
             var t6 = Util.GetTimeMs();
-            
+
             if (UseDrawDrawTime) {
                 string info =
 $@"== Image ==
@@ -262,7 +283,7 @@ Total : {t6-t0:0.0}ms
             ZoomLevel = Util.Clamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -40, 40);
             if (fixPanning)
                 return;
-            
+
             var zoomFactorNew = GetZoomFactor();
 
             var zoomFactorDelta = zoomFactorNew / zoomFactorOld;
@@ -337,6 +358,8 @@ Total : {t6-t0:0.0}ms
         private void AllocDispBuf() {
             FreeDispBuf();
 
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, ClientRectangle);
+
             dispBW = Math.Max(ClientSize.Width, 64);
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Marshal.AllocHGlobal((IntPtr)(dispBW * dispBH * 4));
@@ -349,6 +372,9 @@ Total : {t6-t0:0.0}ms
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
                 Marshal.FreeHGlobal(dispBuf);
+
+            if (bufferedGraphics != null)
+                bufferedGraphics.Dispose();
         }
 
         // 중심선 표시
