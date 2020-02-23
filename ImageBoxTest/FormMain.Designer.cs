@@ -50,11 +50,17 @@
             this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.immediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.retainedimmediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
-            this.retainedimmediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.drawEllipseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillEllipseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.drawPixelCirclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -295,7 +301,13 @@
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.immediateDrawTestToolStripMenuItem,
-            this.retainedimmediateDrawTestToolStripMenuItem});
+            this.retainedimmediateDrawTestToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.drawEllipseToolStripMenuItem,
+            this.fillEllipseToolStripMenuItem,
+            this.drawStringToolStripMenuItem,
+            this.drawShapesToolStripMenuItem,
+            this.drawPixelCirclesToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
             this.testToolStripMenuItem.Text = "Test";
@@ -307,6 +319,15 @@
             this.immediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.immediateDrawTestToolStripMenuItem.Text = "Immediate Draw Test";
             this.immediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.immediateDrawTestToolStripMenuItem_Click);
+            // 
+            // retainedimmediateDrawTestToolStripMenuItem
+            // 
+            this.retainedimmediateDrawTestToolStripMenuItem.CheckOnClick = true;
+            this.retainedimmediateDrawTestToolStripMenuItem.Name = "retainedimmediateDrawTestToolStripMenuItem";
+            this.retainedimmediateDrawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.retainedimmediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.retainedimmediateDrawTestToolStripMenuItem.Text = "Retained Draw Test";
+            this.retainedimmediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.retainedimmediateDrawTestToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -353,14 +374,47 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
-            // retainedimmediateDrawTestToolStripMenuItem
+            // toolStripSeparator4
             // 
-            this.retainedimmediateDrawTestToolStripMenuItem.CheckOnClick = true;
-            this.retainedimmediateDrawTestToolStripMenuItem.Name = "retainedimmediateDrawTestToolStripMenuItem";
-            this.retainedimmediateDrawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.retainedimmediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.retainedimmediateDrawTestToolStripMenuItem.Text = "Retained Draw Test";
-            this.retainedimmediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.retainedimmediateDrawTestToolStripMenuItem_Click);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(226, 6);
+            // 
+            // drawEllipseToolStripMenuItem
+            // 
+            this.drawEllipseToolStripMenuItem.Checked = true;
+            this.drawEllipseToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.drawEllipseToolStripMenuItem.Name = "drawEllipseToolStripMenuItem";
+            this.drawEllipseToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawEllipseToolStripMenuItem.Text = "DrawEllipse";
+            this.drawEllipseToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // fillEllipseToolStripMenuItem
+            // 
+            this.fillEllipseToolStripMenuItem.Name = "fillEllipseToolStripMenuItem";
+            this.fillEllipseToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.fillEllipseToolStripMenuItem.Text = "FillEllipse";
+            this.fillEllipseToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // drawStringToolStripMenuItem
+            // 
+            this.drawStringToolStripMenuItem.Name = "drawStringToolStripMenuItem";
+            this.drawStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawStringToolStripMenuItem.Text = "DrawString";
+            this.drawStringToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // drawShapesToolStripMenuItem
+            // 
+            this.drawShapesToolStripMenuItem.Name = "drawShapesToolStripMenuItem";
+            this.drawShapesToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawShapesToolStripMenuItem.Text = "Draw Shapes";
+            this.drawShapesToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // drawPixelCirclesToolStripMenuItem
+            // 
+            this.drawPixelCirclesToolStripMenuItem.Name = "drawPixelCirclesToolStripMenuItem";
+            this.drawPixelCirclesToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawPixelCirclesToolStripMenuItem.Text = "Draw Pixel Circles";
+            this.drawPixelCirclesToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -413,6 +467,12 @@
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem immediateDrawTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem retainedimmediateDrawTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem drawEllipseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fillEllipseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem drawStringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem drawShapesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem drawPixelCirclesToolStripMenuItem;
     }
 }
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -181,41 +182,82 @@ namespace ImageBoxTest {
         }
 
         private void pbxDraw_Paint(object sender, PaintEventArgs e) {
-            //ImageGraphics ig = new ImageGraphics(pbxDraw, e.Graphics);
-            //ig.DrawLine(1, 1, 2, 2, Pens.Lime);
-            //ig.DrawLine(1, 2, 2, 1, Pens.Red);
-            //ig.DrawRectangle(2, 2, 3, 3, Pens.Red, true, Brushes.Lime);
-            //ig.DrawRectangle(2, 2, 3, 3, Pens.Red, false, Brushes.Red);
-            //ig.DrawEllipse(3, 3, 4, 4, Pens.Red, true, Brushes.Lime);
-            //ig.DrawEllipse(3, 3, 4, 4, Pens.Red, false, Brushes.Red);
-            //ig.DrawCross(10, 10, 20, Pens.Lime, false);
-            //ig.DrawPlus(10, 10, 20, Pens.Red, true);
-            
-            if (retainedimmediateDrawTestToolStripMenuItem.Checked) {
-                ImageGraphics ig = new ImageGraphics(pbxDraw, e.Graphics);
-                for (int y = 0; y < 100; y++) {
-                    for (int x = 0; x < 100; x++) {
-                        ig.DrawEllipse(x, y, x + 1, y + 1, Pens.Red);
-                    }
-                }
-            }
+            if (retainedimmediateDrawTestToolStripMenuItem.Checked)
+                UserDrawTest(e.Graphics);
         }
 
         private void immediateDrawTestToolStripMenuItem_Click(object sender, EventArgs e) {
             using (Graphics g = pbxDraw.CreateGraphics()) {
-                var st = Util.GetTimeMs();
-                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
-                for (int y = 0; y < 100; y++) {
-                    for (int x = 0; x < 100; x++) {
-                        ig.DrawEllipse(x, y, x + 1, y + 1, Pens.Lime);
-                    }
-                }
-                var dt = Util.GetTimeMs() - st;
-                ig.DrawStringScreen(dt.ToString(), 200, 0, Brushes.Black, true, Brushes.White);
+                UserDrawTest(g);
             }
         }
 
+        private void UserDrawTest(Graphics g) {
+            var st = Stopwatch.GetTimestamp();
+
+            Random Rnd = new Random();
+            int step = 20;
+            if (drawEllipseToolStripMenuItem.Checked) {
+                Pen pen = new Pen(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
+                for (int y = 0; y < 1000; y += step) {
+                    for (int x = 0; x < 1000; x += step) {
+                        g.DrawEllipse(pen, x, y, step, step);
+                    }
+                }
+                pen.Dispose();
+            } else if (fillEllipseToolStripMenuItem.Checked) {
+                Brush br = new SolidBrush(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
+                for (int y = 0; y < 1000; y += step) {
+                    for (int x = 0; x < 1000; x += step) {
+                        g.FillEllipse(br, x, y, step, step);
+                    }
+                }
+                br.Dispose();
+            } else if (drawStringToolStripMenuItem.Checked) {
+                Brush br = new SolidBrush(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
+                for (int y = 0; y < 1000; y += step) {
+                    for (int x = 0; x < 1000; x += step) {
+                        g.DrawString("128", this.Font, br, x, y);
+                    }
+                }
+                br.Dispose();
+            } else if (drawShapesToolStripMenuItem.Checked) {
+                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
+                ig.DrawLine(1, 1, 2, 2, Pens.Lime);
+                ig.DrawLine(1, 2, 2, 1, Pens.Red);
+                ig.DrawRectangle(2, 2, 3, 3, Pens.Red, true, Brushes.Lime);
+                ig.DrawRectangle(2, 2, 3, 3, Pens.Red, false, Brushes.Red);
+                ig.DrawEllipse(3, 3, 4, 4, Pens.Red, true, Brushes.Lime);
+                ig.DrawEllipse(3, 3, 4, 4, Pens.Red, false, Brushes.Red);
+                ig.DrawCross(10, 10, 20, Pens.Lime, false);
+                ig.DrawPlus(10, 10, 20, Pens.Red, true);
+            } else if (drawPixelCirclesToolStripMenuItem.Checked) {
+                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
+                Pen pen = new Pen(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
+                for (int y = 0; y < 100; y++) {
+                    for (int x = 0; x < 100; x++) {
+                        ig.DrawEllipse(x, y, x + 1, y + 1, pen);
+                    }
+                }
+                pen.Dispose();
+            }
+
+            var et = Stopwatch.GetTimestamp();
+            var ms = (et - st) * 1000.0 / Stopwatch.Frequency;
+            var text = $"DrawTime : {ms:0.00}";
+            var size = g.MeasureString(text, this.Font);
+            g.FillRectangle(Brushes.White, 255, 2, size.Width, size.Height);
+            g.DrawString(text, pbxDraw.Font, Brushes.Black, 255, 2);
+        }
+
         private void retainedimmediateDrawTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            pbxDraw.Invalidate();
+        }
+
+        private void drawEllipseToolStripMenuItem_Click(object sender, EventArgs e) {
+            ToolStripMenuItem[] mitems = { drawEllipseToolStripMenuItem, fillEllipseToolStripMenuItem, drawStringToolStripMenuItem, drawShapesToolStripMenuItem, drawPixelCirclesToolStripMenuItem };
+            var clickItem = sender as ToolStripMenuItem;
+            Array.ForEach(mitems, mitem => mitem.Checked = mitem == clickItem ? true : false);
             pbxDraw.Invalidate();
         }
     }
