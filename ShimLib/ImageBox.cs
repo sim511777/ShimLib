@@ -88,22 +88,15 @@ v0.0.0.0 - 20191001
         [Browsable(false)]
         public int ImgBytepp { get; private set; } = 1;
 
-        private Graphics graphics;
-        private BufferedGraphicsContext bufferedGraphicsContext;
         private BufferedGraphics bufferedGraphics;
 
         // 생성자
         public ImageBox() {
-            graphics = CreateGraphics();
-            bufferedGraphicsContext = BufferedGraphicsManager.Current;
         }
 
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
             FreeDispBuf();
-
-            bufferedGraphicsContext.Dispose();
-            graphics.Dispose();
         }
 
         // 화면 표시 옵션
@@ -186,9 +179,7 @@ v0.0.0.0 - 20191001
         // Invalidate() 재정의
         public new void Invalidate() {
             DrawGraphics(bufferedGraphics.Graphics);    // draw items to backbuffer
-            bufferedGraphics.Render();                  // draw backbuffer to frontbuffer
-            graphics.DrawString("aaa", this.Font, Brushes.Black, 100, 100);
-            graphics.DrawEllipse(Pens.Lime, 100, 100, 100, 100);
+            bufferedGraphics.Render(CreateGraphics());                  // draw backbuffer to frontbuffer
         }
 
         // 그리기 함수 따로 빼냄
@@ -358,8 +349,8 @@ Total : {t6-t0:0.0}ms
         private void AllocDispBuf() {
             FreeDispBuf();
 
-            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, ClientRectangle);
-
+            bufferedGraphics = BufferedGraphicsManager.Current.Allocate(CreateGraphics(), ClientRectangle);
+            
             dispBW = Math.Max(ClientSize.Width, 64);
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Marshal.AllocHGlobal((IntPtr)(dispBW * dispBH * 4));
