@@ -92,6 +92,7 @@ v0.0.0.0 - 20191001
 
         // 생성자
         public ImageBox() {
+            SetStyle(ControlStyles.Opaque, true);
         }
 
         protected override void Dispose(bool disposing) {
@@ -175,7 +176,7 @@ v0.0.0.0 - 20191001
         protected override void OnPaint(PaintEventArgs e) {
             Invalidate();
         }
-
+        
         // Invalidate() 재정의
         public new void Invalidate() {
             DrawGraphics(bufferedGraphics.Graphics);    // draw items to backbuffer
