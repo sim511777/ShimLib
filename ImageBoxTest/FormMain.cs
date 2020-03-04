@@ -119,20 +119,8 @@ namespace ImageBoxTest {
             LoadImageFile(filePath);
         }
 
-        private void showPixelValueToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
-            pbxDraw.UseDrawPixelValue = showPixelValueToolStripMenuItem.Checked;
-            pbxDraw.UseDrawInfo = showCursorInfoToolStripMenuItem.Checked;
-            pbxDraw.UseDrawCenterLine = showDrawCenterLineToolStripMenuItem.Checked;
-            pbxDraw.UseDrawDrawTime = showDrawTimeToolStripMenuItem.Checked;
-            pbxDraw.UseMouseMove = mousePanningToolStripMenuItem.Checked;
-            pbxDraw.UseMouseWheelZoom = wheelZoomToolStripMenuItem.Checked;
-            pbxDraw.UseInterPorlation = useInterpolationToolStripMenuItem.Checked;
-            pbxDraw.UseParallel = userParallelToolStripMenuItem.Checked;
-            pbxDraw.Invalidate();
-        }
-
         private void aboutImageBoxToolStripMenuItem_Click(object sender, EventArgs e) {
-            MessageBox.Show(this, ImageBox.VersionHistory, "About ImageBox");
+            pbxDraw.ShowAbout();
         }
 
         private void LoadBitmap(Bitmap bmp) {
