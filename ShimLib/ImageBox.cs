@@ -17,6 +17,10 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.9 - 20200305
+1. BufferedGraphics 안쓰고 DoubleBuffered = true; 사용
+2. MouseMove 오동작 수정
+
 v1.0.0.8 - 20200304
 1. 버전정보 창에 속성 변경기능 추가
 2. 쿼드클릭 대신 ctrl + 더블클릭 누를때 버전정보 창 띄움
@@ -283,8 +287,10 @@ Total : {t6 - t0:0.0}ms
         protected override void OnMouseDown(MouseEventArgs e) {
             base.OnMouseDown(e);
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left) {
                 mouseDown = true;
+            }
+            ptMouseLast = e.Location;
         }
 
         // 마우스 무브
@@ -292,15 +298,12 @@ Total : {t6 - t0:0.0}ms
         protected override void OnMouseMove(MouseEventArgs e) {
             base.OnMouseMove(e);
 
-            var ptMouse = e.Location;
             if (UseMouseMove && mouseDown) {
-                PanX += ptMouse.X - ptMouseLast.X;
-                PanY += ptMouse.Y - ptMouseLast.Y;
-                ptMouseLast = ptMouse;
+                PanX += e.Location.X - ptMouseLast.X;
+                PanY += e.Location.Y - ptMouseLast.Y;
                 Invalidate();
-            } else {
-                ptMouseLast = ptMouse;
             }
+            ptMouseLast = e.Location;
 
             if (UseDrawInfo) {
                 using (Graphics g = this.CreateGraphics()) {
