@@ -88,9 +88,11 @@ v0.0.0.0 - 20191001
         [Browsable(false)]
         public int ImgBytepp { get; private set; } = 1;
 
+        private BufferedGraphics bufferedGraphics;
+
         // 생성자
         public ImageBox() {
-            DoubleBuffered = true;
+            SetStyle(ControlStyles.Opaque, true);
         }
 
         protected override void Dispose(bool disposing) {
@@ -172,6 +174,17 @@ v0.0.0.0 - 20191001
 
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
+            Invalidate();
+        }
+
+        // Invalidate() 재정의
+        public new void Invalidate() {
+            DrawGraphics(bufferedGraphics.Graphics);    // draw items to backbuffer
+            bufferedGraphics.Render(CreateGraphics());                  // draw backbuffer to frontbuffer
+        }
+
+        // 그리기 함수 따로 빼냄
+        private void DrawGraphics(Graphics g) {
             var t0 = Util.GetTimeMs();
 
             if (UseInterPorlation)
@@ -180,10 +193,10 @@ v0.0.0.0 - 20191001
                 Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             var t1 = Util.GetTimeMs();
 
-            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
             var t2 = Util.GetTimeMs();
 
-            var ig = new ImageGraphics(this, e.Graphics);
+            var ig = new ImageGraphics(this, g);
             if (UseDrawPixelValue)
                 DrawPixelValue(ig);
             var t3 = Util.GetTimeMs();
@@ -192,17 +205,17 @@ v0.0.0.0 - 20191001
                 DrawCenterLine(ig);
             var t4 = Util.GetTimeMs();
 
-            base.OnPaint(e);
+            base.OnPaint(new PaintEventArgs(g, this.ClientRectangle));
             var t5 = Util.GetTimeMs();
 
             if (UseDrawInfo)
                 DrawInfo(ig);
             var t6 = Util.GetTimeMs();
-            
+
             if (UseDrawDrawTime) {
                 string info =
 $@"== Image ==
-{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp*8}bpp")}
+{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp * 8}bpp")}
 
 == Draw option ==
 DrawPixelValue : {(UseDrawPixelValue ? "O" : "X")}
@@ -217,13 +230,13 @@ MouseMove : {(UseMouseMove ? "O" : "X")}
 MouseWheelZoom : {(UseMouseWheelZoom ? "O" : "X")}
 
 == Draw time ==
-CopyImage : {t1-t0:0.0}ms
-DrawImage : {t2-t1:0.0}ms
-PixelValue : {t3-t2:0.0}ms
-CenterLine : {t4-t3:0.0}ms
-OnPaint : {t5-t4:0.0}ms
-CursorInfo : {t6-t5:0.0}ms
-Total : {t6-t0:0.0}ms
+CopyImage : {t1 - t0:0.0}ms
+DrawImage : {t2 - t1:0.0}ms
+PixelValue : {t3 - t2:0.0}ms
+CenterLine : {t4 - t3:0.0}ms
+OnPaint : {t5 - t4:0.0}ms
+CursorInfo : {t6 - t5:0.0}ms
+Total : {t6 - t0:0.0}ms
 ";
                 DrawDrawTime(ig, info);
             }
@@ -262,7 +275,7 @@ Total : {t6-t0:0.0}ms
             ZoomLevel = Util.Clamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -40, 40);
             if (fixPanning)
                 return;
-            
+
             var zoomFactorNew = GetZoomFactor();
 
             var zoomFactorDelta = zoomFactorNew / zoomFactorOld;
@@ -337,6 +350,8 @@ Total : {t6-t0:0.0}ms
         private void AllocDispBuf() {
             FreeDispBuf();
 
+            bufferedGraphics = BufferedGraphicsManager.Current.Allocate(CreateGraphics(), ClientRectangle);
+
             dispBW = Math.Max(ClientSize.Width, 64);
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Marshal.AllocHGlobal((IntPtr)(dispBW * dispBH * 4));
@@ -349,6 +364,9 @@ Total : {t6-t0:0.0}ms
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
                 Marshal.FreeHGlobal(dispBuf);
+
+            if (bufferedGraphics != null)
+                bufferedGraphics.Dispose();
         }
 
         // 중심선 표시
@@ -361,7 +379,7 @@ Total : {t6-t0:0.0}ms
             };
 
             PointD ptLeft = new PointD(0, ImgBH / 2);
-            PointD ptRight = new PointD(ImgBW, ImgBH/ 2);
+            PointD ptRight = new PointD(ImgBW, ImgBH / 2);
             PointD ptdLeft = ImgToDisp(ptLeft);
             PointD ptdRight = ImgToDisp(ptRight);
 
@@ -375,8 +393,8 @@ Total : {t6-t0:0.0}ms
                 ig.DrawLine(ptLeft, ptRight, pen);
             }
 
-            PointD ptTop = new PointD(ImgBW/ 2, 0);
-            PointD ptBottom = new PointD(ImgBW/ 2, ImgBH);
+            PointD ptTop = new PointD(ImgBW / 2, 0);
+            PointD ptBottom = new PointD(ImgBW / 2, ImgBH);
             PointD ptdTop = ImgToDisp(ptTop);
             PointD ptdBottom = ImgToDisp(ptBottom);
 
@@ -410,10 +428,10 @@ Total : {t6-t0:0.0}ms
             var ptDisp2 = new PointD(ClientSize.Width, ClientSize.Height);
             var ptImg1 = DispToImg(ptDisp1);
             var ptImg2 = DispToImg(ptDisp2);
-            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW-1);
-            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH-1);
-            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW-1);
-            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH-1);
+            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW - 1);
+            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH - 1);
+            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
+            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
 
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
