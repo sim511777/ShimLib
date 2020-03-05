@@ -38,29 +38,19 @@
             this.zoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomToImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mousePanningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wheelZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.showPixelValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showCursorInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showDrawCenterLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showDrawTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.useInterpolationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.userParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.immediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retainedimmediateDrawTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.pbxDraw = new ShimLib.ImageBox();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.drawEllipseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillEllipseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawPixelCirclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.pbxDraw = new ShimLib.ImageBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,7 +59,6 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.zoomToolStripMenuItem,
-            this.optionToolStripMenuItem,
             this.testToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -193,110 +182,6 @@
             this.zoomToImageToolStripMenuItem.Text = "Zoom to Image";
             this.zoomToImageToolStripMenuItem.Click += new System.EventHandler(this.zoomToImageToolStripMenuItem_Click_1);
             // 
-            // optionToolStripMenuItem
-            // 
-            this.optionToolStripMenuItem.CheckOnClick = true;
-            this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mousePanningToolStripMenuItem,
-            this.wheelZoomToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.showPixelValueToolStripMenuItem,
-            this.showCursorInfoToolStripMenuItem,
-            this.showDrawCenterLineToolStripMenuItem,
-            this.showDrawTimeToolStripMenuItem,
-            this.useInterpolationToolStripMenuItem,
-            this.userParallelToolStripMenuItem});
-            this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
-            this.optionToolStripMenuItem.Text = "Option";
-            // 
-            // mousePanningToolStripMenuItem
-            // 
-            this.mousePanningToolStripMenuItem.Checked = true;
-            this.mousePanningToolStripMenuItem.CheckOnClick = true;
-            this.mousePanningToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mousePanningToolStripMenuItem.Name = "mousePanningToolStripMenuItem";
-            this.mousePanningToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.mousePanningToolStripMenuItem.Text = "Mouse Panning";
-            this.mousePanningToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // wheelZoomToolStripMenuItem
-            // 
-            this.wheelZoomToolStripMenuItem.Checked = true;
-            this.wheelZoomToolStripMenuItem.CheckOnClick = true;
-            this.wheelZoomToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.wheelZoomToolStripMenuItem.Name = "wheelZoomToolStripMenuItem";
-            this.wheelZoomToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.wheelZoomToolStripMenuItem.Text = "Wheel Zoom";
-            this.wheelZoomToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(239, 6);
-            // 
-            // showPixelValueToolStripMenuItem
-            // 
-            this.showPixelValueToolStripMenuItem.Checked = true;
-            this.showPixelValueToolStripMenuItem.CheckOnClick = true;
-            this.showPixelValueToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showPixelValueToolStripMenuItem.Name = "showPixelValueToolStripMenuItem";
-            this.showPixelValueToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
-            this.showPixelValueToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.showPixelValueToolStripMenuItem.Text = "Show Pixel Value";
-            this.showPixelValueToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // showCursorInfoToolStripMenuItem
-            // 
-            this.showCursorInfoToolStripMenuItem.Checked = true;
-            this.showCursorInfoToolStripMenuItem.CheckOnClick = true;
-            this.showCursorInfoToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showCursorInfoToolStripMenuItem.Name = "showCursorInfoToolStripMenuItem";
-            this.showCursorInfoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
-            this.showCursorInfoToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.showCursorInfoToolStripMenuItem.Text = "Show Cursor Info";
-            this.showCursorInfoToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // showDrawCenterLineToolStripMenuItem
-            // 
-            this.showDrawCenterLineToolStripMenuItem.Checked = true;
-            this.showDrawCenterLineToolStripMenuItem.CheckOnClick = true;
-            this.showDrawCenterLineToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showDrawCenterLineToolStripMenuItem.Name = "showDrawCenterLineToolStripMenuItem";
-            this.showDrawCenterLineToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
-            this.showDrawCenterLineToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.showDrawCenterLineToolStripMenuItem.Text = "Show Draw Center Line";
-            this.showDrawCenterLineToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // showDrawTimeToolStripMenuItem
-            // 
-            this.showDrawTimeToolStripMenuItem.Checked = true;
-            this.showDrawTimeToolStripMenuItem.CheckOnClick = true;
-            this.showDrawTimeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showDrawTimeToolStripMenuItem.Name = "showDrawTimeToolStripMenuItem";
-            this.showDrawTimeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
-            this.showDrawTimeToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.showDrawTimeToolStripMenuItem.Text = "Show Draw Time";
-            this.showDrawTimeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // useInterpolationToolStripMenuItem
-            // 
-            this.useInterpolationToolStripMenuItem.CheckOnClick = true;
-            this.useInterpolationToolStripMenuItem.Name = "useInterpolationToolStripMenuItem";
-            this.useInterpolationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
-            this.useInterpolationToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.useInterpolationToolStripMenuItem.Text = "Use Interpolation";
-            this.useInterpolationToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
-            // userParallelToolStripMenuItem
-            // 
-            this.userParallelToolStripMenuItem.CheckOnClick = true;
-            this.userParallelToolStripMenuItem.Name = "userParallelToolStripMenuItem";
-            this.userParallelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D6)));
-            this.userParallelToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.userParallelToolStripMenuItem.Text = "User Parallel";
-            this.userParallelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showPixelValueToolStripMenuItem_CheckedChanged);
-            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -328,6 +213,48 @@
             this.retainedimmediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.retainedimmediateDrawTestToolStripMenuItem.Text = "Retained Draw Test";
             this.retainedimmediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.retainedimmediateDrawTestToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(226, 6);
+            // 
+            // drawEllipseToolStripMenuItem
+            // 
+            this.drawEllipseToolStripMenuItem.Checked = true;
+            this.drawEllipseToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.drawEllipseToolStripMenuItem.Name = "drawEllipseToolStripMenuItem";
+            this.drawEllipseToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawEllipseToolStripMenuItem.Text = "DrawEllipse";
+            this.drawEllipseToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // fillEllipseToolStripMenuItem
+            // 
+            this.fillEllipseToolStripMenuItem.Name = "fillEllipseToolStripMenuItem";
+            this.fillEllipseToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.fillEllipseToolStripMenuItem.Text = "FillEllipse";
+            this.fillEllipseToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // drawStringToolStripMenuItem
+            // 
+            this.drawStringToolStripMenuItem.Name = "drawStringToolStripMenuItem";
+            this.drawStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawStringToolStripMenuItem.Text = "DrawString";
+            this.drawStringToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // drawShapesToolStripMenuItem
+            // 
+            this.drawShapesToolStripMenuItem.Name = "drawShapesToolStripMenuItem";
+            this.drawShapesToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawShapesToolStripMenuItem.Text = "Draw Shapes";
+            this.drawShapesToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
+            // 
+            // drawPixelCirclesToolStripMenuItem
+            // 
+            this.drawPixelCirclesToolStripMenuItem.Name = "drawPixelCirclesToolStripMenuItem";
+            this.drawPixelCirclesToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.drawPixelCirclesToolStripMenuItem.Text = "Draw Pixel Circles";
+            this.drawPixelCirclesToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -374,48 +301,6 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(226, 6);
-            // 
-            // drawEllipseToolStripMenuItem
-            // 
-            this.drawEllipseToolStripMenuItem.Checked = true;
-            this.drawEllipseToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.drawEllipseToolStripMenuItem.Name = "drawEllipseToolStripMenuItem";
-            this.drawEllipseToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.drawEllipseToolStripMenuItem.Text = "DrawEllipse";
-            this.drawEllipseToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
-            // 
-            // fillEllipseToolStripMenuItem
-            // 
-            this.fillEllipseToolStripMenuItem.Name = "fillEllipseToolStripMenuItem";
-            this.fillEllipseToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.fillEllipseToolStripMenuItem.Text = "FillEllipse";
-            this.fillEllipseToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
-            // 
-            // drawStringToolStripMenuItem
-            // 
-            this.drawStringToolStripMenuItem.Name = "drawStringToolStripMenuItem";
-            this.drawStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.drawStringToolStripMenuItem.Text = "DrawString";
-            this.drawStringToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
-            // 
-            // drawShapesToolStripMenuItem
-            // 
-            this.drawShapesToolStripMenuItem.Name = "drawShapesToolStripMenuItem";
-            this.drawShapesToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.drawShapesToolStripMenuItem.Text = "Draw Shapes";
-            this.drawShapesToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
-            // 
-            // drawPixelCirclesToolStripMenuItem
-            // 
-            this.drawPixelCirclesToolStripMenuItem.Name = "drawPixelCirclesToolStripMenuItem";
-            this.drawPixelCirclesToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.drawPixelCirclesToolStripMenuItem.Text = "Draw Pixel Circles";
-            this.drawPixelCirclesToolStripMenuItem.Click += new System.EventHandler(this.drawEllipseToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -438,13 +323,6 @@
         private ShimLib.ImageBox pbxDraw;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
-        private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showPixelValueToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showCursorInfoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showDrawCenterLineToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showDrawTimeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mousePanningToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem wheelZoomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
@@ -453,9 +331,6 @@
         private System.Windows.Forms.ToolStripMenuItem zoomToImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutImageBoxToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem useInterpolationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem userParallelToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem lennaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chessToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lenna4ToolStripMenuItem;

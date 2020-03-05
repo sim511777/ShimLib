@@ -19,6 +19,7 @@ namespace ShimLib {
 v1.0.0.8 - 20200304
 1. 버전정보 창에 속성 변경기능 추가
 2. 쿼드클릭 대신 ctrl + 더블클릭 누를때 버전정보 창 띄움
+3. ShowAbout() 함수 추가
 
 v1.0.0.7 - 20200217
 1. DrawInfo() 깜빡이 않게 더블버퍼 처리
@@ -332,13 +333,18 @@ Total : {t6 - t0:0.0}ms
         // ctrl + doubleclick 누를때 어바웃창 띄움
         protected override void OnMouseDoubleClick(MouseEventArgs e) {
             if (ModifierKeys.HasFlag(Keys.Control) && e.Button == MouseButtons.Left) {
-                var frmAbout = new FormAbout(this);
-                var dr = frmAbout.ShowDialog(this);
-                if (dr == DialogResult.OK)
-                    this.Invalidate();
+                ShowAbout();
             } else {
                 base.OnDoubleClick(e);
             }
+        }
+
+        // 어바웃 / 옵션 창 띄움
+        public void ShowAbout() {
+            var frmAbout = new FormAbout(this);
+            var dr = frmAbout.ShowDialog(this);
+            if (dr == DialogResult.OK)
+                this.Invalidate();
         }
 
         // 표시 버퍼 생성

@@ -105,7 +105,9 @@
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.grdOption);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FormAbout";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ImageBox control for .NET";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormAbout_FormClosed);
             this.Load += new System.EventHandler(this.FormAbout_Load);
