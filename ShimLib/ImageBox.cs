@@ -94,11 +94,9 @@ v0.0.0.0 - 20191001
         [Browsable(false)]
         public int ImgBytepp { get; private set; } = 1;
 
-        private BufferedGraphics bufferedGraphics;
-
         // 생성자
         public ImageBox() {
-            SetStyle(ControlStyles.Opaque, true);
+            DoubleBuffered = true;
         }
 
         protected override void Dispose(bool disposing) {
@@ -180,17 +178,6 @@ v0.0.0.0 - 20191001
 
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
-            Invalidate();
-        }
-
-        // Invalidate() 재정의
-        public new void Invalidate() {
-            DrawGraphics(bufferedGraphics.Graphics);    // draw items to backbuffer
-            bufferedGraphics.Render(CreateGraphics());                  // draw backbuffer to frontbuffer
-        }
-
-        // 그리기 함수 따로 빼냄
-        private void DrawGraphics(Graphics g) {
             var t0 = Util.GetTimeMs();
 
             if (UseInterPorlation)
@@ -199,10 +186,10 @@ v0.0.0.0 - 20191001
                 Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
             var t1 = Util.GetTimeMs();
 
-            g.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
             var t2 = Util.GetTimeMs();
 
-            var ig = new ImageGraphics(this, g);
+            var ig = new ImageGraphics(this, e.Graphics);
             if (UseDrawPixelValue)
                 DrawPixelValue(ig);
             var t3 = Util.GetTimeMs();
@@ -211,7 +198,7 @@ v0.0.0.0 - 20191001
                 DrawCenterLine(ig);
             var t4 = Util.GetTimeMs();
 
-            base.OnPaint(new PaintEventArgs(g, this.ClientRectangle));
+            base.OnPaint(e);
             var t5 = Util.GetTimeMs();
 
             if (UseDrawInfo)
@@ -352,8 +339,6 @@ Total : {t6 - t0:0.0}ms
         private void AllocDispBuf() {
             FreeDispBuf();
 
-            bufferedGraphics = BufferedGraphicsManager.Current.Allocate(CreateGraphics(), ClientRectangle);
-
             dispBW = Math.Max(ClientSize.Width, 64);
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Marshal.AllocHGlobal((IntPtr)(dispBW * dispBH * 4));
@@ -366,9 +351,6 @@ Total : {t6 - t0:0.0}ms
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
                 Marshal.FreeHGlobal(dispBuf);
-
-            if (bufferedGraphics != null)
-                bufferedGraphics.Dispose();
         }
 
         // 중심선 표시
