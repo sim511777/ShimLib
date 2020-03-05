@@ -15,7 +15,8 @@ using PointD = System.Windows.Point;
 namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
-@"ImageBox .NET 컨트롤
+@"ImageBox for .NET
+
 v1.0.0.8 - 20200304
 1. 버전정보 창에 속성 변경기능 추가
 2. 쿼드클릭 대신 ctrl + 더블클릭 누를때 버전정보 창 띄움

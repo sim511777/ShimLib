@@ -27,9 +27,14 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.grdOption = new System.Windows.Forms.PropertyGrid();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.tbxVersion = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -37,7 +42,7 @@
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnOk);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 450);
+            this.panel1.Location = new System.Drawing.Point(0, 298);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(443, 35);
             this.panel1.TabIndex = 0;
@@ -66,54 +71,79 @@
             // 
             // grdOption
             // 
-            this.grdOption.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.grdOption.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grdOption.HelpVisible = false;
-            this.grdOption.Location = new System.Drawing.Point(0, 206);
+            this.grdOption.Location = new System.Drawing.Point(3, 3);
             this.grdOption.Name = "grdOption";
             this.grdOption.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grdOption.Size = new System.Drawing.Size(443, 244);
+            this.grdOption.Size = new System.Drawing.Size(429, 266);
             this.grdOption.TabIndex = 1;
             this.grdOption.ToolbarVisible = false;
-            // 
-            // splitter1
-            // 
-            this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter1.Location = new System.Drawing.Point(0, 203);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(443, 3);
-            this.splitter1.TabIndex = 2;
-            this.splitter1.TabStop = false;
             // 
             // tbxVersion
             // 
             this.tbxVersion.BackColor = System.Drawing.SystemColors.Window;
             this.tbxVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbxVersion.Location = new System.Drawing.Point(0, 0);
+            this.tbxVersion.Location = new System.Drawing.Point(3, 3);
             this.tbxVersion.Multiline = true;
             this.tbxVersion.Name = "tbxVersion";
             this.tbxVersion.ReadOnly = true;
             this.tbxVersion.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbxVersion.Size = new System.Drawing.Size(443, 203);
+            this.tbxVersion.Size = new System.Drawing.Size(429, 266);
             this.tbxVersion.TabIndex = 3;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(443, 298);
+            this.tabControl1.TabIndex = 4;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.tbxVersion);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(435, 272);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Version";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.grdOption);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(435, 272);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Option";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // FormAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(443, 485);
-            this.Controls.Add(this.tbxVersion);
-            this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.grdOption);
+            this.ClientSize = new System.Drawing.Size(443, 333);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FormAbout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ImageBox control for .NET";
+            this.Text = "ImageBox for .NET";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormAbout_FormClosed);
             this.Load += new System.EventHandler(this.FormAbout_Load);
             this.panel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -123,7 +153,9 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.PropertyGrid grdOption;
-        private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.TextBox tbxVersion;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
