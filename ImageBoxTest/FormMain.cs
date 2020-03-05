@@ -21,10 +21,13 @@ namespace ImageBoxTest {
         private int bh;
         private int bytepp;
 
-        public FormMain() {
+        public FormMain(string[] args) {
             InitializeComponent();
-            var exts = string.Join(";", extList.Select(ext => "*"+ext));
+            var exts = string.Join(";", extList.Select(ext => "*" + ext));
             dlgOpenFile.Filter = $"Image Files({exts})|{exts}";
+            if (args.Length > 0) {
+                LoadImageFile(args[0]);
+            }
         }
 
         private void LoadImageFile(string fileName) {
