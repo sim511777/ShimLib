@@ -16,6 +16,10 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox .NET 컨트롤
+v1.0.0.8 - 20200304
+1. 버전정보 창에 속성 변경기능 추가
+2. 쿼드클릭 대신 ctrl + 더블클릭 누를때 버전정보 창 띄움
+
 v1.0.0.7 - 20200217
 1. DrawInfo() 깜빡이 않게 더블버퍼 처리
 
@@ -317,32 +321,23 @@ Total : {t6 - t0:0.0}ms
             }
         }
 
-        private DateTime clickTimeOld = DateTime.Now;
-        private int quadrupleClickCount = 0;
-        private void CheckQuadrupleClick() {
-            var clickTimeNow = DateTime.Now;
-            var clickTimeSpan = clickTimeNow - clickTimeOld;
-            clickTimeOld = clickTimeNow;
-            if (clickTimeSpan.TotalMilliseconds > 300) {
-                quadrupleClickCount = 1;
-            } else {
-                quadrupleClickCount++;
-                if (quadrupleClickCount >= 4) {
-                    MessageBox.Show(this, ImageBox.VersionHistory, "ImageBox");
-                    quadrupleClickCount = 0;
-                }
-            }
-        }
-
         // 마우스 업
         protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
 
             if (e.Button == MouseButtons.Left)
                 mouseDown = false;
+        }
 
-            if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Control)) {
-                CheckQuadrupleClick();
+        // ctrl + doubleclick 누를때 어바웃창 띄움
+        protected override void OnMouseDoubleClick(MouseEventArgs e) {
+            if (ModifierKeys.HasFlag(Keys.Control) && e.Button == MouseButtons.Left) {
+                var frmAbout = new FormAbout(this);
+                var dr = frmAbout.ShowDialog(this);
+                if (dr == DialogResult.OK)
+                    this.Invalidate();
+            } else {
+                base.OnDoubleClick(e);
             }
         }
 
