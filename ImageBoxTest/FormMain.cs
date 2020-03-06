@@ -46,7 +46,7 @@ namespace ImageBoxTest {
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
-        private void LoadClipboard() {
+        private void PasteFromClipboard() {
             var img = Clipboard.GetImage();
             if (img == null)
                 return;
@@ -61,6 +61,15 @@ namespace ImageBoxTest {
             img.Dispose();
 
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+        }
+
+        private void CopyToClipboard() {
+            if (imgBuf == null)
+                return;
+            
+            var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
+            Clipboard.SetImage(bmp);
+            bmp.Dispose();
         }
 
         private string GetDragDataImageFile(IDataObject data) {
@@ -90,7 +99,11 @@ namespace ImageBoxTest {
         }
 
         private void pasteFromClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
-            LoadClipboard();
+            PasteFromClipboard();
+        }
+
+        private void copyToClipboardToolStripMenuItem_Click(object sender, EventArgs e) {
+            CopyToClipboard();
         }
 
         private void zoomResetToolStripMenuItem_Click_1(object sender, EventArgs e) {

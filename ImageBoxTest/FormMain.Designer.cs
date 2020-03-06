@@ -27,6 +27,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +52,7 @@
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +73,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openFileToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.copyToClipboardToolStripMenuItem,
             this.pasteFromClipboardToolStripMenuItem,
             this.toolStripSeparator2,
             this.lennaToolStripMenuItem,
@@ -87,7 +91,8 @@
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.openFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
@@ -95,9 +100,17 @@
             // 
             this.pasteFromClipboardToolStripMenuItem.Name = "pasteFromClipboardToolStripMenuItem";
             this.pasteFromClipboardToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.pasteFromClipboardToolStripMenuItem.Text = "Paste from Clipboard";
+            this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pasteFromClipboardToolStripMenuItem.Text = "Paste";
             this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
+            // 
+            // copyToClipboardToolStripMenuItem
+            // 
+            this.copyToClipboardToolStripMenuItem.Name = "copyToClipboardToolStripMenuItem";
+            this.copyToClipboardToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.copyToClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyToClipboardToolStripMenuItem.Text = "Copy";
+            this.copyToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyToClipboardToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -209,7 +222,6 @@
             // 
             this.retainedimmediateDrawTestToolStripMenuItem.CheckOnClick = true;
             this.retainedimmediateDrawTestToolStripMenuItem.Name = "retainedimmediateDrawTestToolStripMenuItem";
-            this.retainedimmediateDrawTestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.retainedimmediateDrawTestToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.retainedimmediateDrawTestToolStripMenuItem.Text = "Retained Draw Test";
             this.retainedimmediateDrawTestToolStripMenuItem.Click += new System.EventHandler(this.retainedimmediateDrawTestToolStripMenuItem_Click);
@@ -301,6 +313,11 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -348,6 +365,8 @@
         private System.Windows.Forms.ToolStripMenuItem drawStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drawShapesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drawPixelCirclesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
