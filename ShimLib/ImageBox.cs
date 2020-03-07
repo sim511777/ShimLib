@@ -121,6 +121,8 @@ v0.0.0.0 - 20191001
         public bool UseMouseMove { get; set; } = true;
         public bool UseMouseWheelZoom { get; set; } = true;
 
+        public Font PixelValueFont { get; set; } = SystemFonts.DefaultFont;
+
         // 줌 파라미터
         // ZoomLevel = 0 => ZoomFactor = 1;
         // { 1/1024d,  3/2048d,  1/512d,  3/1024d,  1/256d,  3/512d,  1/128d,  3/256d,  1/64d,  3/128d,  1/32d,  3/64d,  1/16d,  3/32d,  1/8d,  3/16d,  1/4d,  3/8d,  1/2d,  3/4d,  1d,  3/2d,  2d,  3d,  4d,  6d,  8d,  12d,  16d,  24d,  32d,  48d,  64d,  96d,  128d,  192d,  256d,  384d,  512d,  768d,  1024d, };
@@ -425,7 +427,7 @@ Total : {t6 - t0:0.0}ms
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
-                    ig.DrawString(pixelValText, new PointD(imgX, imgY), brush);
+                    ig.DrawString(pixelValText, PixelValueFont, new PointD(imgX, imgY), brush);
                 }
             }
         }

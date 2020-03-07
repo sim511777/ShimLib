@@ -41,6 +41,7 @@ namespace ShimLib {
         public bool UseParallel { get; set; }
         public int PixelValueDispZoomFactor { get; set; }
         public Font Font { get; set; }
+        public Font PixelValueFont { get; set; }
         public Color BackColor { get; set; }
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; }
@@ -61,6 +62,7 @@ namespace ShimLib {
 
             this.PixelValueDispZoomFactor = pbx.PixelValueDispZoomFactor;
             this.Font = pbx.Font;
+            this.PixelValueFont = pbx.PixelValueFont;
             this.BackColor = pbx.BackColor;
 
             this.UseMouseMove = pbx.UseMouseMove;
@@ -80,6 +82,7 @@ namespace ShimLib {
             pbx.UseParallel = this.UseParallel;
             pbx.PixelValueDispZoomFactor = this.PixelValueDispZoomFactor;
             pbx.Font = this.Font;
+            pbx.PixelValueFont = this.PixelValueFont;
             pbx.BackColor = this.BackColor;
             pbx.UseMouseMove = this.UseMouseMove;
             pbx.UseMouseWheelZoom = this.UseMouseWheelZoom;

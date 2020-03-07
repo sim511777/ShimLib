@@ -125,6 +125,18 @@ namespace ShimLib {
             DrawString(text, new PointD(x, y), fontBrush, fill, fillBrush);
         }
 
+        public void DrawString(string text, Font font, PointD pt, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
+            PointD ptd = imgBox.ImgToDisp(pt);
+            SizeF size = g.MeasureString(text, font);
+            if (fill)
+                g.FillRectangle(fillBrush, (float)ptd.X, (float)ptd.Y, size.Width, size.Height);
+            g.DrawString(text, font, fontBrush, ptd.ToFloat());
+        }
+
+        public void DrawString(string text, Font font, double x, double y, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
+            DrawString(text, font, new PointD(x, y), fontBrush, fill, fillBrush);
+        }
+
         public void DrawStringScreen(string text, PointD pt, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
             SizeF size = g.MeasureString(text, imgBox.Font);
             if (fill)
