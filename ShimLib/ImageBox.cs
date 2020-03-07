@@ -399,14 +399,15 @@ Total : {t6 - t0:0.0}ms
         // 이미지 픽셀값 표시
         private static readonly Brush[] pseudo = {
             Brushes.White,      // 0~31
-            Brushes.LightCyan,  // 32~63
+            Brushes.Cyan,       // 32~63
             Brushes.DodgerBlue, // 63~95
             Brushes.Yellow,     // 96~127
             Brushes.Brown,      // 128~159
-            Brushes.Magenta,    // 160~191
+            Brushes.DarkViolet, // 160~191
             Brushes.Red    ,    // 192~223
             Brushes.Black,      // 224~255
         };
+
         private void DrawPixelValue(ImageGraphics ig) {
             double ZoomFactor = GetZoomFactor();
             double pixeValFactor = (ImgBytepp == 4) ? 3 : ImgBytepp;
