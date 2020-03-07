@@ -163,6 +163,10 @@ namespace ImageBoxTest {
             LoadBitmap(Properties.Resources.Coins);
         }
 
+        private void gradientToolStripMenuItem_Click(object sender, EventArgs e) {
+            LoadBitmap(Properties.Resources.gardient_8bit);
+        }
+
         private void longImageToolStripMenuItem_Click(object sender, EventArgs e) {
             GenerateBitmap(256, 4000000);
         }

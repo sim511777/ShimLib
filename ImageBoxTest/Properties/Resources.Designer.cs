@@ -45,7 +45,7 @@ namespace ImageBoxTest.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   이 강력한 형식의 리소스 클래스를 사용하여 모든 리소스 조회에 대한 현재 스레드의 CurrentUICulture
         ///   속성을 재정의합니다.
@@ -76,6 +76,16 @@ namespace ImageBoxTest.Properties {
         internal static System.Drawing.Bitmap Coins {
             get {
                 object obj = ResourceManager.GetObject("Coins", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap gardient_8bit {
+            get {
+                object obj = ResourceManager.GetObject("gardient_8bit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

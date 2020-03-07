@@ -103,5 +103,8 @@
   <ItemGroup>
     <None Include="Resources\Coins.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gardient_8bit.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

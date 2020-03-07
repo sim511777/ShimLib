@@ -26,8 +26,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,7 @@
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.gradientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,6 +82,7 @@
             this.lenna4ToolStripMenuItem,
             this.coinsToolStripMenuItem,
             this.chessToolStripMenuItem,
+            this.gradientToolStripMenuItem,
             this.toolStripSeparator3,
             this.longImageToolStripMenuItem,
             this.wideImageToolStripMenuItem});
@@ -96,13 +98,10 @@
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
-            // pasteFromClipboardToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.pasteFromClipboardToolStripMenuItem.Name = "pasteFromClipboardToolStripMenuItem";
-            this.pasteFromClipboardToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.pasteFromClipboardToolStripMenuItem.Text = "Paste";
-            this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // copyToClipboardToolStripMenuItem
             // 
@@ -112,16 +111,24 @@
             this.copyToClipboardToolStripMenuItem.Text = "Copy";
             this.copyToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyToClipboardToolStripMenuItem_Click);
             // 
+            // pasteFromClipboardToolStripMenuItem
+            // 
+            this.pasteFromClipboardToolStripMenuItem.Name = "pasteFromClipboardToolStripMenuItem";
+            this.pasteFromClipboardToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.pasteFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pasteFromClipboardToolStripMenuItem.Text = "Paste";
+            this.pasteFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.pasteFromClipboardToolStripMenuItem_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // lennaToolStripMenuItem
             // 
             this.lennaToolStripMenuItem.Name = "lennaToolStripMenuItem";
             this.lennaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.lennaToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.lennaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.lennaToolStripMenuItem.Text = "Lenna";
             this.lennaToolStripMenuItem.Click += new System.EventHandler(this.lennaToolStripMenuItem_Click);
             // 
@@ -129,7 +136,7 @@
             // 
             this.lenna4ToolStripMenuItem.Name = "lenna4ToolStripMenuItem";
             this.lenna4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.lenna4ToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.lenna4ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.lenna4ToolStripMenuItem.Text = "Lenna4";
             this.lenna4ToolStripMenuItem.Click += new System.EventHandler(this.lenna4ToolStripMenuItem_Click);
             // 
@@ -137,7 +144,7 @@
             // 
             this.coinsToolStripMenuItem.Name = "coinsToolStripMenuItem";
             this.coinsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.coinsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.coinsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.coinsToolStripMenuItem.Text = "Coins";
             this.coinsToolStripMenuItem.Click += new System.EventHandler(this.coinsToolStripMenuItem_Click);
             // 
@@ -145,28 +152,28 @@
             // 
             this.chessToolStripMenuItem.Name = "chessToolStripMenuItem";
             this.chessToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.chessToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.chessToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.chessToolStripMenuItem.Text = "Chess";
             this.chessToolStripMenuItem.Click += new System.EventHandler(this.chessToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // longImageToolStripMenuItem
             // 
             this.longImageToolStripMenuItem.Name = "longImageToolStripMenuItem";
-            this.longImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.longImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.longImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.longImageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.longImageToolStripMenuItem.Text = "Long Image";
             this.longImageToolStripMenuItem.Click += new System.EventHandler(this.longImageToolStripMenuItem_Click);
             // 
             // wideImageToolStripMenuItem
             // 
             this.wideImageToolStripMenuItem.Name = "wideImageToolStripMenuItem";
-            this.wideImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.wideImageToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.wideImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+            this.wideImageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.wideImageToolStripMenuItem.Text = "Wide Image";
             this.wideImageToolStripMenuItem.Click += new System.EventHandler(this.wideImageToolStripMenuItem_Click);
             // 
@@ -297,6 +304,7 @@
             this.pbxDraw.PanX = 0D;
             this.pbxDraw.PanY = 0D;
             this.pbxDraw.PixelValueDispZoomFactor = 20;
+            this.pbxDraw.PixelValueFont = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.pbxDraw.Size = new System.Drawing.Size(820, 511);
             this.pbxDraw.TabIndex = 1;
             this.pbxDraw.Text = "imageBox1";
@@ -313,10 +321,13 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
-            // toolStripSeparator1
+            // gradientToolStripMenuItem
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.gradientToolStripMenuItem.Name = "gradientToolStripMenuItem";
+            this.gradientToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.gradientToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gradientToolStripMenuItem.Text = "Gradient";
+            this.gradientToolStripMenuItem.Click += new System.EventHandler(this.gradientToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -367,6 +378,7 @@
         private System.Windows.Forms.ToolStripMenuItem drawPixelCirclesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem gradientToolStripMenuItem;
     }
 }
 
