@@ -17,6 +17,10 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.10 - 20200308
+1. 개별 픽셀 표시 폰트와 일반 표시 폰트 두가지 따로 갈것
+2. pseudo 기본 컬러 더 잘보이는 것으로 수정
+
 v1.0.0.9 - 20200305
 1. BufferedGraphics 안쓰고 DoubleBuffered = true; 사용
 2. MouseMove 오동작 수정
@@ -115,13 +119,12 @@ v0.0.0.0 - 20191001
         public bool UseDrawDrawTime { get; set; } = false;
         public bool UseInterPorlation { get; set; } = false;
         public bool UseParallel { get; set; } = false;
+        public Font PixelValueDispFont { get; set; } = SystemFonts.DefaultFont;
         public int PixelValueDispZoomFactor { get; set; } = 20;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
         public bool UseMouseWheelZoom { get; set; } = true;
-
-        public Font PixelValueFont { get; set; } = SystemFonts.DefaultFont;
 
         // 줌 파라미터
         // ZoomLevel = 0 => ZoomFactor = 1;
@@ -428,7 +431,7 @@ Total : {t6 - t0:0.0}ms
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
-                    ig.DrawString(pixelValText, PixelValueFont, new PointD(imgX, imgY), brush);
+                    ig.DrawString(pixelValText, PixelValueDispFont, new PointD(imgX, imgY), brush);
                 }
             }
         }

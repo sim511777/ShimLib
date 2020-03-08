@@ -39,10 +39,11 @@ namespace ShimLib {
         public bool UseDrawDrawTime { get; set; }
         public bool UseInterPorlation { get; set; }
         public bool UseParallel { get; set; }
-        public int PixelValueDispZoomFactor { get; set; }
-        public Font Font { get; set; }
-        public Font PixelValueFont { get; set; }
+        // 표시 옵션
         public Color BackColor { get; set; }
+        public Font Font { get; set; }
+        public Font PixelValueDispFont { get; set; }
+        public int PixelValueDispZoomFactor { get; set; }
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; }
         public bool UseMouseWheelZoom { get; set; }
@@ -60,10 +61,10 @@ namespace ShimLib {
             this.UseInterPorlation = pbx.UseInterPorlation;
             this.UseParallel = pbx.UseParallel;
 
-            this.PixelValueDispZoomFactor = pbx.PixelValueDispZoomFactor;
-            this.Font = pbx.Font;
-            this.PixelValueFont = pbx.PixelValueFont;
             this.BackColor = pbx.BackColor;
+            this.Font = pbx.Font;
+            this.PixelValueDispFont = pbx.PixelValueDispFont;
+            this.PixelValueDispZoomFactor = pbx.PixelValueDispZoomFactor;
 
             this.UseMouseMove = pbx.UseMouseMove;
             this.UseMouseWheelZoom = pbx.UseMouseWheelZoom;
@@ -80,12 +81,15 @@ namespace ShimLib {
             pbx.UseDrawDrawTime = this.UseDrawDrawTime;
             pbx.UseInterPorlation = this.UseInterPorlation;
             pbx.UseParallel = this.UseParallel;
-            pbx.PixelValueDispZoomFactor = this.PixelValueDispZoomFactor;
-            pbx.Font = this.Font;
-            pbx.PixelValueFont = this.PixelValueFont;
+            
             pbx.BackColor = this.BackColor;
+            pbx.Font = this.Font;
+            pbx.PixelValueDispFont = this.PixelValueDispFont;
+            pbx.PixelValueDispZoomFactor = this.PixelValueDispZoomFactor;
+            
             pbx.UseMouseMove = this.UseMouseMove;
             pbx.UseMouseWheelZoom = this.UseMouseWheelZoom;
+            
             pbx.ZoomLevel = this.ZoomLevel;
             pbx.PanX = this.PanX;
             pbx.PanY = this.PanY;

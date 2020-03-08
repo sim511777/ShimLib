@@ -304,7 +304,7 @@
             this.pbxDraw.PanX = 0D;
             this.pbxDraw.PanY = 0D;
             this.pbxDraw.PixelValueDispZoomFactor = 20;
-            this.pbxDraw.PixelValueFont = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.pbxDraw.PixelValueDispFont = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.pbxDraw.Size = new System.Drawing.Size(820, 511);
             this.pbxDraw.TabIndex = 1;
             this.pbxDraw.Text = "imageBox1";
