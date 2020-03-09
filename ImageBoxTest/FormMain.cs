@@ -25,6 +25,7 @@ namespace ImageBoxTest {
             InitializeComponent();
             var exts = string.Join(";", extList.Select(ext => "*" + ext));
             dlgOpenFile.Filter = $"Image Files({exts})|{exts}";
+            dlgSaveFile.Filter = $"Bmp File(.bmp)|.bmp";
             if (args.Length > 0) {
                 LoadImageFile(args[0]);
             }
@@ -44,6 +45,14 @@ namespace ImageBoxTest {
             }
 
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+        }
+
+        private void SaveImageFile(string fileName) {
+            if (imgBuf != IntPtr.Zero)
+                Marshal.FreeHGlobal(imgBuf);
+
+            var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
+            bmp.Save(fileName);
         }
 
         private void PasteFromClipboard() {
@@ -267,6 +276,15 @@ namespace ImageBoxTest {
             var clickItem = sender as ToolStripMenuItem;
             Array.ForEach(mitems, mitem => mitem.Checked = mitem == clickItem ? true : false);
             pbxDraw.Invalidate();
+        }
+
+        private void saveFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            var ok = dlgSaveFile.ShowDialog(this);
+            if (ok != DialogResult.OK)
+                return;
+
+            string filePath = dlgSaveFile.FileName;
+            SaveImageFile(filePath);
         }
     }
 }
