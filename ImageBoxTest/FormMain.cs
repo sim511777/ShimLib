@@ -48,9 +48,6 @@ namespace ImageBoxTest {
         }
 
         private void SaveImageFile(string fileName) {
-            if (imgBuf != IntPtr.Zero)
-                Marshal.FreeHGlobal(imgBuf);
-
             var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
             bmp.Save(fileName);
         }
