@@ -17,6 +17,9 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.11 - 20200315
+1. 옵션창에서 버퍼 파일정장, 버퍼 클립보드 복사 추가
+
 v1.0.0.10 - 20200308
 1. 개별 픽셀 표시 폰트와 일반 표시 폰트 두가지 따로 갈것
 2. pseudo 기본 컬러 더 잘보이는 것으로 수정

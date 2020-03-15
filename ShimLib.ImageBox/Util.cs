@@ -248,8 +248,8 @@ namespace ShimLib {
             Bitmap bmp = new Bitmap(bw, bh, pixelFormat);
             BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bw, bh), ImageLockMode.WriteOnly, bmp.PixelFormat);
             int copySize = bw * bytepp;
-            int paddingSize = bmpData.Stride - bw * bytepp;
-            byte[] paddingBuf = Enumerable.Repeat((byte)0, 4).ToArray();
+            int paddingSize = bmpData.Stride - copySize;
+            byte[] paddingBuf = { 0, 0, 0, 0 };
             for (int y = 0; y < bh; y++) {
                 IntPtr srcPtr = imgBuf + bw * y * bytepp;
                 IntPtr dstPtr = bmpData.Scan0 + bmpData.Stride * y;

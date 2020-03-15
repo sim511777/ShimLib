@@ -24,21 +24,26 @@
         /// </summary>
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCopy = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.grdOption = new System.Windows.Forms.PropertyGrid();
             this.tbxVersion = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnCopy);
+            this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnOk);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -46,6 +51,26 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(443, 35);
             this.panel1.TabIndex = 0;
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.Location = new System.Drawing.Point(97, 6);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(79, 23);
+            this.btnCopy.TabIndex = 3;
+            this.btnCopy.Text = "Copy Buffer";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(12, 6);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(79, 23);
+            this.btnSave.TabIndex = 2;
+            this.btnSave.Text = "Save Buffer";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -103,6 +128,17 @@
             this.tabControl1.Size = new System.Drawing.Size(443, 298);
             this.tabControl1.TabIndex = 4;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.grdOption);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(435, 272);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Option";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.tbxVersion);
@@ -114,16 +150,9 @@
             this.tabPage1.Text = "Version";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // dlgSaveFile
             // 
-            this.tabPage2.Controls.Add(this.grdOption);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(435, 272);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Option";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.dlgSaveFile.Filter = "Bmp File(*.bmp)|*.bmp";
             // 
             // FormAbout
             // 
@@ -140,9 +169,9 @@
             this.Load += new System.EventHandler(this.FormAbout_Load);
             this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -157,5 +186,8 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.SaveFileDialog dlgSaveFile;
     }
 }

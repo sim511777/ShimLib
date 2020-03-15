@@ -29,6 +29,32 @@ namespace ShimLib {
             var option = grdOption.SelectedObject as ImageBoxOption;
             option.ToImageBox(pbx);
         }
+
+        private void btnSave_Click(object sender, EventArgs e) {
+            if (pbx.ImgBuf == IntPtr.Zero) {
+                MessageBox.Show(this, "pbx.ImgBuf == IntPtr.Zero");
+                return;
+            }
+
+            var ok = dlgSaveFile.ShowDialog(this);
+            if (ok != DialogResult.OK)
+                return;
+
+            var bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
+            string filePath = dlgSaveFile.FileName;
+            bmp.Save(filePath);
+            bmp.Dispose();
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e) {
+            if (pbx.ImgBuf == IntPtr.Zero) {
+                return;
+            }
+
+            var bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
+            Clipboard.SetImage(bmp);
+            bmp.Dispose();
+        }
     }
 
     public class ImageBoxOption {

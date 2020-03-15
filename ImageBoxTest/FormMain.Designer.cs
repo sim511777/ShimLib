@@ -26,6 +26,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +55,6 @@
             this.aboutImageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
-            this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -100,6 +100,14 @@
             this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
+            // 
+            // saveFileToolStripMenuItem
+            // 
+            this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
+            this.saveFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveFileToolStripMenuItem.Text = "Save File";
+            this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -301,10 +309,6 @@
             this.aboutImageBoxToolStripMenuItem.Text = "About ImageBox";
             this.aboutImageBoxToolStripMenuItem.Click += new System.EventHandler(this.aboutImageBoxToolStripMenuItem_Click);
             // 
-            // dlgOpenFile
-            // 
-            this.dlgOpenFile.FileName = "openFileDialog1";
-            // 
             // pbxDraw
             // 
             this.pbxDraw.AllowDrop = true;
@@ -332,13 +336,9 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
-            // saveFileToolStripMenuItem
+            // dlgSaveFile
             // 
-            this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveFileToolStripMenuItem.Text = "Save File";
-            this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
+            this.dlgSaveFile.Filter = "Bmp File(*.bmp)|*.bmp";
             // 
             // FormMain
             // 

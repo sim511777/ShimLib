@@ -25,31 +25,29 @@ namespace ImageBoxTest {
             InitializeComponent();
             var exts = string.Join(";", extList.Select(ext => "*" + ext));
             dlgOpenFile.Filter = $"Image Files({exts})|{exts}";
-            dlgSaveFile.Filter = $"Bmp File(.bmp)|.bmp";
             if (args.Length > 0) {
                 LoadImageFile(args[0]);
             }
         }
 
         private void LoadImageFile(string fileName) {
-            if (imgBuf != IntPtr.Zero)
-                Marshal.FreeHGlobal(imgBuf);
-            
             var ext = Path.GetExtension(fileName).ToLower();
             if (ext == ".hra") {
+                if (imgBuf != IntPtr.Zero)
+                    Marshal.FreeHGlobal(imgBuf);
                 Util.LoadHraFile(fileName, ref imgBuf, ref bw, ref bh, ref bytepp);
+                pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
             } else {
                 var bmp = new Bitmap(fileName);
-                Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+                LoadBitmap(bmp);
                 bmp.Dispose();
             }
-
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private void SaveImageFile(string fileName) {
             var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
             bmp.Save(fileName);
+            bmp.Dispose();
         }
 
         private void PasteFromClipboard() {
@@ -57,16 +55,12 @@ namespace ImageBoxTest {
             if (img == null)
                 return;
 
-            if (imgBuf != IntPtr.Zero)
-                Marshal.FreeHGlobal(imgBuf);
-
             var bmp = new Bitmap(img);
-            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+
+            LoadBitmap(bmp);
 
             bmp.Dispose();
             img.Dispose();
-
-            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private void CopyToClipboard() {
@@ -276,6 +270,11 @@ namespace ImageBoxTest {
         }
 
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (imgBuf == IntPtr.Zero) {
+                MessageBox.Show(this, "imgBuf == IntPtr.Zero");
+                return;
+            }
+
             var ok = dlgSaveFile.ShowDialog(this);
             if (ok != DialogResult.OK)
                 return;
