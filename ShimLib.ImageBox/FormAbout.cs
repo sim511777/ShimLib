@@ -36,6 +36,11 @@ namespace ShimLib {
                 return;
             }
 
+            if (pbx.BufIsFloat) {
+                MessageBox.Show(this, "Floating point image buffer can not be converted to Bitmap object.");
+                return;
+            }
+
             var ok = dlgSaveFile.ShowDialog(this);
             if (ok != DialogResult.OK)
                 return;
@@ -48,6 +53,10 @@ namespace ShimLib {
 
         private void btnCopy_Click(object sender, EventArgs e) {
             if (pbx.ImgBuf == IntPtr.Zero) {
+                return;
+            }
+
+            if (pbx.BufIsFloat) {
                 return;
             }
 

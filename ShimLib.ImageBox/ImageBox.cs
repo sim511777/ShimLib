@@ -17,6 +17,10 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.12 - 20200316
+1. float, double buffer 표시 기능 추가
+2. float, double buffer 전처리 해서 표시 기능 추가
+
 v1.0.0.11 - 20200315
 1. 옵션창에서 버퍼 파일정장, 버퍼 클립보드 복사 추가
 
@@ -104,6 +108,13 @@ v0.0.0.0 - 20191001
         public IntPtr ImgBuf { get; private set; } = IntPtr.Zero;
         [Browsable(false)]
         public int ImgBytepp { get; private set; } = 1;
+        [Browsable(false)]
+        public bool BufIsFloat { get; private set; } = false;
+        [Browsable(false)]
+        public bool FloatPreprocessed { get; private set; } = false;
+
+        // Float 버퍼용 전처리 버퍼
+        private IntPtr grayBuf = IntPtr.Zero;
 
         // 생성자
         public ImageBox() {
@@ -113,6 +124,7 @@ v0.0.0.0 - 20191001
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
             FreeDispBuf();
+            Util.FreeBuffer(ref grayBuf);
         }
 
         // 화면 표시 옵션
@@ -158,6 +170,30 @@ v0.0.0.0 - 20191001
             ImgBW = bw;
             ImgBH = bh;
             ImgBytepp = bytepp;
+            
+            BufIsFloat = false;
+            FloatPreprocessed = false;
+            Util.FreeBuffer(ref grayBuf);
+            
+            if (bInvalidate)
+                Invalidate();
+        }
+
+        // float, double 버퍼 세팅
+        public void SetFloatBuf(IntPtr buf, int bw, int bh, int bytepp, bool preprocess, bool bInvalidate) {
+            ImgBuf = buf;
+            ImgBW = bw;
+            ImgBH = bh;
+            ImgBytepp = bytepp;
+            
+            BufIsFloat = true;
+            FloatPreprocessed = preprocess;
+            Util.FreeBuffer(ref grayBuf);
+            if (preprocess) {
+                grayBuf = Util.AllocBuffer(bw * bh);
+                Util.FloatBufToByte(buf, bw, bh, bytepp, grayBuf);
+            }
+
             if (bInvalidate)
                 Invalidate();
         }
@@ -192,10 +228,25 @@ v0.0.0.0 - 20191001
         protected override void OnPaint(PaintEventArgs e) {
             var t0 = Util.GetTimeMs();
 
-            if (UseInterPorlation)
-                Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
-            else
-                Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+            if (UseInterPorlation) {
+                if (BufIsFloat) {
+                    if (FloatPreprocessed)
+                        Util.CopyImageBufferZoomIpl(grayBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), 1, this.BackColor.ToArgb(), UseParallel);
+                    else
+                        Util.CopyImageBufferZoomIplFloat(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                } else {
+                    Util.CopyImageBufferZoomIpl(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                }
+            } else {
+                if (BufIsFloat) {
+                    if (FloatPreprocessed)
+                        Util.CopyImageBufferZoom(grayBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), 1, this.BackColor.ToArgb(), UseParallel);
+                    else
+                        Util.CopyImageBufferZoomFloat(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                } else {
+                    Util.CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), UseParallel);
+                }
+            }
             var t1 = Util.GetTimeMs();
 
             e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
@@ -220,7 +271,7 @@ v0.0.0.0 - 20191001
             if (UseDrawDrawTime) {
                 string info =
 $@"== Image ==
-{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp * 8}bpp")}
+{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp * 8}bpp({(BufIsFloat?"float":"byte")})")}
 
 == Draw option ==
 DrawPixelValue : {(UseDrawPixelValue ? "O" : "X")}
@@ -352,7 +403,7 @@ Total : {t6 - t0:0.0}ms
 
             dispBW = Math.Max(ClientSize.Width, 64);
             dispBH = Math.Max(ClientSize.Height, 64);
-            dispBuf = Marshal.AllocHGlobal((IntPtr)(dispBW * dispBH * 4));
+            dispBuf = Util.AllocBuffer(dispBW * dispBH * 4);
             dispBmp = new Bitmap(dispBW, dispBH, dispBW * 4, PixelFormat.Format32bppPArgb, dispBuf);
         }
 
@@ -361,7 +412,7 @@ Total : {t6 - t0:0.0}ms
             if (dispBmp != null)
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
-                Marshal.FreeHGlobal(dispBuf);
+                Util.FreeBuffer(ref dispBuf);
         }
 
         // 중심선 표시
@@ -416,7 +467,9 @@ Total : {t6 - t0:0.0}ms
 
         private void DrawPixelValue(ImageGraphics ig) {
             double ZoomFactor = GetZoomFactor();
-            double pixeValFactor = (ImgBytepp == 4) ? 3 : ImgBytepp;
+            double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
+            if (BufIsFloat)
+                pixeValFactor *= 0.6;
             if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
                 return;
 
@@ -480,27 +533,47 @@ Total : {t6 - t0:0.0}ms
         }
 
         // 이미지 픽셀값 문자열 리턴
-        private string GetImagePixelValueText(int x, int y) {
+        private unsafe string GetImagePixelValueText(int x, int y) {
             if (ImgBuf == IntPtr.Zero || x < 0 || x >= ImgBW || y < 0 || y >= ImgBH)
                 return "";
+
             IntPtr ptr = (IntPtr)(ImgBuf.ToInt64() + ((long)ImgBW * y + x) * ImgBytepp);
-            if (ImgBytepp == 1)
-                return Marshal.ReadByte(ptr).ToString();
-            if (ImgBytepp == 2)
-                return (Marshal.ReadByte(ptr, 1) | Marshal.ReadByte(ptr) << 8).ToString();
-            return $"{Marshal.ReadByte(ptr, 2)},{Marshal.ReadByte(ptr, 1)},{Marshal.ReadByte(ptr, 0)}";
+            
+            if (!BufIsFloat) {
+                if (ImgBytepp == 1)
+                    return Marshal.ReadByte(ptr).ToString();
+                if (ImgBytepp == 2)
+                    return (Marshal.ReadByte(ptr, 1) | Marshal.ReadByte(ptr) << 8).ToString();
+                else
+                    return $"{Marshal.ReadByte(ptr, 2)},{Marshal.ReadByte(ptr, 1)},{Marshal.ReadByte(ptr, 0)}";
+            } else {
+                if (ImgBytepp == 4)
+                    return $"{(*(float*)ptr):f2}";
+                else
+                    return $"{(*(double*)ptr):f2}";
+            }
         }
 
         // 이미지 픽셀값 평균 리턴 (0~255)
-        private int GetImagePixelValueAverage(int x, int y) {
+        private unsafe int GetImagePixelValueAverage(int x, int y) {
             if (ImgBuf == IntPtr.Zero || x < 0 || x >= ImgBW || y < 0 || y >= ImgBH)
                 return 0;
+            
             IntPtr ptr = (IntPtr)(ImgBuf.ToInt64() + ((long)ImgBW * y + x) * ImgBytepp);
-            if (ImgBytepp == 1)
-                return Marshal.ReadByte(ptr);
-            if (ImgBytepp == 2)
-                return Marshal.ReadByte(ptr);
-            return ((int)Marshal.ReadByte(ptr, 2) + (int)Marshal.ReadByte(ptr, 1) + (int)Marshal.ReadByte(ptr, 0)) / 3;
+
+            if (!BufIsFloat) {
+                if (ImgBytepp == 1)
+                    return Marshal.ReadByte(ptr);
+                if (ImgBytepp == 2)
+                    return Marshal.ReadByte(ptr);
+                else
+                    return ((int)Marshal.ReadByte(ptr, 2) + (int)Marshal.ReadByte(ptr, 1) + (int)Marshal.ReadByte(ptr, 0)) / 3;
+            } else {
+                if (ImgBytepp == 4)
+                    return Util.Clamp((int)*(float*)ptr, 0, 255);
+                else
+                    return Util.Clamp((int)*(double*)ptr, 0, 255);
+            }
         }
     }
 

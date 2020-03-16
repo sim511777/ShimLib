@@ -86,6 +86,34 @@ namespace ShimLib {
             return _Dst;
         }
 
+        // free and set null
+        public static void FreeBuffer(ref IntPtr buf) {
+            if (buf != IntPtr.Zero) {
+                Marshal.FreeHGlobal(buf);
+                buf = IntPtr.Zero;
+            }
+        }
+
+        public static IntPtr AllocBuffer(Int64 size) {
+            IntPtr buf = Marshal.AllocHGlobal((IntPtr)size);
+            Util.Memset(buf, 0, size);
+            return buf;
+        }
+
+        // float(32bit) or double(64bit) -> gray(8bit);
+        public unsafe static void FloatBufToByte(IntPtr floatBuf, int bw, int bh, int bytepp, IntPtr byteBuf) {
+            for (int y = 0; y < bh; y++) {
+                byte* psrc = (byte*)floatBuf + (bw * y) * bytepp;
+                byte* pdst = (byte*)byteBuf + bw * y;
+                for (int x = 0; x < bw; x++, pdst++, psrc += bytepp) {
+                    if (bytepp == 4)
+                        *pdst = (byte)Util.Clamp(*(float*)psrc, 0, 255);
+                    else if (bytepp == 8)
+                        *pdst = (byte)Util.Clamp(*(double*)psrc, 0, 255);
+                }
+            }
+        }
+
         // 8bit bmp 파일 버퍼에 로드
         public unsafe static T StreamReadStructure<T>(Stream sr) {
             int size = Marshal.SizeOf<T>();
@@ -220,7 +248,7 @@ namespace ShimLib {
             else if (bmp.PixelFormat == PixelFormat.Format32bppRgb || bmp.PixelFormat == PixelFormat.Format32bppArgb || bmp.PixelFormat == PixelFormat.Format32bppPArgb)
                 bytepp = 4;
             long bufSize = (long)bw * bh * bytepp;
-            imgBuf = Marshal.AllocHGlobal(new IntPtr(bufSize));
+            imgBuf = Util.AllocBuffer(bufSize);
                 
             BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bw, bh), ImageLockMode.ReadOnly, bmp.PixelFormat);
             int copySize = bw * bytepp;
@@ -281,7 +309,7 @@ namespace ShimLib {
                     bh = br.ReadInt32();
 
                     int bufSize = bw * bh * bytepp;
-                    imgBuf = Marshal.AllocHGlobal(bufSize);
+                    imgBuf = Util.AllocBuffer(bufSize);
 
                     byte[] fbuf = br.ReadBytes(bufSize);
                     for (int y = 0; y < bh; y++) {
@@ -384,6 +412,50 @@ namespace ShimLib {
             }
         }
 
+        // 이미지 버퍼를 디스플레이 버퍼에 복사
+        public static unsafe void CopyImageBufferZoomFloat(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
+            // 인덱스 버퍼 생성
+            int[] siys = new int[dbh];
+            int[] sixs = new int[dbw];
+            for (int y = 0; y < dbh; y++) {
+                int siy = (int)Math.Floor((y - pany) / zoom);
+                siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy >= sbh) ? -1 : siy;
+            }
+            for (int x = 0; x < dbw; x++) {
+                int six = (int)Math.Floor((x - panx) / zoom);
+                sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six >= sbw) ? -1 : six;
+            }
+
+            // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
+            Action<int> rasterizeAction = (int y) => {
+                int siy = siys[y];
+                byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
+                int* dp = (int*)dbuf + (Int64)dbw * y;
+                for (int x = 0; x < dbw; x++, dp++) {
+                    int six = sixs[x];
+                    if (siy == -1 || six == -1) {   // out of boundary of image
+                        *dp = bgColor;
+                    } else {
+                        if (bytepp == 4) {
+                            float* sp = (float*)&sptr[six * bytepp];
+                            int v = Util.Clamp((int)*sp, 0, 255);
+                            *dp = v | v << 8 | v << 16 | 0xff << 24;
+                        } else if (bytepp == 8) {
+                            double* sp = (double*)&sptr[six * bytepp];
+                            int v = Util.Clamp((int)*sp, 0, 255);
+                            *dp = v | v << 8 | v << 16 | 0xff << 24;
+                        }
+                    }
+                }
+            };
+
+            if (useParallel) {
+                Parallel.For(0, dbh, rasterizeAction);
+            } else {
+                for (int y = 0; y < dbh; y++) rasterizeAction(y);
+            }
+        }
+
         // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
         public static unsafe void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
@@ -463,6 +535,89 @@ namespace ShimLib {
                             int g = (sp00[1] * t00 + sp01[1] * t01 + sp10[1] * t10 + sp11[1] * t11) >> 16;
                             int r = (sp00[2] * t00 + sp01[2] * t01 + sp10[2] * t10 + sp11[2] * t11) >> 16;
                             *dp = b | g << 8 | r << 16 | 0xff << 24;
+                        }
+                    }
+                }
+            };
+
+            if (useParallel) {
+                Parallel.For(0, dbh, rasterizeAction);
+            } else {
+                for (int y = 0; y < dbh; y++) rasterizeAction(y);
+            }
+        }
+
+        // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
+        public static unsafe void CopyImageBufferZoomIplFloat(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
+            // 인덱스 버퍼 생성
+            int[] siy0s = new int[dbh];
+            int[] siy1s = new int[dbh];
+            int[] six0s = new int[dbw];
+            int[] six1s = new int[dbw];
+            double[] sity0s = new double[dbh];
+            double[] sity1s = new double[dbh];
+            double[] sitx0s = new double[dbw];
+            double[] sitx1s = new double[dbw];
+            for (int y = 0; y < dbh; y++) {
+                double siy = (y + 0.5 - pany) / zoom - 0.5;
+                if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh - 0.5) {
+                    siy0s[y] = -1;
+                    continue;
+                }
+                int siy0 = (int)Math.Floor(siy);
+                int siy1 = siy0 + 1;
+                sity0s[y] = siy1 - siy;
+                sity1s[y] = siy - siy0;
+                siy0s[y] = Clamp(siy0, 0, sbh - 1);
+                siy1s[y] = Clamp(siy1, 0, sbh - 1);
+            }
+            for (int x = 0; x < dbw; x++) {
+                double six = (x + 0.5 - panx) / zoom - 0.5;
+                if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5) {
+                    six0s[x] = -1;
+                    continue;
+                }
+                int six0 = (int)Math.Floor(six);
+                int six1 = six0 + 1;
+                sitx0s[x] = six1 - six;
+                sitx1s[x] = six - six0;
+                six0s[x] = Clamp(six0, 0, sbw - 1);
+                six1s[x] = Clamp(six1, 0, sbw - 1);
+            }
+
+            // dst 범위만큼 루프를 돌면서 해당 픽셀값 쓰기
+            Action<int> rasterizeAction = (int y) => {
+                int siy0 = siy0s[y];
+                int siy1 = siy1s[y];
+                byte* sptr0 = (byte*)sbuf + (Int64)sbw * siy0 * bytepp;
+                byte* sptr1 = (byte*)sbuf + (Int64)sbw * siy1 * bytepp;
+                int* dp = (int*)dbuf + (Int64)dbw * y;
+                double ty0 = sity0s[y];
+                double ty1 = sity1s[y];
+                for (int x = 0; x < dbw; x++, dp++) {
+                    int six0 = six0s[x];
+                    int six1 = six1s[x];
+                    if (siy0 == -1 || six0 == -1) {   // out of boundary of image
+                        *dp = bgColor;
+                    } else {
+                        byte* sp00 = &sptr0[six0 * bytepp];
+                        byte* sp01 = &sptr0[six1 * bytepp];
+                        byte* sp10 = &sptr1[six0 * bytepp];
+                        byte* sp11 = &sptr1[six1 * bytepp];
+                        double tx0 = sitx0s[x];
+                        double tx1 = sitx1s[x];
+                        double t00 = ty0 * tx0;
+                        double t01 = ty0 * tx1;
+                        double t10 = ty1 * tx0;
+                        double t11 = ty1 * tx1;
+                        if (bytepp == 4) {
+                            double v = *(float*)sp00 * t00 + *(float*)sp01 * t01 + *(float*)sp10 * t10 + *(float*)sp11 * t11;
+                            int iv = Clamp((int)v, 0, 255);
+                            *dp = iv | iv << 8 | iv << 16 | 0xff << 24;
+                        } else if (bytepp == 8) {
+                            double v = *(double*)sp00 * t00 + *(double*)sp01 * t01 + *(double*)sp10 * t10 + *(double*)sp11 * t11;
+                            int iv = Clamp((int)v, 0, 255);
+                            *dp = iv | iv << 8 | iv << 16 | 0xff << 24;
                         }
                     }
                 }

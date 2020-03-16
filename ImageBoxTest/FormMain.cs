@@ -34,7 +34,7 @@ namespace ImageBoxTest {
             var ext = Path.GetExtension(fileName).ToLower();
             if (ext == ".hra") {
                 if (imgBuf != IntPtr.Zero)
-                    Marshal.FreeHGlobal(imgBuf);
+                    Util.FreeBuffer(ref imgBuf);
                 Util.LoadHraFile(fileName, ref imgBuf, ref bw, ref bh, ref bytepp);
                 pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
             } else {
@@ -142,9 +142,53 @@ namespace ImageBoxTest {
 
         private void LoadBitmap(Bitmap bmp) {
             if (imgBuf != IntPtr.Zero)
-                Marshal.FreeHGlobal(imgBuf);
+                Util.FreeBuffer(ref imgBuf);
             Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
+        }
+
+        private unsafe void LoadBitmapFloat(Bitmap bmp) {
+            if (imgBuf != IntPtr.Zero)
+                Util.FreeBuffer(ref imgBuf);
+            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+
+            // byte -> float convert
+            IntPtr floatBuf = Util.AllocBuffer(bw * bh * sizeof(float));
+            for (int y = 0; y < bh; y++) {
+                byte* src = (byte*)imgBuf + bw * y;
+                float* dst = (float*)floatBuf + bw * y;
+                for (int x = 0; x < bw; x++, src++, dst++) {
+                    *dst = *src;
+                }
+            }
+            Util.FreeBuffer(ref imgBuf);
+            imgBuf = floatBuf;
+            bytepp = sizeof(float);
+
+            // SetFloatBuf
+            pbxDraw.SetFloatBuf(imgBuf, bw, bh, bytepp, true, true);
+        }
+
+        private unsafe void LoadBitmapDouble(Bitmap bmp) {
+            if (imgBuf != IntPtr.Zero)
+                Util.FreeBuffer(ref imgBuf);
+            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+
+            // byte -> double convert
+            IntPtr dlbBuf = Util.AllocBuffer(bw * bh * sizeof(double));
+            for (int y = 0; y < bh; y++) {
+                byte* src = (byte*)imgBuf + bw * y;
+                double* dst = (double*)dlbBuf + bw * y;
+                for (int x = 0; x < bw; x++, src++, dst++) {
+                    *dst = *src;
+                }
+            }
+            Util.FreeBuffer(ref imgBuf);
+            imgBuf = dlbBuf;
+            bytepp = sizeof(double);
+
+            // SetFloatBuf
+            pbxDraw.SetFloatBuf(imgBuf, bw, bh, bytepp, true, true);
         }
 
         private void lennaToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -177,9 +221,9 @@ namespace ImageBoxTest {
 
         private unsafe void GenerateBitmap(int bw, int bh) {
             if (imgBuf != IntPtr.Zero)
-                Marshal.FreeHGlobal(imgBuf);
+                Util.FreeBuffer(ref imgBuf);
             long cb = (long)bw * bh;
-            imgBuf = Marshal.AllocHGlobal((IntPtr)cb);
+            imgBuf = Util.AllocBuffer(cb);
             for (long y = 0; y < bh; y++) {
                 byte* ptr = (byte*)imgBuf + y * bw;
                 for (long x = 0; x < bw; x++) {
@@ -281,6 +325,14 @@ namespace ImageBoxTest {
 
             string filePath = dlgSaveFile.FileName;
             SaveImageFile(filePath);
+        }
+
+        private void coinsFloatToolStripMenuItem_Click(object sender, EventArgs e) {
+            LoadBitmapFloat(Properties.Resources.Coins);
+        }
+
+        private void coinsDoubleToolStripMenuItem_Click(object sender, EventArgs e) {
+            LoadBitmapDouble(Properties.Resources.Coins);
         }
     }
 }

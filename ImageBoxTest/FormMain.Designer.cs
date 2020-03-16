@@ -56,6 +56,8 @@
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
+            this.coinsFloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.coinsDoubleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,6 +86,8 @@
             this.lennaToolStripMenuItem,
             this.lenna4ToolStripMenuItem,
             this.coinsToolStripMenuItem,
+            this.coinsFloatToolStripMenuItem,
+            this.coinsDoubleToolStripMenuItem,
             this.chessToolStripMenuItem,
             this.gradientToolStripMenuItem,
             this.toolStripSeparator3,
@@ -340,6 +344,20 @@
             // 
             this.dlgSaveFile.Filter = "Bmp File(*.bmp)|*.bmp";
             // 
+            // coinsFloatToolStripMenuItem
+            // 
+            this.coinsFloatToolStripMenuItem.Name = "coinsFloatToolStripMenuItem";
+            this.coinsFloatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coinsFloatToolStripMenuItem.Text = "Coins Float";
+            this.coinsFloatToolStripMenuItem.Click += new System.EventHandler(this.coinsFloatToolStripMenuItem_Click);
+            // 
+            // coinsDoubleToolStripMenuItem
+            // 
+            this.coinsDoubleToolStripMenuItem.Name = "coinsDoubleToolStripMenuItem";
+            this.coinsDoubleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coinsDoubleToolStripMenuItem.Text = "Coins Double";
+            this.coinsDoubleToolStripMenuItem.Click += new System.EventHandler(this.coinsDoubleToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -392,6 +410,8 @@
         private System.Windows.Forms.ToolStripMenuItem gradientToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveFileToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog dlgSaveFile;
+        private System.Windows.Forms.ToolStripMenuItem coinsFloatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem coinsDoubleToolStripMenuItem;
     }
 }
 
