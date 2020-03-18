@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace ShimLib {
 
             var bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
             string filePath = dlgSaveFile.FileName;
-            bmp.Save(filePath);
+            bmp.Save(filePath, ImageFormat.Bmp);
             bmp.Dispose();
         }
 

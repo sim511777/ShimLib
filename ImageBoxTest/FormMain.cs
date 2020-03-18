@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -46,7 +47,7 @@ namespace ImageBoxTest {
 
         private void SaveImageFile(string fileName) {
             var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
-            bmp.Save(fileName);
+            bmp.Save(fileName, ImageFormat.Bmp);
             bmp.Dispose();
         }
 
