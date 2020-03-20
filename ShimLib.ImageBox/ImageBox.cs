@@ -17,6 +17,9 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.13 - 20200320
+1. 16비트 hra버퍼 저장 시 24비트 bmp로 저장 되도록 수정
+
 v1.0.0.12 - 20200316
 1. float, double buffer 표시 기능 추가
 2. float, double buffer 전처리 해서 표시 기능 추가

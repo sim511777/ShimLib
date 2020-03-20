@@ -263,6 +263,9 @@ namespace ShimLib {
 
         // Save Bitmap from Buffer
         public unsafe static Bitmap ImageBufferToBitmap(IntPtr imgBuf, int bw, int bh, int bytepp) {
+            if (bytepp == 2) {
+                return HraToBmp24(imgBuf, bw, bh, bytepp);
+            }
             PixelFormat pixelFormat;
             if (bytepp == 1)
                 pixelFormat = PixelFormat.Format8bppIndexed;
@@ -295,7 +298,30 @@ namespace ShimLib {
             }
             return bmp;
         }
-        
+
+        // hra to bmp24
+        private unsafe static Bitmap HraToBmp24(IntPtr imgBuf, int bw, int bh, int bytepp) {
+            Bitmap bmp = new Bitmap(bw, bh, PixelFormat.Format24bppRgb);
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bw, bh), ImageLockMode.WriteOnly, bmp.PixelFormat);
+            int paddingSize = bmpData.Stride - bw * 3;
+            byte[] paddingBuf = { 0, 0, 0, 0 };
+            for (int y = 0; y < bh; y++) {
+                byte* srcPtr = (byte*)imgBuf + bw * bytepp * y;
+                byte* dstPtr = (byte*)bmpData.Scan0 + bmpData.Stride * y;
+                for (int x = 0; x < bw; x++, srcPtr += bytepp, dstPtr += 3) {
+                    byte gray = srcPtr[0];
+                    dstPtr[0] = gray;
+                    dstPtr[1] = gray;
+                    dstPtr[2] = gray;
+                }
+                
+                if (paddingSize > 0)
+                    Marshal.Copy(paddingBuf, 0, (IntPtr)dstPtr, paddingSize);
+            }
+            bmp.UnlockBits(bmpData);
+            return bmp;
+        }
+
         // hra Lolad
         public unsafe static void LoadHraFile(string fileName, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
             Stream sr = null;
