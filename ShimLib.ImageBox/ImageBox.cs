@@ -17,6 +17,10 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.14 - 20200325
+1. ZoomLevelMin, ZoomLevelMax 속성 추가
+2. UseMousePanClamp 속성 추가
+
 v1.0.0.13 - 20200320
 1. 16비트 hra버퍼 저장 시 24비트 bmp로 저장 되도록 수정
 
@@ -148,7 +152,17 @@ v0.0.0.0 - 20191001
         // 줌 파라미터
         // ZoomLevel = 0 => ZoomFactor = 1;
         // { 1/1024d,  3/2048d,  1/512d,  3/1024d,  1/256d,  3/512d,  1/128d,  3/256d,  1/64d,  3/128d,  1/32d,  3/64d,  1/16d,  3/32d,  1/8d,  3/16d,  1/4d,  3/8d,  1/2d,  3/4d,  1d,  3/2d,  2d,  3d,  4d,  6d,  8d,  12d,  16d,  24d,  32d,  48d,  64d,  96d,  128d,  192d,  256d,  384d,  512d,  768d,  1024d, };
-        public int ZoomLevel { get; set; }
+        private int zoomLevel = 0;
+        public int ZoomLevel {
+            get {
+                return zoomLevel;
+            }
+            set {
+                zoomLevel = Util.Clamp(value, ZoomLevelMin, ZoomLevelMax);
+            }
+        }
+        public int ZoomLevelMin { get; set; } = -12;
+        public int ZoomLevelMax { get; set; } = 12; 
         private void GetZoomFactorComponents(out int exp_num, out int c) {
             exp_num = (ZoomLevel >= 0) ? ZoomLevel / 2 : (ZoomLevel - 1) / 2;
             if (ZoomLevel % 2 != 0)
@@ -165,8 +179,39 @@ v0.0.0.0 - 20191001
         }
 
         // 패닝 파라미터
-        public double PanX { get; set; }
-        public double PanY { get; set; }
+        private double panX = 0;
+        private double panY = 0;
+        public double PanX {
+            get {
+                return panX;
+            }
+            set {
+                if (UseMousePanClamp) {
+                    if (ImgBuf == IntPtr.Zero)
+                        panX = 0;
+                    else
+                        panX = Util.Clamp(value, -ImgBW * GetZoomFactor(), 0);
+                } else {
+                    panX = value;
+                }
+            }
+        }
+        public double PanY {
+            get {
+                return panY;
+            }
+            set {
+                if (UseMousePanClamp) {
+                    if (ImgBuf == IntPtr.Zero)
+                        panY = 0;
+                    else
+                        panY = Util.Clamp(value, -ImgBH * GetZoomFactor(), 0); 
+                } else {
+                    panY = value;
+                }
+            }
+        }
+        public bool UseMousePanClamp { get; set; } = true;
 
         // 이미지 버퍼 세팅
         public void SetImgBuf(IntPtr buf, int bw, int bh, int bytepp, bool bInvalidate) {
@@ -207,7 +252,7 @@ v0.0.0.0 - 20191001
             double scale1 = (double)ClientRectangle.Width / width;
             double scale2 = (double)ClientRectangle.Height / height;
             double wantedZoomFactor = Math.Min(scale1, scale2);
-            ZoomLevel = Util.Clamp((int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2))), -40, 40);
+            ZoomLevel = (int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2)));
             double ZoomFactor = GetZoomFactor();
             PanX = (ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor;
             PanY = (ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor;
@@ -288,6 +333,11 @@ Parallel : {(UseParallel ? "O" : "X")}
 == Mouse option ==
 MouseMove : {(UseMouseMove ? "O" : "X")}
 MouseWheelZoom : {(UseMouseWheelZoom ? "O" : "X")}
+UseMousePanClamp : {(UseMousePanClamp ? "O" : "X")}
+Pan : ({PanX},{PanY})
+ZoomLevel : {ZoomLevel}
+ZoomLevelMin : {ZoomLevelMin}
+ZoomLevelMax : {ZoomLevelMax}
 
 == Draw time ==
 CopyImage : {t1 - t0:0.0}ms
@@ -332,7 +382,7 @@ Total : {t6 - t0:0.0}ms
         // 휠 줌
         private void WheelZoom(MouseEventArgs e, bool fixPanning) {
             var zoomFactorOld = GetZoomFactor();
-            ZoomLevel = Util.Clamp((e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1, -40, 40);
+            ZoomLevel = (e.Delta > 0) ? ZoomLevel + 1 : ZoomLevel - 1;
             if (fixPanning)
                 return;
 

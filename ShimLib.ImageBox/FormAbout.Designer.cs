@@ -47,7 +47,7 @@
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnOk);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 298);
+            this.panel1.Location = new System.Drawing.Point(0, 358);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(443, 35);
             this.panel1.TabIndex = 0;
@@ -101,7 +101,7 @@
             this.grdOption.Location = new System.Drawing.Point(3, 3);
             this.grdOption.Name = "grdOption";
             this.grdOption.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.grdOption.Size = new System.Drawing.Size(429, 266);
+            this.grdOption.Size = new System.Drawing.Size(429, 326);
             this.grdOption.TabIndex = 1;
             this.grdOption.ToolbarVisible = false;
             // 
@@ -125,7 +125,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(443, 298);
+            this.tabControl1.Size = new System.Drawing.Size(443, 358);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage2
@@ -134,7 +134,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(435, 272);
+            this.tabPage2.Size = new System.Drawing.Size(435, 332);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Option";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -158,7 +158,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(443, 333);
+            this.ClientSize = new System.Drawing.Size(443, 393);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;

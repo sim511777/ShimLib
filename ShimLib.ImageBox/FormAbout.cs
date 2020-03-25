@@ -85,9 +85,12 @@ namespace ShimLib {
         public bool UseMouseWheelZoom { get; set; }
         // 줌 파라미터
         public int ZoomLevel { get; set; }
+        public int ZoomLevelMin { get; set; }
+        public int ZoomLevelMax { get; set; }
         // 패닝 파라미터
         public double PanX { get; set; }
         public double PanY { get; set; }
+        public bool UseMousePanClamp { get; set; }
 
         public void FromImageBox(ImageBox pbx) {
             this.UseDrawPixelValue = pbx.UseDrawPixelValue;
@@ -106,8 +109,12 @@ namespace ShimLib {
             this.UseMouseWheelZoom = pbx.UseMouseWheelZoom;
 
             this.ZoomLevel = pbx.ZoomLevel;
+            this.ZoomLevelMin = pbx.ZoomLevelMin;
+            this.ZoomLevelMax = pbx.ZoomLevelMax;
+            
             this.PanX = pbx.PanX;
             this.PanY = pbx.PanY;
+            this.UseMousePanClamp = pbx.UseMousePanClamp;
         }
 
         public void ToImageBox(ImageBox pbx) {
@@ -127,8 +134,12 @@ namespace ShimLib {
             pbx.UseMouseWheelZoom = this.UseMouseWheelZoom;
             
             pbx.ZoomLevel = this.ZoomLevel;
+            pbx.ZoomLevelMin = this.ZoomLevelMin;
+            pbx.ZoomLevelMax = this.ZoomLevelMax;
+
             pbx.PanX = this.PanX;
             pbx.PanY = this.PanY;
+            pbx.UseMousePanClamp = this.UseMousePanClamp;
         }
     }
 }
