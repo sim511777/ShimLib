@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{46D807CA-D440-444B-9DE9-CC600B1B44EF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ImageBoxTest</RootNamespace>
-    <AssemblyName>ImageBoxTest</AssemblyName>
+    <RootNamespace>ShimLibTest</RootNamespace>
+    <AssemblyName>ShimLibTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

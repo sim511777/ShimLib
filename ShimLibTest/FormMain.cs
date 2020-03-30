@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PointD = System.Windows.Point;
 
-namespace ImageBoxTest {
+namespace ShimLibTest {
     public partial class FormMain : Form {
         static string[] extList = { ".bmp", ".jpg", ".png", ".hra", ".tif" };
         private IntPtr imgBuf;

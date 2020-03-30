@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 15 for Windows Desktop
 VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageBoxTest", "ImageBoxTest\ImageBoxTest.csproj", "{46D807CA-D440-444B-9DE9-CC600B1B44EF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5A452842-C463-487E-A18B-F8B16C9223BC} = {5A452842-C463-487E-A18B-F8B16C9223BC}
-		{09CB1389-0344-43F5-9B6B-58AFD91A71D6} = {09CB1389-0344-43F5-9B6B-58AFD91A71D6}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82823FE6-BF98-4761-B329-46BDB8B21BF0}"
 	ProjectSection(SolutionItems) = preProject
 		todo.txt = todo.txt
@@ -23,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.Util", "ShimLib.Uti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.Controls", "ShimLib.Controls\ShimLib.Controls.csproj", "{5A452842-C463-487E-A18B-F8B16C9223BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLibTest", "ShimLibTest\ShimLibTest.csproj", "{46D807CA-D440-444B-9DE9-CC600B1B44EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A452842-C463-487E-A18B-F8B16C9223BC} = {5A452842-C463-487E-A18B-F8B16C9223BC}
+		{09CB1389-0344-43F5-9B6B-58AFD91A71D6} = {09CB1389-0344-43F5-9B6B-58AFD91A71D6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,18 +33,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x64.Build.0 = Debug|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x86.Build.0 = Debug|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x64.ActiveCfg = Release|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x64.Build.0 = Release|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x86.ActiveCfg = Release|Any CPU
-		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x86.Build.0 = Release|Any CPU
 		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -81,6 +69,18 @@ Global
 		{5A452842-C463-487E-A18B-F8B16C9223BC}.Release|x64.Build.0 = Release|Any CPU
 		{5A452842-C463-487E-A18B-F8B16C9223BC}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A452842-C463-487E-A18B-F8B16C9223BC}.Release|x86.Build.0 = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x64.Build.0 = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
