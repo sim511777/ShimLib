@@ -37,6 +37,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ShimLib.Controls">
+      <HintPath>..\ShimLib.Controls\bin\Release\ShimLib.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="ShimLib.Util">
       <HintPath>..\ShimLib.Util\bin\Release\ShimLib.Util.dll</HintPath>
     </Reference>

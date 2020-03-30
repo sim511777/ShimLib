@@ -34,6 +34,8 @@
             this.lennaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lenna4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.coinsFloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.coinsDoubleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gradientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -56,9 +58,18 @@
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
-            this.coinsFloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.coinsDoubleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.radioListBox1 = new ShimLib.RadioListBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -162,6 +173,20 @@
             this.coinsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.coinsToolStripMenuItem.Text = "Coins";
             this.coinsToolStripMenuItem.Click += new System.EventHandler(this.coinsToolStripMenuItem_Click);
+            // 
+            // coinsFloatToolStripMenuItem
+            // 
+            this.coinsFloatToolStripMenuItem.Name = "coinsFloatToolStripMenuItem";
+            this.coinsFloatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coinsFloatToolStripMenuItem.Text = "Coins Float";
+            this.coinsFloatToolStripMenuItem.Click += new System.EventHandler(this.coinsFloatToolStripMenuItem_Click);
+            // 
+            // coinsDoubleToolStripMenuItem
+            // 
+            this.coinsDoubleToolStripMenuItem.Name = "coinsDoubleToolStripMenuItem";
+            this.coinsDoubleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coinsDoubleToolStripMenuItem.Text = "Coins Double";
+            this.coinsDoubleToolStripMenuItem.Click += new System.EventHandler(this.coinsDoubleToolStripMenuItem_Click);
             // 
             // chessToolStripMenuItem
             // 
@@ -318,13 +343,13 @@
             this.pbxDraw.AllowDrop = true;
             this.pbxDraw.BackColor = System.Drawing.Color.Gray;
             this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDraw.Location = new System.Drawing.Point(0, 24);
+            this.pbxDraw.Location = new System.Drawing.Point(3, 3);
             this.pbxDraw.Name = "pbxDraw";
             this.pbxDraw.PanX = 0D;
             this.pbxDraw.PanY = 0D;
             this.pbxDraw.PixelValueDispFont = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.pbxDraw.PixelValueDispZoomFactor = 20;
-            this.pbxDraw.Size = new System.Drawing.Size(820, 511);
+            this.pbxDraw.Size = new System.Drawing.Size(270, 297);
             this.pbxDraw.TabIndex = 1;
             this.pbxDraw.Text = "imageBox1";
             this.pbxDraw.UseDrawCenterLine = true;
@@ -333,9 +358,12 @@
             this.pbxDraw.UseDrawPixelValue = true;
             this.pbxDraw.UseInterPorlation = false;
             this.pbxDraw.UseMouseMove = true;
+            this.pbxDraw.UseMousePanClamp = true;
             this.pbxDraw.UseMouseWheelZoom = true;
             this.pbxDraw.UseParallel = false;
             this.pbxDraw.ZoomLevel = 0;
+            this.pbxDraw.ZoomLevelMax = 12;
+            this.pbxDraw.ZoomLevelMin = -12;
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
@@ -344,32 +372,102 @@
             // 
             this.dlgSaveFile.Filter = "Bmp File(*.bmp)|*.bmp";
             // 
-            // coinsFloatToolStripMenuItem
+            // tabControl1
             // 
-            this.coinsFloatToolStripMenuItem.Name = "coinsFloatToolStripMenuItem";
-            this.coinsFloatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.coinsFloatToolStripMenuItem.Text = "Coins Float";
-            this.coinsFloatToolStripMenuItem.Click += new System.EventHandler(this.coinsFloatToolStripMenuItem_Click);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 24);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(820, 511);
+            this.tabControl1.TabIndex = 3;
             // 
-            // coinsDoubleToolStripMenuItem
+            // tabPage1
             // 
-            this.coinsDoubleToolStripMenuItem.Name = "coinsDoubleToolStripMenuItem";
-            this.coinsDoubleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.coinsDoubleToolStripMenuItem.Text = "Coins Double";
-            this.coinsDoubleToolStripMenuItem.Click += new System.EventHandler(this.coinsDoubleToolStripMenuItem_Click);
+            this.tabPage1.Controls.Add(this.pbxDraw);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(276, 303);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "ImageBox";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.radioListBox1);
+            this.tabPage2.Controls.Add(this.button2);
+            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.numericUpDown1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(812, 485);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "RadioListBox";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // radioListBox1
+            // 
+            this.radioListBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.radioListBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.radioListBox1.FormattingEnabled = true;
+            this.radioListBox1.ItemHeight = 18;
+            this.radioListBox1.Items.AddRange(new object[] {
+            "Item0",
+            "Item1",
+            "Item2",
+            "Item3",
+            "Item4"});
+            this.radioListBox1.Location = new System.Drawing.Point(8, 6);
+            this.radioListBox1.Name = "radioListBox1";
+            this.radioListBox1.Size = new System.Drawing.Size(120, 112);
+            this.radioListBox1.TabIndex = 11;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(134, 62);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Set";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(134, 33);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Get";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(134, 6);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 21);
+            this.numericUpDown1.TabIndex = 8;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(820, 535);
-            this.Controls.Add(this.pbxDraw);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.Text = "ImageBox Test";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -412,6 +510,13 @@
         private System.Windows.Forms.SaveFileDialog dlgSaveFile;
         private System.Windows.Forms.ToolStripMenuItem coinsFloatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem coinsDoubleToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private ShimLib.RadioListBox radioListBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 

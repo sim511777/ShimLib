@@ -335,5 +335,15 @@ namespace ImageBoxTest {
         private void coinsDoubleToolStripMenuItem_Click(object sender, EventArgs e) {
             LoadBitmapDouble(Properties.Resources.Coins);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            numericUpDown1.Value = radioListBox1.SelectedIndex;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            radioListBox1.SelectedIndex = (int)numericUpDown1.Value;
+        }
     }
 }
