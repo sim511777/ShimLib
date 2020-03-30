@@ -63,10 +63,25 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageBoxTest.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImageBoxTest.Designer.cs">
+      <DependentUpon>ImageBoxTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadioListBoxTest.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RadioListBoxTest.Designer.cs">
+      <DependentUpon>RadioListBoxTest.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageBoxTest.resx">
+      <DependentUpon>ImageBoxTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -78,6 +93,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RadioListBoxTest.resx">
+      <DependentUpon>RadioListBoxTest.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
