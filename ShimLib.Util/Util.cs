@@ -39,6 +39,12 @@ namespace ShimLib
 
     public class Util
     {
+        public const string VersionHistory =
+@"ShimLib Util for .NET
+
+v20200330
+1. Version정보 추가";
+
         // 시간 측정 함수
         public static double GetTimeMs()
         {

@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ShimLib {
-    public class Version {
-        public const string Info =
+    public class Controls {
+        public const string VersionHistory =
 @"ShimLib Controls for .NET
 
 v20200313.0

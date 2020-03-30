@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Version.cs" />
+    <Compile Include="Controls.cs" />
     <Compile Include="RadioListBox.cs">
       <SubType>Component</SubType>
     </Compile>

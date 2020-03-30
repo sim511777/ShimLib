@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageBoxTest", "ImageBoxTest\ImageBoxTest.csproj", "{46D807CA-D440-444B-9DE9-CC600B1B44EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A452842-C463-487E-A18B-F8B16C9223BC} = {5A452842-C463-487E-A18B-F8B16C9223BC}
+		{09CB1389-0344-43F5-9B6B-58AFD91A71D6} = {09CB1389-0344-43F5-9B6B-58AFD91A71D6}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82823FE6-BF98-4761-B329-46BDB8B21BF0}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,6 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.ImageBox", "ShimLib.ImageBox\ShimLib.ImageBox.csproj", "{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{09CB1389-0344-43F5-9B6B-58AFD91A71D6} = {09CB1389-0344-43F5-9B6B-58AFD91A71D6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.Util", "ShimLib.Util\ShimLib.Util.csproj", "{09CB1389-0344-43F5-9B6B-58AFD91A71D6}"
 EndProject
