@@ -37,12 +37,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ShimLib.Controls">
-      <HintPath>..\ShimLib.Controls\bin\Release\ShimLib.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="ShimLib.Util">
-      <HintPath>..\ShimLib.Util\bin\Release\ShimLib.Util.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -125,9 +119,17 @@
     <None Include="Resources\gardient_8bit.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ShimLib.Controls\ShimLib.Controls.csproj">
+      <Project>{5a452842-c463-487e-a18b-f8b16c9223bc}</Project>
+      <Name>ShimLib.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ShimLib.ImageBox\ShimLib.ImageBox.csproj">
       <Project>{ee2ad7ff-4482-4623-9488-9cdbe3a90e1e}</Project>
       <Name>ShimLib.ImageBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShimLib.Util\ShimLib.Util.csproj">
+      <Project>{09cb1389-0344-43f5-9b6b-58afd91a71d6}</Project>
+      <Name>ShimLib.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
