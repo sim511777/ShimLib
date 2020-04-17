@@ -279,6 +279,11 @@ v20200330
         // Load Bitmap to buffer
         public unsafe static void BitmapToImageBuffer(Bitmap bmp, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp)
         {
+            if (bmp.PixelFormat == PixelFormat.Format1bppIndexed) {
+                BitmapToImageBuffer1Bit(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+                return;
+            }
+
             bw = bmp.Width;
             bh = bmp.Height;
             if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
@@ -299,6 +304,32 @@ v20200330
                 IntPtr dstPtr = imgBuf + bw * y * bytepp;
                 IntPtr srcPtr = bmpData.Scan0 + bmpData.Stride * y;
                 Util.Memcpy(dstPtr, srcPtr, copySize);
+            }
+
+            bmp.UnlockBits(bmpData);
+        }
+
+        private unsafe static void BitmapToImageBuffer1Bit(Bitmap bmp, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
+            bw = bmp.Width;
+            bh = bmp.Height;
+            bytepp = 1;
+            long bufSize = (long)bw * bh * bytepp;
+            imgBuf = Util.AllocBuffer(bufSize);
+
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bw, bh), ImageLockMode.ReadOnly, bmp.PixelFormat);
+            int w8 = bw / 8;
+            for (int y = 0; y < bh; y++) {
+                byte* sptr = (byte*)bmpData.Scan0 + bmpData.Stride * y;
+                byte* dptr = (byte*)imgBuf + bw * y;
+                for (int x8 = 0; x8 < w8; x8++, sptr++) {
+                    byte sp = *sptr;
+                    for (int x = 0; x < 8; x++, dptr++) {
+                        if (((sp << x) & 0x80) != 0)
+                            *dptr = 255;
+                        else
+                            *dptr = 0;
+                    }
+                }
             }
 
             bmp.UnlockBits(bmpData);
