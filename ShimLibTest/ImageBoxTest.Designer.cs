@@ -66,8 +66,6 @@
             this.pbxDraw.Name = "pbxDraw";
             this.pbxDraw.PanX = 0D;
             this.pbxDraw.PanY = 0D;
-            this.pbxDraw.PixelValueDispFont = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.pbxDraw.PixelValueDispZoomFactor = 20;
             this.pbxDraw.Size = new System.Drawing.Size(712, 609);
             this.pbxDraw.TabIndex = 3;
             this.pbxDraw.Text = "imageBox1";
@@ -81,8 +79,6 @@
             this.pbxDraw.UseMouseWheelZoom = true;
             this.pbxDraw.UseParallel = false;
             this.pbxDraw.ZoomLevel = 0;
-            this.pbxDraw.ZoomLevelMax = 12;
-            this.pbxDraw.ZoomLevelMin = -12;
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);

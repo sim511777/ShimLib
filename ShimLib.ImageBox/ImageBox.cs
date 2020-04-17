@@ -142,8 +142,8 @@ v0.0.0.0 - 20191001
         public bool UseDrawDrawTime { get; set; } = false;
         public bool UseInterPorlation { get; set; } = false;
         public bool UseParallel { get; set; } = false;
-        public Font PixelValueDispFont { get; set; } = SystemFonts.DefaultFont;
-        public int PixelValueDispZoomFactor { get; set; } = 20;
+        public Font PixelValueDispFont { get; set; } = new Font("Arial", 6);
+        public int PixelValueDispZoomFactor { get; set; } = 16;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -161,8 +161,8 @@ v0.0.0.0 - 20191001
                 zoomLevel = Util.Clamp(value, ZoomLevelMin, ZoomLevelMax);
             }
         }
-        public int ZoomLevelMin { get; set; } = -12;
-        public int ZoomLevelMax { get; set; } = 12; 
+        public int ZoomLevelMin { get; set; } = -16;
+        public int ZoomLevelMax { get; set; } = 16; 
         private void GetZoomFactorComponents(out int exp_num, out int c) {
             exp_num = (ZoomLevel >= 0) ? ZoomLevel / 2 : (ZoomLevel - 1) / 2;
             if (ZoomLevel % 2 != 0)
