@@ -870,7 +870,7 @@ Total : {t6 - t0:0.0}ms
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
-                    ig.DrawString(pixelValText, PixelValueDispFont, new PointD(imgX, imgY), brush);
+                    ig.DrawString(pixelValText, new PointD(imgX, imgY), true, PixelValueDispFont, brush, null);
                 }
             }
         }
@@ -896,7 +896,7 @@ Total : {t6 - t0:0.0}ms
 
         // 렌더링 시간 표시
         private void DrawDrawTime(ImageGraphics ig, string info) {
-            ig.DrawStringScreen(info, ClientSize.Width - 150, 0, Brushes.Black, true, Brushes.White);
+            ig.DrawString(info, new PointD(ClientSize.Width - 150, 0), false, null, Brushes.Black, Brushes.White);
         }
 
         // 표시 픽셀 좌표를 이미지 좌표로 변환

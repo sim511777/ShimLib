@@ -113,39 +113,20 @@ namespace ShimLib {
             DrawCross(new PointD(x, y), size, pen, fixSize);
         }
 
-        public void DrawString(string text, PointD pt, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
-            PointD ptd = imgBox.ImgToDisp(pt);
-            SizeF size = g.MeasureString(text, imgBox.Font);
-            if (fill)
-                g.FillRectangle(fillBrush, (float)ptd.X, (float)ptd.Y, size.Width, size.Height);
-            g.DrawString(text, imgBox.Font, fontBrush, ptd.ToFloat());
-        }
+        // useImageCoord 이면 이미지 좌표에 그림
+        // font가 null 이면 ImageBox.Font 로 그림
+        // fillBrush가 null 이면 채우기 없음
+        public void DrawString(string text, PointD pt, bool useImageCoord, Font font, Brush fontBrush, Brush fillBrush) {
+            if (useImageCoord)
+                pt = imgBox.ImgToDisp(pt);
 
-        public void DrawString(string text, double x, double y, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
-            DrawString(text, new PointD(x, y), fontBrush, fill, fillBrush);
-        }
+            if (font == null)
+                font = imgBox.Font;
 
-        public void DrawString(string text, Font font, PointD pt, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
-            PointD ptd = imgBox.ImgToDisp(pt);
             SizeF size = g.MeasureString(text, font);
-            if (fill)
-                g.FillRectangle(fillBrush, (float)ptd.X, (float)ptd.Y, size.Width, size.Height);
-            g.DrawString(text, font, fontBrush, ptd.ToFloat());
-        }
-
-        public void DrawString(string text, Font font, double x, double y, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
-            DrawString(text, font, new PointD(x, y), fontBrush, fill, fillBrush);
-        }
-
-        public void DrawStringScreen(string text, PointD pt, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
-            SizeF size = g.MeasureString(text, imgBox.Font);
-            if (fill)
+            if (fillBrush != null)
                 g.FillRectangle(fillBrush, (float)pt.X, (float)pt.Y, size.Width, size.Height);
-            g.DrawString(text, imgBox.Font, fontBrush, pt.ToFloat());
-        }
-
-        public void DrawStringScreen(string text, int x, int y, Brush fontBrush, bool fill = false, Brush fillBrush = null) {
-            DrawStringScreen(text, new PointD(x, y), fontBrush, fill, fillBrush);
+            g.DrawString(text, font, fontBrush, pt.ToFloat());
         }
     }
 }
