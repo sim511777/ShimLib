@@ -298,23 +298,27 @@ v0.0.0.0 - 20191001
             }
             var t1 = Util.GetTimeMs();
 
-            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            var bmpG = Graphics.FromImage(dispBmp);
+            var bmpIG = new ImageGraphics(this, bmpG);
+
+            if (UseDrawPixelValue)
+                DrawPixelValue(bmpIG);
             var t2 = Util.GetTimeMs();
 
-            var ig = new ImageGraphics(this, e.Graphics);
-            if (UseDrawPixelValue)
-                DrawPixelValue(ig);
+            if (UseDrawCenterLine)
+                DrawCenterLine(bmpIG);
             var t3 = Util.GetTimeMs();
 
-            if (UseDrawCenterLine)
-                DrawCenterLine(ig);
+            base.OnPaint(new PaintEventArgs(bmpG, e.ClipRectangle));
             var t4 = Util.GetTimeMs();
 
-            base.OnPaint(e);
-            var t5 = Util.GetTimeMs();
-
             if (UseDrawInfo)
-                DrawInfo(ig);
+                DrawInfo(bmpIG);
+            var t5 = Util.GetTimeMs();
+            
+            bmpG.Dispose();
+
+            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
             var t6 = Util.GetTimeMs();
 
             if (UseDrawDrawTime) {
@@ -341,14 +345,15 @@ ZoomLevelMax : {ZoomLevelMax}
 
 == Draw time ==
 CopyImage : {t1 - t0:0.0}ms
-DrawImage : {t2 - t1:0.0}ms
-PixelValue : {t3 - t2:0.0}ms
-CenterLine : {t4 - t3:0.0}ms
-OnPaint : {t5 - t4:0.0}ms
-CursorInfo : {t6 - t5:0.0}ms
+PixelValue : {t2 - t1:0.0}ms
+CenterLine : {t3 - t2:0.0}ms
+OnPaint : {t4 - t3:0.0}ms
+CursorInfo : {t5 - t4:0.0}ms
+DrawImage : {t6 - t5:0.0}ms
 Total : {t6 - t0:0.0}ms
 ";
-                DrawDrawTime(ig, info);
+                var paintIG = new ImageGraphics(this, e.Graphics);
+                DrawDrawTime(paintIG, info);
             }
         }
 
