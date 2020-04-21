@@ -128,5 +128,9 @@ namespace ShimLib {
                 g.FillRectangle(fillBrush, (float)pt.X, (float)pt.Y, size.Width, size.Height);
             g.DrawString(text, font, fontBrush, pt.ToFloat());
         }
+
+        public void DrawString(string text, double x, double y, bool useImageCoord, Font font, Brush fontBrush, Brush fillBrush) {
+            DrawString(text, new PointD(x, y), useImageCoord, font, fontBrush, fillBrush);
+        }
     }
 }
