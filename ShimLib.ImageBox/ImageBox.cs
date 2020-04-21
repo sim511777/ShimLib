@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using PointD = System.Windows.Point;
+using SkiaSharp;
 
 namespace ShimLib {
     public class ImageBox : Control {
@@ -106,6 +107,7 @@ v0.0.0.0 - 20191001
         private int dispBH;
         private IntPtr dispBuf;
         private Bitmap dispBmp;
+        private SKSurface dispSurf;
 
         // 이미지용 버퍼
         [Browsable(false)]
@@ -137,6 +139,7 @@ v0.0.0.0 - 20191001
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
+        public bool UseSkia { get; set; } = true;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
@@ -162,7 +165,7 @@ v0.0.0.0 - 20191001
             }
         }
         public int ZoomLevelMin { get; set; } = -16;
-        public int ZoomLevelMax { get; set; } = 16; 
+        public int ZoomLevelMax { get; set; } = 16;
         private void GetZoomFactorComponents(out int exp_num, out int c) {
             exp_num = (ZoomLevel >= 0) ? ZoomLevel / 2 : (ZoomLevel - 1) / 2;
             if (ZoomLevel % 2 != 0)
@@ -205,7 +208,7 @@ v0.0.0.0 - 20191001
                     if (ImgBuf == IntPtr.Zero)
                         panY = 0;
                     else
-                        panY = Util.Clamp(value, -ImgBH * GetZoomFactor(), 0); 
+                        panY = Util.Clamp(value, -ImgBH * GetZoomFactor(), 0);
                 } else {
                     panY = value;
                 }
@@ -219,11 +222,11 @@ v0.0.0.0 - 20191001
             ImgBW = bw;
             ImgBH = bh;
             ImgBytepp = bytepp;
-            
+
             BufIsFloat = false;
             FloatPreprocessed = false;
             Util.FreeBuffer(ref grayBuf);
-            
+
             if (bInvalidate)
                 Invalidate();
         }
@@ -234,7 +237,7 @@ v0.0.0.0 - 20191001
             ImgBW = bw;
             ImgBH = bh;
             ImgBytepp = bytepp;
-            
+
             BufIsFloat = true;
             FloatPreprocessed = preprocess;
             Util.FreeBuffer(ref grayBuf);
@@ -301,30 +304,34 @@ v0.0.0.0 - 20191001
             var bmpG = Graphics.FromImage(dispBmp);
             var bmpIG = new ImageGraphics(this, bmpG);
 
-            if (UseDrawPixelValue)
-                DrawPixelValue(bmpIG);
+            if (UseDrawPixelValue) {
+                if (UseSkia)
+                    DrawPixelValue(dispSurf.Canvas);
+                else
+                    DrawPixelValue(bmpIG);
+            }
             var t2 = Util.GetTimeMs();
 
             if (UseDrawCenterLine)
                 DrawCenterLine(bmpIG);
             var t3 = Util.GetTimeMs();
 
-            base.OnPaint(new PaintEventArgs(bmpG, e.ClipRectangle));
-            var t4 = Util.GetTimeMs();
-
             if (UseDrawInfo)
                 DrawInfo(bmpIG);
-            var t5 = Util.GetTimeMs();
-            
+            var t4 = Util.GetTimeMs();
+
             bmpG.Dispose();
 
             e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            var t5 = Util.GetTimeMs();
+
+            base.OnPaint(e);
             var t6 = Util.GetTimeMs();
 
             if (UseDrawDrawTime) {
                 string info =
 $@"== Image ==
-{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp * 8}bpp({(BufIsFloat?"float":"byte")})")}
+{(ImgBuf == IntPtr.Zero ? "X" : $"{ImgBW}*{ImgBH}*{ImgBytepp * 8}bpp({(BufIsFloat ? "float" : "byte")})")}
 
 == Draw option ==
 DrawPixelValue : {(UseDrawPixelValue ? "O" : "X")}
@@ -347,29 +354,26 @@ ZoomLevelMax : {ZoomLevelMax}
 CopyImage : {t1 - t0:0.0}ms
 PixelValue : {t2 - t1:0.0}ms
 CenterLine : {t3 - t2:0.0}ms
-OnPaint : {t4 - t3:0.0}ms
-CursorInfo : {t5 - t4:0.0}ms
-DrawImage : {t6 - t5:0.0}ms
+CursorInfo : {t4 - t3:0.0}ms
+DrawImage : {t5 - t4:0.0}ms
+OnPaint : {t6 - t5:0.0}ms
 Total : {t6 - t0:0.0}ms
 ";
-                var paintIG = new ImageGraphics(this, e.Graphics);
-                DrawDrawTime(paintIG, info);
+                var ig = new ImageGraphics(this, e.Graphics);
+                DrawDrawTime(ig, info);
             }
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사
-        private static unsafe void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel)
-        {
+        private static unsafe void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siys = new int[dbh];
             int[] sixs = new int[dbw];
-            for (int y = 0; y < dbh; y++)
-            {
+            for (int y = 0; y < dbh; y++) {
                 int siy = (int)Math.Floor((y - pany) / zoom);
                 siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy >= sbh) ? -1 : siy;
             }
-            for (int x = 0; x < dbw; x++)
-            {
+            for (int x = 0; x < dbw; x++) {
                 int six = (int)Math.Floor((x - panx) / zoom);
                 sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six >= sbw) ? -1 : six;
             }
@@ -379,61 +383,44 @@ Total : {t6 - t0:0.0}ms
                 int siy = siys[y];
                 byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
                 int* dp = (int*)dbuf + (Int64)dbw * y;
-                for (int x = 0; x < dbw; x++, dp++)
-                {
+                for (int x = 0; x < dbw; x++, dp++) {
                     int six = sixs[x];
-                    if (siy == -1 || six == -1)
-                    {   // out of boundary of image
+                    if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
-                    }
-                    else
-                    {
+                    } else {
                         byte* sp = &sptr[six * bytepp];
-                        if (bytepp == 1)
-                        {          // 8bit gray
+                        if (bytepp == 1) {          // 8bit gray
                             int v = sp[0];
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 2)
-                        {   // 16bit gray (*.hra)
+                        } else if (bytepp == 2) {   // 16bit gray (*.hra)
                             int v = sp[0];
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 3)
-                        {   // 24bit bgr
+                        } else if (bytepp == 3) {   // 24bit bgr
                             *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 4)
-                        {   // 32bit bgra
+                        } else if (bytepp == 4) {   // 32bit bgra
                             *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
                         }
                     }
                 }
             };
 
-            if (useParallel)
-            {
+            if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
-            }
-            else
-            {
+            } else {
                 for (int y = 0; y < dbh; y++) rasterizeAction(y);
             }
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사
-        private static unsafe void CopyImageBufferZoomFloat(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel)
-        {
+        private static unsafe void CopyImageBufferZoomFloat(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siys = new int[dbh];
             int[] sixs = new int[dbw];
-            for (int y = 0; y < dbh; y++)
-            {
+            for (int y = 0; y < dbh; y++) {
                 int siy = (int)Math.Floor((y - pany) / zoom);
                 siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy >= sbh) ? -1 : siy;
             }
-            for (int x = 0; x < dbw; x++)
-            {
+            for (int x = 0; x < dbw; x++) {
                 int six = (int)Math.Floor((x - panx) / zoom);
                 sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six >= sbw) ? -1 : six;
             }
@@ -443,23 +430,16 @@ Total : {t6 - t0:0.0}ms
                 int siy = siys[y];
                 byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
                 int* dp = (int*)dbuf + (Int64)dbw * y;
-                for (int x = 0; x < dbw; x++, dp++)
-                {
+                for (int x = 0; x < dbw; x++, dp++) {
                     int six = sixs[x];
-                    if (siy == -1 || six == -1)
-                    {   // out of boundary of image
+                    if (siy == -1 || six == -1) {   // out of boundary of image
                         *dp = bgColor;
-                    }
-                    else
-                    {
-                        if (bytepp == 4)
-                        {
+                    } else {
+                        if (bytepp == 4) {
                             float* sp = (float*)&sptr[six * bytepp];
                             int v = Util.Clamp((int)*sp, 0, 255);
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 8)
-                        {
+                        } else if (bytepp == 8) {
                             double* sp = (double*)&sptr[six * bytepp];
                             int v = Util.Clamp((int)*sp, 0, 255);
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
@@ -468,19 +448,15 @@ Total : {t6 - t0:0.0}ms
                 }
             };
 
-            if (useParallel)
-            {
+            if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
-            }
-            else
-            {
+            } else {
                 for (int y = 0; y < dbh; y++) rasterizeAction(y);
             }
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
-        private static unsafe void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel)
-        {
+        private static unsafe void CopyImageBufferZoomIpl(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siy0s = new int[dbh];
             int[] siy1s = new int[dbh];
@@ -490,11 +466,9 @@ Total : {t6 - t0:0.0}ms
             int[] sity1s = new int[dbh];
             int[] sitx0s = new int[dbw];
             int[] sitx1s = new int[dbw];
-            for (int y = 0; y < dbh; y++)
-            {
+            for (int y = 0; y < dbh; y++) {
                 double siy = (y + 0.5 - pany) / zoom - 0.5;
-                if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh - 0.5)
-                {
+                if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh - 0.5) {
                     siy0s[y] = -1;
                     continue;
                 }
@@ -505,11 +479,9 @@ Total : {t6 - t0:0.0}ms
                 siy0s[y] = Util.Clamp(siy0, 0, sbh - 1);
                 siy1s[y] = Util.Clamp(siy1, 0, sbh - 1);
             }
-            for (int x = 0; x < dbw; x++)
-            {
+            for (int x = 0; x < dbw; x++) {
                 double six = (x + 0.5 - panx) / zoom - 0.5;
-                if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5)
-                {
+                if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5) {
                     six0s[x] = -1;
                     continue;
                 }
@@ -530,16 +502,12 @@ Total : {t6 - t0:0.0}ms
                 int* dp = (int*)dbuf + (Int64)dbw * y;
                 int ty0 = sity0s[y];
                 int ty1 = sity1s[y];
-                for (int x = 0; x < dbw; x++, dp++)
-                {
+                for (int x = 0; x < dbw; x++, dp++) {
                     int six0 = six0s[x];
                     int six1 = six1s[x];
-                    if (siy0 == -1 || six0 == -1)
-                    {   // out of boundary of image
+                    if (siy0 == -1 || six0 == -1) {   // out of boundary of image
                         *dp = bgColor;
-                    }
-                    else
-                    {
+                    } else {
                         byte* sp00 = &sptr0[six0 * bytepp];
                         byte* sp01 = &sptr0[six1 * bytepp];
                         byte* sp10 = &sptr1[six0 * bytepp];
@@ -550,25 +518,18 @@ Total : {t6 - t0:0.0}ms
                         int t01 = ty0 * tx1;
                         int t10 = ty1 * tx0;
                         int t11 = ty1 * tx1;
-                        if (bytepp == 1)
-                        {          // 8bit gray
+                        if (bytepp == 1) {          // 8bit gray
                             int v = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 2)
-                        {   // 16bit gray (*.hra)
+                        } else if (bytepp == 2) {   // 16bit gray (*.hra)
                             int v = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
                             *dp = v | v << 8 | v << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 3)
-                        {   // 24bit bgr
+                        } else if (bytepp == 3) {   // 24bit bgr
                             int b = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
                             int g = (sp00[1] * t00 + sp01[1] * t01 + sp10[1] * t10 + sp11[1] * t11) >> 16;
                             int r = (sp00[2] * t00 + sp01[2] * t01 + sp10[2] * t10 + sp11[2] * t11) >> 16;
                             *dp = b | g << 8 | r << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 4)
-                        {   // 32bit bgra
+                        } else if (bytepp == 4) {   // 32bit bgra
                             int b = (sp00[0] * t00 + sp01[0] * t01 + sp10[0] * t10 + sp11[0] * t11) >> 16;
                             int g = (sp00[1] * t00 + sp01[1] * t01 + sp10[1] * t10 + sp11[1] * t11) >> 16;
                             int r = (sp00[2] * t00 + sp01[2] * t01 + sp10[2] * t10 + sp11[2] * t11) >> 16;
@@ -578,19 +539,15 @@ Total : {t6 - t0:0.0}ms
                 }
             };
 
-            if (useParallel)
-            {
+            if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
-            }
-            else
-            {
+            } else {
                 for (int y = 0; y < dbh; y++) rasterizeAction(y);
             }
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사 확대시에 선형보간
-        private static unsafe void CopyImageBufferZoomIplFloat(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel)
-        {
+        private static unsafe void CopyImageBufferZoomIplFloat(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool useParallel) {
             // 인덱스 버퍼 생성
             int[] siy0s = new int[dbh];
             int[] siy1s = new int[dbh];
@@ -600,11 +557,9 @@ Total : {t6 - t0:0.0}ms
             double[] sity1s = new double[dbh];
             double[] sitx0s = new double[dbw];
             double[] sitx1s = new double[dbw];
-            for (int y = 0; y < dbh; y++)
-            {
+            for (int y = 0; y < dbh; y++) {
                 double siy = (y + 0.5 - pany) / zoom - 0.5;
-                if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh - 0.5)
-                {
+                if (sbuf == IntPtr.Zero || siy < -0.5 || siy >= sbh - 0.5) {
                     siy0s[y] = -1;
                     continue;
                 }
@@ -615,11 +570,9 @@ Total : {t6 - t0:0.0}ms
                 siy0s[y] = Util.Clamp(siy0, 0, sbh - 1);
                 siy1s[y] = Util.Clamp(siy1, 0, sbh - 1);
             }
-            for (int x = 0; x < dbw; x++)
-            {
+            for (int x = 0; x < dbw; x++) {
                 double six = (x + 0.5 - panx) / zoom - 0.5;
-                if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5)
-                {
+                if (sbuf == IntPtr.Zero || six < -0.5 || six >= sbw - 0.5) {
                     six0s[x] = -1;
                     continue;
                 }
@@ -640,16 +593,12 @@ Total : {t6 - t0:0.0}ms
                 int* dp = (int*)dbuf + (Int64)dbw * y;
                 double ty0 = sity0s[y];
                 double ty1 = sity1s[y];
-                for (int x = 0; x < dbw; x++, dp++)
-                {
+                for (int x = 0; x < dbw; x++, dp++) {
                     int six0 = six0s[x];
                     int six1 = six1s[x];
-                    if (siy0 == -1 || six0 == -1)
-                    {   // out of boundary of image
+                    if (siy0 == -1 || six0 == -1) {   // out of boundary of image
                         *dp = bgColor;
-                    }
-                    else
-                    {
+                    } else {
                         byte* sp00 = &sptr0[six0 * bytepp];
                         byte* sp01 = &sptr0[six1 * bytepp];
                         byte* sp10 = &sptr1[six0 * bytepp];
@@ -660,14 +609,11 @@ Total : {t6 - t0:0.0}ms
                         double t01 = ty0 * tx1;
                         double t10 = ty1 * tx0;
                         double t11 = ty1 * tx1;
-                        if (bytepp == 4)
-                        {
+                        if (bytepp == 4) {
                             double v = *(float*)sp00 * t00 + *(float*)sp01 * t01 + *(float*)sp10 * t10 + *(float*)sp11 * t11;
                             int iv = Util.Clamp((int)v, 0, 255);
                             *dp = iv | iv << 8 | iv << 16 | 0xff << 24;
-                        }
-                        else if (bytepp == 8)
-                        {
+                        } else if (bytepp == 8) {
                             double v = *(double*)sp00 * t00 + *(double*)sp01 * t01 + *(double*)sp10 * t10 + *(double*)sp11 * t11;
                             int iv = Util.Clamp((int)v, 0, 255);
                             *dp = iv | iv << 8 | iv << 16 | 0xff << 24;
@@ -676,12 +622,9 @@ Total : {t6 - t0:0.0}ms
                 }
             };
 
-            if (useParallel)
-            {
+            if (useParallel) {
                 Parallel.For(0, dbh, rasterizeAction);
-            }
-            else
-            {
+            } else {
                 for (int y = 0; y < dbh; y++) rasterizeAction(y);
             }
         }
@@ -793,10 +736,14 @@ Total : {t6 - t0:0.0}ms
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Util.AllocBuffer(dispBW * dispBH * 4);
             dispBmp = new Bitmap(dispBW, dispBH, dispBW * 4, PixelFormat.Format32bppPArgb, dispBuf);
+            SKImageInfo ski = new SKImageInfo(dispBW, dispBH, SKColorType.Bgra8888, SKAlphaType.Premul);
+            dispSurf = SKSurface.Create(ski, dispBuf, dispBW * 4);
         }
 
         // 표시 버퍼 해제
         private void FreeDispBuf() {
+            if (dispSurf != null)
+                dispSurf.Dispose();
             if (dispBmp != null)
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
@@ -880,6 +827,59 @@ Total : {t6 - t0:0.0}ms
             }
         }
 
+        // 이미지 픽셀값 표시
+        private static readonly SKColor[] pseudoSki = {
+            SKColors.White,      // 0~31
+            SKColors.Cyan,       // 32~63
+            SKColors.DodgerBlue, // 63~95
+            SKColors.Yellow,     // 96~127
+            SKColors.Brown,      // 128~159
+            SKColors.DarkViolet, // 160~191
+            SKColors.Red    ,    // 192~223
+            SKColors.Black,      // 224~255
+        };
+
+        private void DrawPixelValue(SKCanvas cnv) {
+            double ZoomFactor = GetZoomFactor();
+            double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
+            if (BufIsFloat)
+                pixeValFactor *= 0.6;
+            if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
+                return;
+
+            var ptDisp1 = new PointD(0, 0);
+            var ptDisp2 = new PointD(ClientSize.Width, ClientSize.Height);
+            var ptImg1 = DispToImg(ptDisp1);
+            var ptImg2 = DispToImg(ptDisp2);
+            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW - 1);
+            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH - 1);
+            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
+            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
+
+            using (var paint = new SKPaint()) {
+                paint.IsAntialias = true;
+                paint.StrokeWidth = 1;
+                paint.BlendMode = SKBlendMode.Src;
+
+                paint.Typeface = SKTypeface.FromFamilyName(PixelValueDispFont.Name);
+                paint.TextSize = PixelValueDispFont.SizeInPoints * 1.4f;
+                paint.StrokeWidth = 5;
+                paint.TextAlign = SKTextAlign.Left;
+                float fontHeight = paint.TextSize;
+
+                for (int imgY = imgY1; imgY <= imgY2; imgY++) {
+                    for (int imgX = imgX1; imgX <= imgX2; imgX++) {
+                        string pixelValText = GetImagePixelValueText(imgX, imgY);
+                        int pixelVal = GetImagePixelValueAverage(imgX, imgY);
+                        paint.Color = pseudoSki[pixelVal / 32];
+                        PointD ptImg = new PointD(imgX, imgY);
+                        PointD ptDisp = this.ImgToDisp(ptImg);
+                        cnv.DrawText(pixelValText, (float)ptDisp.X, (float)ptDisp.Y + fontHeight, paint);
+                    }
+                }
+            }
+        }
+
         // 좌상단 정보 표시
         private void DrawInfo(ImageGraphics ig) {
             Point ptCur = ptMouseLast;
@@ -926,7 +926,7 @@ Total : {t6 - t0:0.0}ms
                 return "";
 
             IntPtr ptr = (IntPtr)(ImgBuf.ToInt64() + ((long)ImgBW * y + x) * ImgBytepp);
-            
+
             if (!BufIsFloat) {
                 if (ImgBytepp == 1)
                     return Marshal.ReadByte(ptr).ToString();
@@ -946,7 +946,7 @@ Total : {t6 - t0:0.0}ms
         private unsafe int GetImagePixelValueAverage(int x, int y) {
             if (ImgBuf == IntPtr.Zero || x < 0 || x >= ImgBW || y < 0 || y >= ImgBH)
                 return 0;
-            
+
             IntPtr ptr = (IntPtr)(ImgBuf.ToInt64() + ((long)ImgBW * y + x) * ImgBytepp);
 
             if (!BufIsFloat) {

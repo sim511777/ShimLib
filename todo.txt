@@ -5,6 +5,7 @@ ok pseudo 기본 컬러 더 잘보이는 것으로 수정
 ok 비트맵 폰트 렌더링 기능 삭제
 ok DrawString 함수에서 double x, double y 파라미터 받는 함수 추가 할것
 ok 그래픽은 이미지버퍼에 모두 그릴것
+ok dispBmp 임시 객체로 생성
 
 그래픽 렌더러 SKIA 추가 할것
  - 렌더링 시간 줄일수 있음

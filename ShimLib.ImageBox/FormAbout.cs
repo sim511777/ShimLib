@@ -70,6 +70,7 @@ namespace ShimLib {
     public class ImageBoxOption {
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; }
+        public bool UseSkia { get; set; }
         public bool UseDrawInfo { get; set; }
         public bool UseDrawCenterLine { get; set; }
         public bool UseDrawDrawTime { get; set; }
@@ -94,6 +95,7 @@ namespace ShimLib {
 
         public void FromImageBox(ImageBox pbx) {
             this.UseDrawPixelValue = pbx.UseDrawPixelValue;
+            this.UseSkia = pbx.UseSkia;
             this.UseDrawInfo = pbx.UseDrawInfo;
             this.UseDrawCenterLine = pbx.UseDrawCenterLine;
             this.UseDrawDrawTime = pbx.UseDrawDrawTime;
@@ -111,7 +113,7 @@ namespace ShimLib {
             this.ZoomLevel = pbx.ZoomLevel;
             this.ZoomLevelMin = pbx.ZoomLevelMin;
             this.ZoomLevelMax = pbx.ZoomLevelMax;
-            
+
             this.PanX = pbx.PanX;
             this.PanY = pbx.PanY;
             this.UseMousePanClamp = pbx.UseMousePanClamp;
@@ -119,20 +121,21 @@ namespace ShimLib {
 
         public void ToImageBox(ImageBox pbx) {
             pbx.UseDrawPixelValue = this.UseDrawPixelValue;
+            pbx.UseSkia = this.UseSkia;
             pbx.UseDrawInfo = this.UseDrawInfo;
             pbx.UseDrawCenterLine = this.UseDrawCenterLine;
             pbx.UseDrawDrawTime = this.UseDrawDrawTime;
             pbx.UseInterPorlation = this.UseInterPorlation;
             pbx.UseParallel = this.UseParallel;
-            
+
             pbx.BackColor = this.BackColor;
             pbx.Font = this.Font;
             pbx.PixelValueDispFont = this.PixelValueDispFont;
             pbx.PixelValueDispZoomFactor = this.PixelValueDispZoomFactor;
-            
+
             pbx.UseMouseMove = this.UseMouseMove;
             pbx.UseMouseWheelZoom = this.UseMouseWheelZoom;
-            
+
             pbx.ZoomLevel = this.ZoomLevel;
             pbx.ZoomLevelMin = this.ZoomLevelMin;
             pbx.ZoomLevelMax = this.ZoomLevelMax;
