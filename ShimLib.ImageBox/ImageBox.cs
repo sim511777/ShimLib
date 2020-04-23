@@ -858,15 +858,8 @@ Total : {t6 - t0:0.0}ms
 
             using (var paint = new SKPaint()) {
                 paint.IsAntialias = true;
-                paint.StrokeWidth = 1;
-                paint.BlendMode = SKBlendMode.Src;
-
                 paint.Typeface = SKTypeface.FromFamilyName(PixelValueDispFont.Name);
-                paint.TextSize = PixelValueDispFont.SizeInPoints * 1.4f;
-                paint.StrokeWidth = 5;
-                paint.TextAlign = SKTextAlign.Left;
-                float fontHeight = paint.TextSize;
-
+                paint.TextSize = PixelValueDispFont.Height;
                 for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                     for (int imgX = imgX1; imgX <= imgX2; imgX++) {
                         string pixelValText = GetImagePixelValueText(imgX, imgY);
@@ -874,7 +867,7 @@ Total : {t6 - t0:0.0}ms
                         paint.Color = pseudoSki[pixelVal / 32];
                         PointD ptImg = new PointD(imgX, imgY);
                         PointD ptDisp = this.ImgToDisp(ptImg);
-                        cnv.DrawText(pixelValText, (float)ptDisp.X, (float)ptDisp.Y + fontHeight, paint);
+                        cnv.DrawText(pixelValText, (float)ptDisp.X, (float)ptDisp.Y + paint.TextSize, paint);
                     }
                 }
             }
