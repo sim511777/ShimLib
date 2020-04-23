@@ -9,6 +9,7 @@ ok dispBmp 임시 객체로 생성
 
 그래픽 렌더러 SKIA 추가 할것
  - 렌더링 시간 줄일수 있음
+ - 폰트명 변경이 안되는 버그 있음
 그래픽 렌더러 인터페이스 구조로 만들것 GDI+ / SKIA
 OnPaintBitmap 이벤트 추가
 OnPiant 대신에 BufferedGraphics로 할것
