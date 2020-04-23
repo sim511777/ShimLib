@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using PointD = System.Windows.Point;
 using SkiaSharp;
 
 namespace ShimLib {
@@ -955,6 +954,15 @@ Total : {t6 - t0:0.0}ms
                 else
                     return Util.Clamp((int)*(double*)ptr, 0, 255);
             }
+        }
+    }
+
+    public struct PointD {
+        public double X;
+        public double Y;
+        public PointD(double x, double y) {
+            X = x;
+            Y = y;
         }
     }
 

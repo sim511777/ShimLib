@@ -12,7 +12,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PointD = System.Windows.Point;
 
 namespace ShimLibTest {
     public partial class FormMain : Form {

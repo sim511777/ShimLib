@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PointD = System.Windows.Point;
 
 namespace ShimLib {
     public class ImageGraphics {
