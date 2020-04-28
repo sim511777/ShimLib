@@ -13,6 +13,12 @@ using System.Diagnostics;
 using SkiaSharp;
 
 namespace ShimLib {
+    public enum PixelValueRenderer {
+        GdiPlus,
+        Skia,
+        Bitmap,
+    }
+
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox for .NET
@@ -138,7 +144,7 @@ v0.0.0.0 - 20191001
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
-        public bool UseSkia { get; set; } = true;
+        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Skia;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
@@ -304,10 +310,12 @@ v0.0.0.0 - 20191001
             var bmpIG = new ImageGraphics(this, bmpG);
 
             if (UseDrawPixelValue) {
-                if (UseSkia)
+                if (DrawPixelValueMode == PixelValueRenderer.Skia)
                     DrawPixelValue(dispSurf.Canvas);
-                else
+                else if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
                     DrawPixelValue(bmpIG);
+                else
+                    DrawPixelValueBitmap();
             }
             var t2 = Util.GetTimeMs();
 
@@ -821,6 +829,34 @@ Total : {t6 - t0:0.0}ms
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     var brush = pseudo[pixelVal / 32];
+                    ig.DrawString(pixelValText, new PointD(imgX, imgY), true, PixelValueDispFont, brush, null);
+                }
+            }
+        }
+
+        private void DrawPixelValueBitmap() {
+            double ZoomFactor = GetZoomFactor();
+            double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
+            if (BufIsFloat)
+                pixeValFactor *= 0.6;
+            if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
+                return;
+
+            var ptDisp1 = new PointD(0, 0);
+            var ptDisp2 = new PointD(ClientSize.Width, ClientSize.Height);
+            var ptImg1 = DispToImg(ptDisp1);
+            var ptImg2 = DispToImg(ptDisp2);
+            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW - 1);
+            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH - 1);
+            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
+            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
+
+            for (int imgY = imgY1; imgY <= imgY2; imgY++) {
+                for (int imgX = imgX1; imgX <= imgX2; imgX++) {
+                    string pixelValText = GetImagePixelValueText(imgX, imgY);
+                    int pixelVal = GetImagePixelValueAverage(imgX, imgY);
+                    var brush = pseudo[pixelVal / 32];
+                    FontRenderer.DrawString(dispBuf, dispBW, dispBH, )
                     ig.DrawString(pixelValText, new PointD(imgX, imgY), true, PixelValueDispFont, brush, null);
                 }
             }
