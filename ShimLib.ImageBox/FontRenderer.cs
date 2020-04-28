@@ -27,22 +27,33 @@ namespace ShimLib {
             }
         }
         
-        public static void DrawString(IntPtr dispBuf, int bw, int bh, string text, int x, int y, Color color) {
+        public static void DrawString(string text, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, Color color) {
             int icolor = color.ToArgb();
             byte[] bytes = Encoding.ASCII.GetBytes(text);
+            int x = dx;
+            int y = dy;
             foreach (var b in bytes) {
                 var fontBuffer = fontBuffers[b];
-                DrawByte(dispBuf, bw, bh, x, y, fontBuffer, icolor);
+                if (b == 0x0d) {
+                    continue;
+                }
+                if (b == 0x0a) {
+                    x = dx;
+                    y += fontBuffer.bh;
+                    continue;
+                }
+                DrawByte(fontBuffer, dispBuf, dispBW, dispBH, x, y, icolor);
                 x += fontBuffer.bw;
             }
         }
 
-        private unsafe static void DrawByte(IntPtr dispBuf, int bw, int bh, int dx, int dy, ImageBuffer fbuf, int icolor) {
-            if (dx < 0 || dy < 0 || dx + fbuf.bw >= bw || dy + fbuf.bh >= bh)
+        private unsafe static void DrawByte(ImageBuffer fbuf, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
+            if (dx < 0 || dy < 0 || dx + fbuf.bw >= dispBW || dy + fbuf.bh >= dispBH)
                 return;
+
             for (int y = 0; y < fbuf.bh; y++) {
                 byte* src = (byte*)fbuf.buf + fbuf.bw * y;
-                int* dst = (int*)dispBuf + bw * (dy + y) + dx;
+                int* dst = (int*)dispBuf + dispBW * (dy + y) + dx;
                 for (int x = 0; x < fbuf.bw; x++, src++, dst++) {
                     if (*src == 0) {
                         *dst = icolor;

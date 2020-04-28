@@ -144,7 +144,7 @@ v0.0.0.0 - 20191001
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
-        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Skia;
+        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Bitmap;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
@@ -160,7 +160,7 @@ v0.0.0.0 - 20191001
         // 줌 파라미터
         // ZoomLevel = 0 => ZoomFactor = 1;
         // { 1/1024d,  3/2048d,  1/512d,  3/1024d,  1/256d,  3/512d,  1/128d,  3/256d,  1/64d,  3/128d,  1/32d,  3/64d,  1/16d,  3/32d,  1/8d,  3/16d,  1/4d,  3/8d,  1/2d,  3/4d,  1d,  3/2d,  2d,  3d,  4d,  6d,  8d,  12d,  16d,  24d,  32d,  48d,  64d,  96d,  128d,  192d,  256d,  384d,  512d,  768d,  1024d, };
-        private int zoomLevel = 0;
+        private int zoomLevel = 8;
         public int ZoomLevel {
             get {
                 return zoomLevel;
@@ -796,15 +796,15 @@ Total : {t6 - t0:0.0}ms
         }
 
         // 이미지 픽셀값 표시
-        private static readonly Brush[] pseudo = {
-            Brushes.White,      // 0~31
-            Brushes.Cyan,       // 32~63
-            Brushes.DodgerBlue, // 63~95
-            Brushes.Yellow,     // 96~127
-            Brushes.Brown,      // 128~159
-            Brushes.DarkViolet, // 160~191
-            Brushes.Red    ,    // 192~223
-            Brushes.Black,      // 224~255
+        private static readonly Color[] pseudo = {
+            Color.White,      // 0~31
+            Color.Cyan,       // 32~63
+            Color.DodgerBlue, // 63~95
+            Color.Yellow,     // 96~127
+            Color.Brown,      // 128~159
+            Color.DarkViolet, // 160~191
+            Color.Red    ,    // 192~223
+            Color.Black,      // 224~255
         };
 
         private void DrawPixelValue(ImageGraphics ig) {
@@ -824,14 +824,16 @@ Total : {t6 - t0:0.0}ms
             int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
             int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
 
+            SolidBrush brush = new SolidBrush(Color.Black);
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
-                    var brush = pseudo[pixelVal / 32];
+                    brush.Color = pseudo[pixelVal / 32];
                     ig.DrawString(pixelValText, new PointD(imgX, imgY), true, PixelValueDispFont, brush, null);
                 }
             }
+            brush.Dispose();
         }
 
         private void DrawPixelValueBitmap() {
@@ -855,9 +857,10 @@ Total : {t6 - t0:0.0}ms
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
-                    var brush = pseudo[pixelVal / 32];
-                    FontRenderer.DrawString(dispBuf, dispBW, dispBH, )
-                    ig.DrawString(pixelValText, new PointD(imgX, imgY), true, PixelValueDispFont, brush, null);
+                    PointD ptImg = new PointD(imgX, imgY);
+                    PointD ptDisp = this.ImgToDisp(ptImg);
+                    var color = pseudo[pixelVal / 32];
+                    FontRenderer.DrawString(pixelValText, dispBuf, dispBW, dispBH, (int)ptDisp.X, (int)ptDisp.Y, color);
                 }
             }
         }

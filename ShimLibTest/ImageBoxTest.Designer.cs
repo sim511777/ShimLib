@@ -78,7 +78,6 @@
             this.pbxDraw.UseMousePanClamp = true;
             this.pbxDraw.UseMouseWheelZoom = true;
             this.pbxDraw.UseParallel = false;
-            this.pbxDraw.ZoomLevel = 0;
             this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);

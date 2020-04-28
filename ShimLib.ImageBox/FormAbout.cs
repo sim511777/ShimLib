@@ -70,7 +70,7 @@ namespace ShimLib {
     public class ImageBoxOption {
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; }
-        public bool UseSkia { get; set; }
+        public PixelValueRenderer DrawPixelValueMode { get; set; }
         public bool UseDrawInfo { get; set; }
         public bool UseDrawCenterLine { get; set; }
         public bool UseDrawDrawTime { get; set; }
@@ -95,7 +95,7 @@ namespace ShimLib {
 
         public void FromImageBox(ImageBox pbx) {
             this.UseDrawPixelValue = pbx.UseDrawPixelValue;
-            this.UseSkia = pbx.UseSkia;
+            this.DrawPixelValueMode = pbx.DrawPixelValueMode;
             this.UseDrawInfo = pbx.UseDrawInfo;
             this.UseDrawCenterLine = pbx.UseDrawCenterLine;
             this.UseDrawDrawTime = pbx.UseDrawDrawTime;
@@ -121,7 +121,7 @@ namespace ShimLib {
 
         public void ToImageBox(ImageBox pbx) {
             pbx.UseDrawPixelValue = this.UseDrawPixelValue;
-            pbx.UseSkia = this.UseSkia;
+            pbx.DrawPixelValueMode = this.DrawPixelValueMode;
             pbx.UseDrawInfo = this.UseDrawInfo;
             pbx.UseDrawCenterLine = this.UseDrawCenterLine;
             pbx.UseDrawDrawTime = this.UseDrawDrawTime;
