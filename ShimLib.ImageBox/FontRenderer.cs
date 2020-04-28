@@ -8,26 +8,27 @@ using System.Threading.Tasks;
 
 namespace ShimLib {
     public class FontRenderer {
-        static ImageBuffer[] fontBuffers;
-        static unsafe FontRenderer() {
+        private ImageBuffer[] fontBuffers;
+        public FontRenderer(Bitmap bmp, int fontBW, int fontBH) {
             fontBuffers = new ImageBuffer[256];
-            using (ImageBuffer fontImage = new ImageBuffer(Properties.Resources.tom_thumb_new)) {
-                int bw = 4;
-                int bh = 6;
-                int bytepp = 1;
+            using (ImageBuffer fontImage = new ImageBuffer(bmp)) {
                 for (int i = 0; i < 256; i++) {
-                    IntPtr buf = Marshal.AllocHGlobal(bw * bytepp * bh);
-                    fontBuffers[i] = new ImageBuffer(buf, bw, bh, bytepp, true);
-                    for (int y = 0; y < bh; y++) {
-                        IntPtr src = fontImage.buf + fontImage.bw * y + bw * i;
-                        IntPtr dst = buf + bw * y;
-                        Util.Memcpy4(dst, src, 1);
+                    IntPtr buf = Marshal.AllocHGlobal(fontBW * fontBH);
+                    fontBuffers[i] = new ImageBuffer(buf, fontBW, fontBH, 1, true);
+                    if (i >= 48 && i < 58) {
+                        for (int y = 0; y < fontBH; y++) {
+                            IntPtr src = fontImage.buf + fontImage.bw * y + fontBW * (i-48);
+                            IntPtr dst = buf + fontBW * y;
+                            Util.Memcpy(dst, src, fontBW);
+                        }
+                    } else {
+                        Util.Memset(buf, 255, fontBW * fontBH);
                     }
                 }
             }
         }
         
-        public static void DrawString(string text, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, Color color) {
+        public void DrawString(string text, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, Color color) {
             int icolor = color.ToArgb();
             byte[] bytes = Encoding.ASCII.GetBytes(text);
             int x = dx;

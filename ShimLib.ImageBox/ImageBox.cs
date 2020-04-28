@@ -16,7 +16,10 @@ namespace ShimLib {
     public enum PixelValueRenderer {
         GdiPlus,
         Skia,
-        Bitmap,
+        Bitmap_4x6,
+        Bitmap_4x6_Round,
+        Bitmap_5x8,
+        Bitmap_5x8_Round,
     }
 
     public class ImageBox : Control {
@@ -113,6 +116,10 @@ v0.0.0.0 - 20191001
         private IntPtr dispBuf;
         private Bitmap dispBmp;
         private SKSurface dispSurf;
+        private FontRenderer font4x6;
+        private FontRenderer font4x6Round;
+        private FontRenderer font5x8;
+        private FontRenderer font5x8Round;
 
         // 이미지용 버퍼
         [Browsable(false)]
@@ -134,6 +141,10 @@ v0.0.0.0 - 20191001
         // 생성자
         public ImageBox() {
             DoubleBuffered = true;
+            font4x6 = new FontRenderer(Properties.Resources.FontDigit_4x6, 4, 6);
+            font4x6Round = new FontRenderer(Properties.Resources.FontDigit_4x6_round, 4, 6);
+            font5x8 = new FontRenderer(Properties.Resources.FontDigit_5x8, 5, 8);
+            font5x8Round = new FontRenderer(Properties.Resources.FontDigit_5x8_round, 5, 8);
         }
 
         protected override void Dispose(bool disposing) {
@@ -144,7 +155,7 @@ v0.0.0.0 - 20191001
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
-        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Bitmap;
+        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Bitmap_5x8_Round;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
@@ -310,12 +321,20 @@ v0.0.0.0 - 20191001
             var bmpIG = new ImageGraphics(this, bmpG);
 
             if (UseDrawPixelValue) {
-                if (DrawPixelValueMode == PixelValueRenderer.Skia)
-                    DrawPixelValue(dispSurf.Canvas);
-                else if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
+                if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
                     DrawPixelValue(bmpIG);
-                else
-                    DrawPixelValueBitmap();
+                else if (DrawPixelValueMode == PixelValueRenderer.Skia)
+                    DrawPixelValue(dispSurf.Canvas);
+                else {
+                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_4x6)
+                        DrawPixelValueBitmap(font4x6);
+                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_4x6_Round)
+                        DrawPixelValueBitmap(font4x6Round);
+                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_5x8)
+                        DrawPixelValueBitmap(font5x8);
+                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_5x8_Round)
+                        DrawPixelValueBitmap(font5x8Round);
+                }
             }
             var t2 = Util.GetTimeMs();
 
@@ -836,7 +855,7 @@ Total : {t6 - t0:0.0}ms
             brush.Dispose();
         }
 
-        private void DrawPixelValueBitmap() {
+        private void DrawPixelValueBitmap(FontRenderer fontRnd) {
             double ZoomFactor = GetZoomFactor();
             double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
             if (BufIsFloat)
@@ -860,7 +879,7 @@ Total : {t6 - t0:0.0}ms
                     PointD ptImg = new PointD(imgX, imgY);
                     PointD ptDisp = this.ImgToDisp(ptImg);
                     var color = pseudo[pixelVal / 32];
-                    FontRenderer.DrawString(pixelValText, dispBuf, dispBW, dispBH, (int)ptDisp.X, (int)ptDisp.Y, color);
+                    fontRnd.DrawString(pixelValText, dispBuf, dispBW, dispBH, (int)ptDisp.X, (int)ptDisp.Y, color);
                 }
             }
         }
