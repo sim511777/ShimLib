@@ -17,18 +17,23 @@ namespace ShimLib {
             InitializeComponent();
         }
 
+        ImageBoxOption optBackup;
+
         private void FormAbout_Load(object sender, EventArgs e) {
             tbxVersion.Text = ImageBox.VersionHistory;
+            optBackup = new ImageBoxOption();
+            optBackup.FromImageBox(pbx);
             ImageBoxOption option = new ImageBoxOption();
             option.FromImageBox(pbx);
             grdOption.SelectedObject = option;
         }
 
         private void FormAbout_FormClosed(object sender, FormClosedEventArgs e) {
-            if (this.DialogResult != DialogResult.OK)
+            if (this.DialogResult == DialogResult.Cancel) {
+                optBackup.ToImageBox(pbx);
+                pbx.Refresh();
                 return;
-            var option = grdOption.SelectedObject as ImageBoxOption;
-            option.ToImageBox(pbx);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
@@ -64,6 +69,12 @@ namespace ShimLib {
             var bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
             Clipboard.SetImage(bmp);
             bmp.Dispose();
+        }
+
+        private void grdOption_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) {
+            var option = grdOption.SelectedObject as ImageBoxOption;
+            option.ToImageBox(pbx);
+            pbx.Refresh();
         }
     }
 

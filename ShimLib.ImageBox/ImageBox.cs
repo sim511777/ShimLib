@@ -26,6 +26,18 @@ namespace ShimLib {
         public const string VersionHistory =
 @"ImageBox for .NET
 
+v1.0.0.15 - 20200429
+1. ShimLib.Util.dll 분리
+2. CopyImageBuffer 함수 Util클래스에서 ImageBox 클래스로 이동
+3. 1bit bmp 로딩 가능하도록 수정
+4. DrawString 함수 하나로 통일
+5. 그래픽은 이미지버퍼에 모두 그림
+6. DrawPixelValue()에 SKIA 사용 - 렌더링 시간 줄일수 있음
+7. WPF PointD 없애고 직접 정의
+8. ImageBuffer 클래스 추가
+9. Bitmap FontRenderer 추가
+10. 설정창 속성 변경시 즉시 적용, 취소시 원복
+
 v1.0.0.14 - 20200325
 1. ZoomLevelMin, ZoomLevelMax 속성 추가
 2. UseMousePanClamp 속성 추가
@@ -361,6 +373,7 @@ $@"== Image ==
 
 == Draw option ==
 DrawPixelValue : {(UseDrawPixelValue ? "O" : "X")}
+ -> : {DrawPixelValueMode}
 DrawInfo : {(UseDrawInfo ? "O" : "X")}
 DrawCenterLine : {(UseDrawCenterLine ? "O" : "X")}
 DrawDrawTime : {(UseDrawDrawTime ? "O" : "X")}
@@ -749,9 +762,7 @@ Total : {t6 - t0:0.0}ms
         // 어바웃 / 옵션 창 띄움
         public void ShowAbout() {
             var frmAbout = new FormAbout(this);
-            var dr = frmAbout.ShowDialog(this);
-            if (dr == DialogResult.OK)
-                this.Invalidate();
+            frmAbout.ShowDialog(this);
         }
 
         // 표시 버퍼 생성
