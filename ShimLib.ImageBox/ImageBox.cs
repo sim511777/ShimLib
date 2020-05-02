@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using SkiaSharp;
+using ShimLib.Properties;
 
 namespace ShimLib {
     public enum PixelValueRenderer {
@@ -20,6 +21,7 @@ namespace ShimLib {
         Bitmap_4x6_Round,
         Bitmap_5x8,
         Bitmap_5x8_Round,
+        Unifont,
     }
 
     public class ImageBox : Control {
@@ -37,6 +39,7 @@ v1.0.0.15 - 20200429
 8. ImageBuffer 클래스 추가
 9. Bitmap FontRenderer 추가
 10. 설정창 속성 변경시 즉시 적용, 취소시 원복
+11. UniFont 렌더링 기능 추가
 
 v1.0.0.14 - 20200325
 1. ZoomLevelMin, ZoomLevelMax 속성 추가
@@ -132,6 +135,7 @@ v0.0.0.0 - 20191001
         private FontRenderer font4x6Round;
         private FontRenderer font5x8;
         private FontRenderer font5x8Round;
+        private FontRenderer unifont;
 
         // 이미지용 버퍼
         [Browsable(false)]
@@ -153,10 +157,11 @@ v0.0.0.0 - 20191001
         // 생성자
         public ImageBox() {
             DoubleBuffered = true;
-            font4x6 = new FontRenderer(Properties.Resources.FontDigit_4x6, 4, 6);
-            font4x6Round = new FontRenderer(Properties.Resources.FontDigit_4x6_round, 4, 6);
-            font5x8 = new FontRenderer(Properties.Resources.FontDigit_5x8, 5, 8);
-            font5x8Round = new FontRenderer(Properties.Resources.FontDigit_5x8_round, 5, 8);
+            font4x6 = new FontRenderer(Resources.FontDigit_4x6, 4, 6, true);
+            font4x6Round = new FontRenderer(Resources.FontDigit_4x6_round, 4, 6, true);
+            font5x8 = new FontRenderer(Resources.FontDigit_5x8, 5, 8, true);
+            font5x8Round = new FontRenderer(Resources.FontDigit_5x8_round, 5, 8, true);
+            unifont = new FontRenderer(Resources.unifont, 16, 16, false);
         }
 
         protected override void Dispose(bool disposing) {
@@ -346,6 +351,8 @@ v0.0.0.0 - 20191001
                         DrawPixelValueBitmap(font5x8);
                     if (DrawPixelValueMode == PixelValueRenderer.Bitmap_5x8_Round)
                         DrawPixelValueBitmap(font5x8Round);
+                    if (DrawPixelValueMode == PixelValueRenderer.Unifont)
+                        DrawPixelValueBitmap(unifont);
                 }
             }
             var t2 = Util.GetTimeMs();
