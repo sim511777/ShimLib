@@ -46,9 +46,14 @@ v20200330
 1. Version정보 추가";
 
         // 시간 측정 함수
+        public static double GetTime()
+        {
+            return (double)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
+        }
+
         public static double GetTimeMs()
         {
-            return Stopwatch.GetTimestamp() * 1000.0 / Stopwatch.Frequency;
+            return GetTime() * 1000.0;
         }
 
         // 범위 제한 함수
