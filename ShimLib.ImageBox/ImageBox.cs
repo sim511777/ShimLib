@@ -10,13 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using SkiaSharp;
 using ShimLib.Properties;
 
 namespace ShimLib {
     public enum PixelValueRenderer {
         GdiPlus,
-        Skia,
         Bitmap_4x6,
         Bitmap_4x6_Round,
         Bitmap_5x8,
@@ -27,6 +25,11 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox for .NET
+v1.0.0.16 - 2020055
+1. DrawPixelValue()에 SKIA 제거
+  - 의존하는 추가 DLL들이 너무 많음
+  - DrawString 외에 다른 함수는 느림
+  - 실제적으로 DrawPixelValue에서만 유용한데, BitmapFontRender으로 충분
 
 v1.0.0.15 - 20200429
 1. ShimLib.Util.dll 분리
@@ -130,7 +133,6 @@ v0.0.0.0 - 20191001
         private int dispBH;
         private IntPtr dispBuf;
         private Bitmap dispBmp;
-        private SKSurface dispSurf;
         private FontRenderer font4x6;
         private FontRenderer font4x6Round;
         private FontRenderer font5x8;
@@ -340,8 +342,6 @@ v0.0.0.0 - 20191001
             if (UseDrawPixelValue) {
                 if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
                     DrawPixelValue(bmpIG);
-                else if (DrawPixelValueMode == PixelValueRenderer.Skia)
-                    DrawPixelValue(dispSurf.Canvas);
                 else {
                     if (DrawPixelValueMode == PixelValueRenderer.Bitmap_4x6)
                         DrawPixelValueBitmap(font4x6);
@@ -780,14 +780,10 @@ Total : {t6 - t0:0.0}ms
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Util.AllocBuffer(dispBW * dispBH * 4);
             dispBmp = new Bitmap(dispBW, dispBH, dispBW * 4, PixelFormat.Format32bppPArgb, dispBuf);
-            SKImageInfo ski = new SKImageInfo(dispBW, dispBH, SKColorType.Bgra8888, SKAlphaType.Premul);
-            dispSurf = SKSurface.Create(ski, dispBuf, dispBW * 4);
         }
 
         // 표시 버퍼 해제
         private void FreeDispBuf() {
-            if (dispSurf != null)
-                dispSurf.Dispose();
             if (dispBmp != null)
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
@@ -898,52 +894,6 @@ Total : {t6 - t0:0.0}ms
                     PointD ptDisp = this.ImgToDisp(ptImg);
                     var color = pseudo[pixelVal / 32];
                     fontRnd.DrawString(pixelValText, dispBuf, dispBW, dispBH, (int)ptDisp.X, (int)ptDisp.Y, color);
-                }
-            }
-        }
-
-        // 이미지 픽셀값 표시
-        private static readonly SKColor[] pseudoSki = {
-            SKColors.White,      // 0~31
-            SKColors.Cyan,       // 32~63
-            SKColors.DodgerBlue, // 63~95
-            SKColors.Yellow,     // 96~127
-            SKColors.Brown,      // 128~159
-            SKColors.DarkViolet, // 160~191
-            SKColors.Red    ,    // 192~223
-            SKColors.Black,      // 224~255
-        };
-
-        private void DrawPixelValue(SKCanvas cnv) {
-            double ZoomFactor = GetZoomFactor();
-            double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
-            if (BufIsFloat)
-                pixeValFactor *= 0.6;
-            if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
-                return;
-
-            var ptDisp1 = new PointD(0, 0);
-            var ptDisp2 = new PointD(ClientSize.Width, ClientSize.Height);
-            var ptImg1 = DispToImg(ptDisp1);
-            var ptImg2 = DispToImg(ptDisp2);
-            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW - 1);
-            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH - 1);
-            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
-            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
-
-            using (var paint = new SKPaint()) {
-                paint.IsAntialias = true;
-                paint.Typeface = SKTypeface.FromFamilyName(PixelValueDispFont.Name);
-                paint.TextSize = PixelValueDispFont.Height;
-                for (int imgY = imgY1; imgY <= imgY2; imgY++) {
-                    for (int imgX = imgX1; imgX <= imgX2; imgX++) {
-                        string pixelValText = GetImagePixelValueText(imgX, imgY);
-                        int pixelVal = GetImagePixelValueAverage(imgX, imgY);
-                        paint.Color = pseudoSki[pixelVal / 32];
-                        PointD ptImg = new PointD(imgX, imgY);
-                        PointD ptDisp = this.ImgToDisp(ptImg);
-                        cnv.DrawText(pixelValText, (float)ptDisp.X, (float)ptDisp.Y + paint.TextSize, paint);
-                    }
                 }
             }
         }
