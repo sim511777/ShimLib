@@ -64,50 +64,38 @@ v20200330
             return value;
         }
 
-        // memset
-        public unsafe static IntPtr Memset(IntPtr _Dst, int _Val, long _Size)
-        {
-            byte valByte = (byte)_Val;
-            byte* pdst = (byte*)_Dst.ToPointer();
-            for (long i = 0; i < _Size; i++, pdst++)
-            {
-                *pdst = valByte;
-            }
+        public static unsafe IntPtr Memcpy(IntPtr _Dst, IntPtr _Src, Int64 _Size) {
+            Int64 size4 = _Size / 4;
+            Int64 size1 = _Size % 4;
+            
+            int* pdst4 = (int*)_Dst;
+            int* psrc4 = (int*)_Src;
+            while (size4-- > 0)
+                *pdst4++ = *psrc4++;
+
+            byte* pdst1 = (byte*)pdst4;
+            byte* psrc1 = (byte*)psrc4;
+            while (size1-- > 0)
+                *pdst1++ = *psrc1++;
+
             return _Dst;
         }
 
-        // memcpy
-        public unsafe static IntPtr Memcpy(IntPtr _Dst, IntPtr _Src, long _Size)
-        {
-            byte* psrc = (byte*)_Src.ToPointer();
-            byte* pdst = (byte*)_Dst.ToPointer();
-            for (long i = 0; i < _Size; i++, psrc++, pdst++)
-            {
-                *pdst = *psrc;
-            }
-            return _Dst;
-        }
+        public static unsafe IntPtr Memset(IntPtr _Dst, int _Val, Int64 _Size) {
+            Int64 size4 = _Size / 4;
+            Int64 size1 = _Size % 4;
 
-        // memset 4byte
-        public unsafe static IntPtr Memset4(IntPtr _Dst, uint _Val, long _Size)
-        {
-            uint* pdst = (uint*)_Dst.ToPointer();
-            for (long i = 0; i < _Size; i++, pdst++)
-            {
-                *pdst = _Val;
-            }
-            return _Dst;
-        }
+            int val4 = _Val | _Val << 8 | _Val << 16 | _Val << 24;
+            byte val1 = (byte)_Val;
+            
+            int* pdst4 = (int*)_Dst;
+            while (size4-- > 0)
+                *pdst4++ = val4;
 
-        // memcpy 4byte
-        public unsafe static IntPtr Memcpy4(IntPtr _Dst, IntPtr _Src, long _Size)
-        {
-            uint* psrc = (uint*)_Src.ToPointer();
-            uint* pdst = (uint*)_Dst.ToPointer();
-            for (long i = 0; i < _Size; i++, psrc++, pdst++)
-            {
-                *pdst = *psrc;
-            }
+            byte* pdst1 = (byte*)pdst4;
+            while (size1-- > 0)
+                *pdst1++ = val1;
+
             return _Dst;
         }
 
