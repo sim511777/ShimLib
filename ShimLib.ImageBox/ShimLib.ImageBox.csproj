@@ -83,19 +83,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FontDigit_4x6.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FontDigit_5x8.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FontDigit_4x6_round.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FontDigit_5x8_round.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\unifont.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FontAscii_4x6.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FontAscii_5x12.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

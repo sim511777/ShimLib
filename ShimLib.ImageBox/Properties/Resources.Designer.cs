@@ -63,9 +63,9 @@ namespace ShimLib.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap FontDigit_4x6 {
+        internal static System.Drawing.Bitmap FontAscii_4x6 {
             get {
-                object obj = ResourceManager.GetObject("FontDigit_4x6", resourceCulture);
+                object obj = ResourceManager.GetObject("FontAscii_4x6", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,29 +73,9 @@ namespace ShimLib.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap FontDigit_4x6_round {
+        internal static System.Drawing.Bitmap FontAscii_5x12 {
             get {
-                object obj = ResourceManager.GetObject("FontDigit_4x6_round", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap FontDigit_5x8 {
-            get {
-                object obj = ResourceManager.GetObject("FontDigit_5x8", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap FontDigit_5x8_round {
-            get {
-                object obj = ResourceManager.GetObject("FontDigit_5x8_round", resourceCulture);
+                object obj = ResourceManager.GetObject("FontAscii_5x12", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

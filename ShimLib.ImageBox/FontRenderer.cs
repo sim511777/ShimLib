@@ -11,14 +11,14 @@ namespace ShimLib {
         private ImageBuffer fontImage;
         private int fontBW;
         private int fontBH;
-        private bool isDigit;
+        private bool isAscii;
         private bool[] charHalfs;
-        public FontRenderer(Bitmap bmp, int _fontBW, int _fontBH, bool _isDigit) {
+        public FontRenderer(Bitmap bmp, int _fontBW, int _fontBH, bool _isAscii) {
             fontImage = new ImageBuffer(bmp);
             fontBW = _fontBW;
             fontBH = _fontBH;
-            isDigit = _isDigit;
-            if (!isDigit) {
+            isAscii = _isAscii;
+            if (!isAscii) {
                 GetCharHalfs();
             }
         }
@@ -58,9 +58,9 @@ namespace ShimLib {
                     y += fontBH;
                     continue;
                 }
-                if (isDigit) {
-                    if (ch >= '0' && ch <= '9') {
-                        int fontX = (ch - '0') * fontBW;
+                if (isAscii) {
+                    if (ch >= 32 && ch <= 128) {
+                        int fontX = (ch - 32) * fontBW;
                         int fontImgY = fontX / fontImage.bw;
                         int fontImgX = fontX % fontImage.bw;
                         DrawChar(fontImgX, fontImgY, fontBW, dispBuf, dispBW, dispBH, x, y, icolor);

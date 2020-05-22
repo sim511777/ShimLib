@@ -15,17 +15,20 @@ using ShimLib.Properties;
 namespace ShimLib {
     public enum PixelValueRenderer {
         GdiPlus,
-        Bitmap_4x6,
-        Bitmap_4x6_Round,
-        Bitmap_5x8,
-        Bitmap_5x8_Round,
+        FontAscii_4x6,
+        FontAscii_5x12,
         Unifont,
     }
 
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox for .NET
-v1.0.0.16 - 2020055
+v1.0.0.17 - 20200522
+1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
+  - FontAscii_4x6
+  - FontAscii_5x12
+
+v1.0.0.16 - 20200505
 1. DrawPixelValue()에 SKIA 제거
   - 의존하는 추가 DLL들이 너무 많음
   - DrawString 외에 다른 함수는 느림
@@ -133,10 +136,8 @@ v0.0.0.0 - 20191001
         private int dispBH;
         private IntPtr dispBuf;
         private Bitmap dispBmp;
-        private FontRenderer font4x6;
-        private FontRenderer font4x6Round;
-        private FontRenderer font5x8;
-        private FontRenderer font5x8Round;
+        private FontRenderer fontAscii4x6;
+        private FontRenderer fontAscii5x12;
         private FontRenderer unifont;
 
         // 이미지용 버퍼
@@ -159,10 +160,8 @@ v0.0.0.0 - 20191001
         // 생성자
         public ImageBox() {
             DoubleBuffered = true;
-            font4x6 = new FontRenderer(Resources.FontDigit_4x6, 4, 6, true);
-            font4x6Round = new FontRenderer(Resources.FontDigit_4x6_round, 4, 6, true);
-            font5x8 = new FontRenderer(Resources.FontDigit_5x8, 5, 8, true);
-            font5x8Round = new FontRenderer(Resources.FontDigit_5x8_round, 5, 8, true);
+            fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6, true);
+            fontAscii5x12 = new FontRenderer(Resources.FontAscii_5x12, 5, 12, true);
             unifont = new FontRenderer(Resources.unifont, 16, 16, false);
         }
 
@@ -174,7 +173,7 @@ v0.0.0.0 - 20191001
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
-        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Bitmap_5x8_Round;
+        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.FontAscii_5x12;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
@@ -343,14 +342,10 @@ v0.0.0.0 - 20191001
                 if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
                     DrawPixelValue(bmpIG);
                 else {
-                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_4x6)
-                        DrawPixelValueBitmap(font4x6);
-                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_4x6_Round)
-                        DrawPixelValueBitmap(font4x6Round);
-                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_5x8)
-                        DrawPixelValueBitmap(font5x8);
-                    if (DrawPixelValueMode == PixelValueRenderer.Bitmap_5x8_Round)
-                        DrawPixelValueBitmap(font5x8Round);
+                    if (DrawPixelValueMode == PixelValueRenderer.FontAscii_4x6)
+                        DrawPixelValueBitmap(fontAscii4x6);
+                    if (DrawPixelValueMode == PixelValueRenderer.FontAscii_5x12)
+                        DrawPixelValueBitmap(fontAscii5x12);
                     if (DrawPixelValueMode == PixelValueRenderer.Unifont)
                         DrawPixelValueBitmap(unifont);
                 }
