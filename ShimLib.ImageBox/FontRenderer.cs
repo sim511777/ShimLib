@@ -78,14 +78,14 @@ namespace ShimLib {
         }
 
         private unsafe void DrawChar(int fontImgX, int fontImgY, int fontBW2, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
-
-            if (dx < 0 || dy < 0 || dx + fontBW2 >= dispBW || dy + fontBH >= dispBH)
-                return;
-
             for (int y = 0; y < fontBH; y++) {
-                byte* src = (byte*)fontImage.buf + fontImage.bw * (fontImgY + y) + fontImgX;
+                if (dy + y < 0 || dy + y >= dispBH)
+                    continue;
                 int* dst = (int*)dispBuf + dispBW * (dy + y) + dx;
+                byte* src = (byte*)fontImage.buf + fontImage.bw * (fontImgY + y) + fontImgX;
                 for (int x = 0; x < fontBW2; x++, src++, dst++) {
+                    if (dx + x < 0 || dx + x >= dispBW)
+                        continue;
                     if (*src == 0) {
                         *dst = icolor;
                     }

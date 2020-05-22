@@ -27,6 +27,7 @@ v1.0.0.17 - 20200522
 1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
   - FontAscii_4x6
   - FontAscii_5x12
+2. BitmapFont 렌더링시 윈도우 경계부분 글자단위로 짤리는 문제 수정
 
 v1.0.0.16 - 20200505
 1. DrawPixelValue()에 SKIA 제거
