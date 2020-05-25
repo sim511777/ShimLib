@@ -333,5 +333,9 @@ namespace ShimLibTest {
         private void btnAboutImageBox_Click(object sender, EventArgs e) {
             pbxDraw.ShowAbout();
         }
+
+        private void pbxDraw_PaintBackBuffer(object sender, IntPtr buf, int bw, int bh) {
+            var iCol = Color.Lime.ToArgb();
+        }
     }
 }

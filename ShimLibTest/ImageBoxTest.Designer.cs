@@ -23,7 +23,6 @@
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent() {
-            this.pbxDraw = new ShimLib.ImageBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnAboutImageBox = new System.Windows.Forms.Button();
@@ -50,35 +49,13 @@
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
+            this.pbxDraw = new ShimLib.ImageBox();
             this.panel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pbxDraw
-            // 
-            this.pbxDraw.AllowDrop = true;
-            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
-            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDraw.Location = new System.Drawing.Point(0, 0);
-            this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PanX = 0D;
-            this.pbxDraw.PanY = 0D;
-            this.pbxDraw.Size = new System.Drawing.Size(712, 609);
-            this.pbxDraw.TabIndex = 3;
-            this.pbxDraw.Text = "imageBox1";
-            this.pbxDraw.UseDrawCenterLine = true;
-            this.pbxDraw.UseDrawDrawTime = true;
-            this.pbxDraw.UseDrawInfo = true;
-            this.pbxDraw.UseDrawPixelValue = true;
-            this.pbxDraw.UseMouseMove = true;
-            this.pbxDraw.UseMousePanClamp = true;
-            this.pbxDraw.UseMouseWheelZoom = true;
-            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
-            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
-            this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
             // panel1
             // 
@@ -349,6 +326,35 @@
             // dlgSaveFile
             // 
             this.dlgSaveFile.Filter = "Bmp File(*.bmp)|*.bmp";
+            // 
+            // pbxDraw
+            // 
+            this.pbxDraw.AllowDrop = true;
+            this.pbxDraw.BackColor = System.Drawing.Color.Gray;
+            this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxDraw.DrawPixelValueMode = ShimLib.PixelValueRenderer.FontAscii_5x12;
+            this.pbxDraw.Location = new System.Drawing.Point(0, 0);
+            this.pbxDraw.Name = "pbxDraw";
+            this.pbxDraw.PanX = 0D;
+            this.pbxDraw.PanY = 0D;
+            this.pbxDraw.PixelValueDispFont = new System.Drawing.Font("Arial", 6F);
+            this.pbxDraw.PixelValueDispZoomFactor = 16;
+            this.pbxDraw.Size = new System.Drawing.Size(712, 609);
+            this.pbxDraw.TabIndex = 3;
+            this.pbxDraw.Text = "imageBox1";
+            this.pbxDraw.UseDrawCenterLine = true;
+            this.pbxDraw.UseDrawDrawTime = true;
+            this.pbxDraw.UseDrawInfo = true;
+            this.pbxDraw.UseDrawPixelValue = true;
+            this.pbxDraw.UseMouseMove = true;
+            this.pbxDraw.UseMousePanClamp = true;
+            this.pbxDraw.UseMouseWheelZoom = true;
+            this.pbxDraw.ZoomLevel = 8;
+            this.pbxDraw.ZoomLevelMax = 16;
+            this.pbxDraw.ZoomLevelMin = -16;
+            this.pbxDraw.PaintBackBuffer += new ShimLib.PaintBackbufferEventHandler(this.pbxDraw_PaintBackBuffer);
+            this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
+            this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
             // ImageBoxTest
             // 

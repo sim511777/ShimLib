@@ -13,6 +13,8 @@ using System.Diagnostics;
 using ShimLib.Properties;
 
 namespace ShimLib {
+    public delegate void PaintBackbufferEventHandler(object sender, IntPtr buf, int bw, int bh);
+
     public enum PixelValueRenderer {
         GdiPlus,
         FontAscii_4x6,
@@ -23,6 +25,11 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox for .NET
+v1.0.0.18 - 20200526
+1. Interpolation 기능 제거
+2. Parallel 기능 제거
+3. PaintBackBuffer 이벤트 추가
+
 v1.0.0.17 - 20200522
 1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
   - FontAscii_4x6
@@ -131,6 +138,8 @@ v0.0.0.0 - 20191001
   - C, C# 모두 구현하여 속도 비교 테스트
   - 닷넷 컨트롤로 구현하여 폼디자이너에서 사용하기 쉽게 만듦
 ";
+        // 백버퍼 그리기
+        public event PaintBackbufferEventHandler PaintBackBuffer;
 
         // 디스플레이용 버퍼
         private int dispBW;
@@ -290,6 +299,11 @@ v0.0.0.0 - 20191001
             CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), BufIsFloat);
             var t1 = Util.GetTimeMs();
 
+            if (PaintBackBuffer != null) {
+                PaintBackBuffer(this, dispBuf, dispBW, dispBH);
+            }
+            var t2 = Util.GetTimeMs();
+
             var bmpG = Graphics.FromImage(dispBmp);
             var bmpIG = new ImageGraphics(this, bmpG);
 
@@ -305,23 +319,23 @@ v0.0.0.0 - 20191001
                         DrawPixelValueBitmap(unifont);
                 }
             }
-            var t2 = Util.GetTimeMs();
+            var t3 = Util.GetTimeMs();
 
             if (UseDrawCenterLine)
                 DrawCenterLine(bmpIG);
-            var t3 = Util.GetTimeMs();
+            var t4 = Util.GetTimeMs();
 
             if (UseDrawInfo)
                 DrawInfo(bmpIG);
-            var t4 = Util.GetTimeMs();
+            var t5 = Util.GetTimeMs();
 
             bmpG.Dispose();
 
             e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
-            var t5 = Util.GetTimeMs();
+            var t6 = Util.GetTimeMs();
 
             base.OnPaint(e);
-            var t6 = Util.GetTimeMs();
+            var t7 = Util.GetTimeMs();
 
             if (UseDrawDrawTime) {
                 string info =
@@ -345,13 +359,14 @@ ZoomLevelMin : {ZoomLevelMin}
 ZoomLevelMax : {ZoomLevelMax}
 
 == Draw time ==
-CopyImage : {t1 - t0:0.0}ms
-PixelValue : {t2 - t1:0.0}ms
-CenterLine : {t3 - t2:0.0}ms
-CursorInfo : {t4 - t3:0.0}ms
-DrawImage : {t5 - t4:0.0}ms
-OnPaint : {t6 - t5:0.0}ms
-Total : {t6 - t0:0.0}ms
+ZoomImage : {t1 - t0:0.0}ms
+PaintBackBuffer : {t2 - t1:0.0}ms
+PixelValue : {t3 - t2:0.0}ms
+CenterLine : {t4 - t3:0.0}ms
+CursorInfo : {t5 - t4:0.0}ms
+DrawImage : {t6 - t5:0.0}ms
+OnPaint : {t7 - t6:0.0}ms
+Total : {t7 - t0:0.0}ms
 ";
                 var ig = new ImageGraphics(this, e.Graphics);
                 DrawDrawTime(ig, info);
