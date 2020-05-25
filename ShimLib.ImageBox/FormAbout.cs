@@ -85,8 +85,6 @@ namespace ShimLib {
         public bool UseDrawInfo { get; set; }
         public bool UseDrawCenterLine { get; set; }
         public bool UseDrawDrawTime { get; set; }
-        public bool UseInterPorlation { get; set; }
-        public bool UseParallel { get; set; }
         // 표시 옵션
         public Color BackColor { get; set; }
         public Font Font { get; set; }
@@ -110,8 +108,6 @@ namespace ShimLib {
             this.UseDrawInfo = pbx.UseDrawInfo;
             this.UseDrawCenterLine = pbx.UseDrawCenterLine;
             this.UseDrawDrawTime = pbx.UseDrawDrawTime;
-            this.UseInterPorlation = pbx.UseInterPorlation;
-            this.UseParallel = pbx.UseParallel;
 
             this.BackColor = pbx.BackColor;
             this.Font = pbx.Font;
@@ -136,8 +132,6 @@ namespace ShimLib {
             pbx.UseDrawInfo = this.UseDrawInfo;
             pbx.UseDrawCenterLine = this.UseDrawCenterLine;
             pbx.UseDrawDrawTime = this.UseDrawDrawTime;
-            pbx.UseInterPorlation = this.UseInterPorlation;
-            pbx.UseParallel = this.UseParallel;
 
             pbx.BackColor = this.BackColor;
             pbx.Font = this.Font;

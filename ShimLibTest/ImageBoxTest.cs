@@ -134,7 +134,7 @@ namespace ShimLibTest {
             bytepp = sizeof(float);
 
             // SetFloatBuf
-            pbxDraw.SetFloatBuf(imgBuf, bw, bh, bytepp, true, true);
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true, true);
         }
 
         private unsafe void LoadBitmapDouble(Bitmap bmp) {
@@ -156,7 +156,7 @@ namespace ShimLibTest {
             bytepp = sizeof(double);
 
             // SetFloatBuf
-            pbxDraw.SetFloatBuf(imgBuf, bw, bh, bytepp, true, true);
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true, true);
         }
 
         private unsafe void GenerateBitmap(int bw, int bh) {
