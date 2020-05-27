@@ -335,7 +335,23 @@ namespace ShimLibTest {
         }
 
         private void pbxDraw_PaintBackBuffer(object sender, IntPtr buf, int bw, int bh) {
-            var iCol = Color.Lime.ToArgb();
+            var iCol = Color.Red.ToArgb();
+            
+            int numLine = (int)numLineNum.Value;
+            int lineType = rlbxLineType.SelectedIndex;
+
+            Random rnd = new Random(0);
+            for (int i = 0; i < numLine; i++) {
+                Drawing.DrawLine(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol, lineType);
+            }
+        }
+
+        private void rlbxLineType_SelectedIndexChanged(object sender, EventArgs e) {
+            pbxDraw.Invalidate();
+        }
+
+        private void numLineNum_ValueChanged(object sender, EventArgs e) {
+            pbxDraw.Invalidate();
         }
     }
 }

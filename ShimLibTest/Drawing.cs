@@ -31,13 +31,35 @@ namespace ShimLibTest {
                 DrawLineBresenham(buf, bw, bh, x1, y1, x2, y2, iCol);
         }
 
-        private static void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+        private static unsafe void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            int* ptr = (int*)buf;
+            int dx = Math.Abs(x2 - x1);
+            int dy = Math.Abs(y2 - y1);
+            int sx = x1 < x2 ? 1 : -1;
+            int sy = y1 < y2 ? 1 : -1;
+            int err = (dx > dy ? dx : -dy) / 2;
+            int e2;
+
+            while (x1 != x2 || y1 != y2) {
+                if (x1 >= 0 && x1 < bw && y1 >= 0 && y1 < bh)
+                    *(ptr + bw * y1 + x1) = iCol;
+                
+                e2 = err;
+                if (e2 > -dx) {
+                    err -= dy;
+                    x1 += sx;
+                }
+                if (e2 < dy) {
+                    err += dx;
+                    y1 += sy;
+                }
+            }
         }
 
         private static unsafe void DrawLineEquation(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            int* ptr = (int*)buf;
             int dx = x2 - x1;
             int dy = y2 - y1;
-            int* ptr = (int*)buf;
             float m = (float)dy / dx;
 
             if (m >= -1 && m <= 1) {
@@ -46,7 +68,7 @@ namespace ShimLibTest {
                     if (x < 0 || x >= bw)
                         continue;
                     float fy = m * (x - x1) + y1;
-                    int y = (int)fy;
+                    int y = (int)(fy + 0.5f);
                     if (y < 0 || y >= bh)
                         continue;
                     *(ptr + bw * y + x) = iCol;
@@ -58,7 +80,7 @@ namespace ShimLibTest {
                     if (y < 0 || y >= bh)
                         continue;
                     float fx = m * (y - y1) + x1;
-                    int x = (int)fx;
+                    int x = (int)(fx + 0.5f);
                     if (x < 0 || x >= bw)
                         continue;
                     *(ptr + bw * y + x) = iCol;
@@ -67,9 +89,9 @@ namespace ShimLibTest {
         }
 
         private static unsafe void DrawLineDda(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            int* ptr = (int*)buf;
             int dx = x2 - x1;
             int dy = y2 - y1;
-            int* ptr = (int*)buf;
             float m = (float)dy / dx;
             
             if (m >= -1 && m <= 1) {
@@ -79,7 +101,7 @@ namespace ShimLibTest {
                 for (int x = x1; x != x2; x += step, fy += m) {
                     if (x < 0 || x >= bw)
                         continue;
-                    int y = (int)fy;
+                    int y = (int)(fy + 0.5f);
                     if (y < 0 || y >= bh)
                         continue;
                     *(ptr + bw * y + x) = iCol;
@@ -92,7 +114,7 @@ namespace ShimLibTest {
                 for (int y = y1; y != y2; y += step, fx += m) {
                     if (y < 0 || y >= bh)
                         continue;
-                    int x = (int)fx;
+                    int x = (int)(fx + 0.5f);
                     if (x < 0 || x >= bw)
                         continue;
                     *(ptr + bw * y + x) = iCol;

@@ -24,6 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rlbxLineType = new ShimLib.RadioListBox();
+            this.numLineNum = new System.Windows.Forms.NumericUpDown();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnAboutImageBox = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -51,6 +54,7 @@
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numLineNum)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -59,6 +63,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.rlbxLineType);
+            this.panel1.Controls.Add(this.numLineNum);
             this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
@@ -68,6 +75,49 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(257, 609);
             this.panel1.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(140, 315);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Line";
+            // 
+            // rlbxLineType
+            // 
+            this.rlbxLineType.BackColor = System.Drawing.SystemColors.Window;
+            this.rlbxLineType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.rlbxLineType.FormattingEnabled = true;
+            this.rlbxLineType.ItemHeight = 14;
+            this.rlbxLineType.Items.AddRange(new object[] {
+            "Equation",
+            "DDA",
+            "MidPoint"});
+            this.rlbxLineType.Location = new System.Drawing.Point(136, 340);
+            this.rlbxLineType.Name = "rlbxLineType";
+            this.rlbxLineType.Size = new System.Drawing.Size(106, 46);
+            this.rlbxLineType.TabIndex = 5;
+            this.rlbxLineType.SelectedIndexChanged += new System.EventHandler(this.rlbxLineType_SelectedIndexChanged);
+            // 
+            // numLineNum
+            // 
+            this.numLineNum.Location = new System.Drawing.Point(175, 313);
+            this.numLineNum.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numLineNum.Name = "numLineNum";
+            this.numLineNum.Size = new System.Drawing.Size(73, 21);
+            this.numLineNum.TabIndex = 4;
+            this.numLineNum.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numLineNum.ValueChanged += new System.EventHandler(this.numLineNum_ValueChanged);
             // 
             // groupBox4
             // 
@@ -365,6 +415,8 @@
             this.Name = "ImageBoxTest";
             this.Size = new System.Drawing.Size(969, 609);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numLineNum)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -403,5 +455,8 @@
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
         private System.Windows.Forms.SaveFileDialog dlgSaveFile;
+        private System.Windows.Forms.Label label1;
+        private ShimLib.RadioListBox rlbxLineType;
+        private System.Windows.Forms.NumericUpDown numLineNum;
     }
 }
