@@ -341,8 +341,22 @@ namespace ShimLibTest {
             int lineType = rlbxLineType.SelectedIndex;
 
             Random rnd = new Random(0);
-            for (int i = 0; i < numLine; i++) {
-                Drawing.DrawLine(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol, lineType);
+            if (lineType == 0) {
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.DrawLineEquation(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
+                }
+            } else if (lineType == 1) {
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.DrawLineDda(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
+                }
+            } else if (lineType == 2) {
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.DrawLineBresenham(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
+                }
+            } else if (lineType == 3) {
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.DrawCircle(buf, bw, bh, rnd.Next(125, 375), rnd.Next(125, 375), rnd.Next(0, 125), iCol);
+                }
             }
         }
 

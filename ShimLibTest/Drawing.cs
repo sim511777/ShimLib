@@ -6,10 +6,39 @@ using System.Threading.Tasks;
 
 namespace ShimLibTest {
     public class Drawing {
-        
-        public static unsafe void DrawLine(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol, int lineType) {
-            int dx = x2 - x1;
-            int dy = y2 - y1;
+        public static unsafe void DrawCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol) {
+            int* ptr = (int*)buf;
+
+            int f = 1 - radius;
+            int ddF_x = 0;
+            int ddF_y = -2 * radius;
+            int x = 0;
+            int y = radius;
+
+            while (x <= y) {
+                if ((cx + x) >= 0 && (cx + x) < bw && (cy + y) >= 0 && (cy + y) < bh) *(ptr + bw * (cy + y) + (cx + x)) = iCol;
+                if ((cx - x) >= 0 && (cx - x) < bw && (cy + y) >= 0 && (cy + y) < bh) *(ptr + bw * (cy + y) + (cx - x)) = iCol;
+                if ((cx + x) >= 0 && (cx + x) < bw && (cy - y) >= 0 && (cy - y) < bh) *(ptr + bw * (cy - y) + (cx + x)) = iCol;
+                if ((cx - x) >= 0 && (cx - x) < bw && (cy - y) >= 0 && (cy - y) < bh) *(ptr + bw * (cy - y) + (cx - x)) = iCol;
+                if ((cx + y) >= 0 && (cx + y) < bw && (cy + x) >= 0 && (cy + x) < bh) *(ptr + bw * (cy + x) + (cx + y)) = iCol;
+                if ((cx - y) >= 0 && (cx - y) < bw && (cy + x) >= 0 && (cy + x) < bh) *(ptr + bw * (cy + x) + (cx - y)) = iCol;
+                if ((cx + y) >= 0 && (cx + y) < bw && (cy - x) >= 0 && (cy - x) < bh) *(ptr + bw * (cy - x) + (cx + y)) = iCol;
+                if ((cx - y) >= 0 && (cx - y) < bw && (cy - x) >= 0 && (cy - x) < bh) *(ptr + bw * (cy - x) + (cx - y)) = iCol;
+
+                if (f >= 0) {
+                    y--;
+                    ddF_y += 2;
+                    f += ddF_y;
+                }
+                x++;
+                ddF_x += 2;
+                f += ddF_x + 1;
+            }
+        }
+
+        public static unsafe void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            int dx = Math.Abs(x2 - x1);
+            int dy = Math.Abs(y2 - y1);
             if (dx == 0 && dy == 0)
                 return;
 
@@ -23,18 +52,7 @@ namespace ShimLibTest {
                 return;
             }
 
-            if (lineType == 0)
-                DrawLineEquation(buf, bw, bh, x1, y1, x2, y2, iCol);
-            else if (lineType == 1)
-                DrawLineDda(buf, bw, bh, x1, y1, x2, y2, iCol);
-            else if (lineType == 2)
-                DrawLineBresenham(buf, bw, bh, x1, y1, x2, y2, iCol);
-        }
-
-        private static unsafe void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
             int* ptr = (int*)buf;
-            int dx = Math.Abs(x2 - x1);
-            int dy = Math.Abs(y2 - y1);
             int sx = x1 < x2 ? 1 : -1;
             int sy = y1 < y2 ? 1 : -1;
             int err = (dx > dy ? dx : -dy) / 2;
@@ -56,10 +74,23 @@ namespace ShimLibTest {
             }
         }
 
-        private static unsafe void DrawLineEquation(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
-            int* ptr = (int*)buf;
+        public static unsafe void DrawLineEquation(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
             int dx = x2 - x1;
             int dy = y2 - y1;
+            if (dx == 0 && dy == 0)
+                return;
+
+            if (dy == 0) {
+                DrawHLine(buf, bw, bh, y1, x1, x2, iCol);
+                return;
+            }
+
+            if (dx == 0) {
+                DrawVLine(buf, bw, bh, x1, y1, y2, iCol);
+                return;
+            }
+
+            int* ptr = (int*)buf;
             float m = (float)dy / dx;
 
             if (m >= -1 && m <= 1) {
@@ -88,10 +119,23 @@ namespace ShimLibTest {
             }
         }
 
-        private static unsafe void DrawLineDda(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
-            int* ptr = (int*)buf;
+        public static unsafe void DrawLineDda(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
             int dx = x2 - x1;
             int dy = y2 - y1;
+            if (dx == 0 && dy == 0)
+                return;
+
+            if (dy == 0) {
+                DrawHLine(buf, bw, bh, y1, x1, x2, iCol);
+                return;
+            }
+
+            if (dx == 0) {
+                DrawVLine(buf, bw, bh, x1, y1, y2, iCol);
+                return;
+            }
+
+            int* ptr = (int*)buf;
             float m = (float)dy / dx;
             
             if (m >= -1 && m <= 1) {
@@ -122,7 +166,7 @@ namespace ShimLibTest {
             }
         }
 
-        private static unsafe void DrawHLine(IntPtr buf, int bw, int bh, int y, int x1, int x2, int iCol) {
+        public static unsafe void DrawHLine(IntPtr buf, int bw, int bh, int y, int x1, int x2, int iCol) {
             if (x1 == x2 || y < 0 || y >= bh)
                 return;
 
@@ -135,7 +179,7 @@ namespace ShimLibTest {
             }
         }
 
-        private static unsafe void DrawVLine(IntPtr buf, int bw, int bh, int x, int y1, int y2, int iCol) {
+        public static unsafe void DrawVLine(IntPtr buf, int bw, int bh, int x, int y1, int y2, int iCol) {
             if (y1 == y2 || x < 0 || x >= bw)
                 return;
 
