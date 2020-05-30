@@ -37,39 +37,39 @@ namespace ShimLibTest {
         }
 
         public static unsafe void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
-            int dx = Math.Abs(x2 - x1);
-            int dy = Math.Abs(y2 - y1);
-            if (dx == 0 && dy == 0)
-                return;
-
-            if (dy == 0) {
-                DrawHLine(buf, bw, bh, y1, x1, x2, iCol);
-                return;
-            }
-
-            if (dx == 0) {
-                DrawVLine(buf, bw, bh, x1, y1, y2, iCol);
-                return;
-            }
+            int dx = (x2 > x1) ? (x2 - x1) : (x1 - x2);
+            int dy = (y2 > y1) ? (y2 - y1) : (y1 - y2);
+            int sx = (x2 > x1) ? 1 : -1;
+            int sy = (y2 > y1) ? 1 : -1;
+            int dx2 = dx * 2;
+            int dy2 = dy * 2;
 
             int* ptr = (int*)buf;
-            int sx = x1 < x2 ? 1 : -1;
-            int sy = y1 < y2 ? 1 : -1;
-            int err = (dx > dy ? dx : -dy) / 2;
-            int e2;
-
-            while (x1 != x2 || y1 != y2) {
-                if (x1 >= 0 && x1 < bw && y1 >= 0 && y1 < bh)
-                    *(ptr + bw * y1 + x1) = iCol;
-                
-                e2 = err;
-                if (e2 > -dx) {
-                    err -= dy;
-                    x1 += sx;
+            int x = x1;
+            int y = y1;
+            if (dy < dx) {
+                int d = dy2 - dx;
+                while (x != x2) {
+                    if (x >= 0 && x < bw && y >= 0 && y < bh)
+                        *(ptr + bw * y + x) = iCol;
+                    x += sx;
+                    d += dy2;
+                    if (d > 0) {
+                        y += sy;
+                        d -= dx2;
+                    }
                 }
-                if (e2 < dy) {
-                    err += dx;
-                    y1 += sy;
+            } else {
+                int d = dx2 - dy;
+                while (y != y2) {
+                    if (x >= 0 && x < bw && y >= 0 && y < bh)
+                        *(ptr + bw * y + x) = iCol;
+                    y += sy;
+                    d += dx2;
+                    if (d > 0) {
+                        x += sx;
+                        d -= dy2;
+                    }
                 }
             }
         }
