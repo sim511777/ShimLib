@@ -10,31 +10,28 @@ namespace ShimLibTest {
         public static unsafe void DrawCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol) {
             int* ptr = (int*)buf;
 
-            int f = 1 - radius;
-            int ddF_x = 0;
-            int ddF_y = -2 * radius;
+            int d = (5 - radius * 4) / 4;
             int x = 0;
             int y = radius;
 
-            while (x <= y) {
-                DrawPixel(ptr, bw, bh, (cx + x), (cy + y), iCol);
-                DrawPixel(ptr, bw, bh, (cx - x), (cy + y), iCol);
-                DrawPixel(ptr, bw, bh, (cx + x), (cy - y), iCol);
-                DrawPixel(ptr, bw, bh, (cx - x), (cy - y), iCol);
-                DrawPixel(ptr, bw, bh, (cx + y), (cy + x), iCol);
-                DrawPixel(ptr, bw, bh, (cx - y), (cy + x), iCol);
-                DrawPixel(ptr, bw, bh, (cx + y), (cy - x), iCol);
-                DrawPixel(ptr, bw, bh, (cx - y), (cy - x), iCol);
+            do {
+                DrawPixel(ptr, bw, bh, cx + x, cy + y, iCol);
+                DrawPixel(ptr, bw, bh, cx + x, cy - y, iCol);
+                DrawPixel(ptr, bw, bh, cx - x, cy + y, iCol);
+                DrawPixel(ptr, bw, bh, cx - x, cy - y, iCol);
+                DrawPixel(ptr, bw, bh, cx + y, cy + x, iCol);
+                DrawPixel(ptr, bw, bh, cx + y, cy - x, iCol);
+                DrawPixel(ptr, bw, bh, cx - y, cy + x, iCol);
+                DrawPixel(ptr, bw, bh, cx - y, cy - x, iCol);
 
-                if (f >= 0) {
-                    y--;
-                    ddF_y += 2;
-                    f += ddF_y;
+                if (d < 0) {
+                    d += 2 * x + 1;
+                } else {
+                    d += 2 * (x - y) + 1;
+                    --y;
                 }
-                x++;
-                ddF_x += 2;
-                f += ddF_x + 1;
-            }
+                ++x;
+            } while (x <= y);
         }
 
         public static unsafe void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
