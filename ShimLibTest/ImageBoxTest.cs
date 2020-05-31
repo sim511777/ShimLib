@@ -143,16 +143,16 @@ namespace ShimLibTest {
             Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
 
             // byte -> double convert
-            IntPtr dlbBuf = Util.AllocBuffer(bw * bh * sizeof(double));
+            IntPtr doubleBuf = Util.AllocBuffer(bw * bh * sizeof(double));
             for (int y = 0; y < bh; y++) {
                 byte* src = (byte*)imgBuf + bw * y;
-                double* dst = (double*)dlbBuf + bw * y;
+                double* dst = (double*)doubleBuf + bw * y;
                 for (int x = 0; x < bw; x++, src++, dst++) {
                     *dst = *src;
                 }
             }
             Util.FreeBuffer(ref imgBuf);
-            imgBuf = dlbBuf;
+            imgBuf = doubleBuf;
             bytepp = sizeof(double);
 
             // SetFloatBuf
