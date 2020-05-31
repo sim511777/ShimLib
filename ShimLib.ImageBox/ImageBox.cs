@@ -142,6 +142,10 @@ v0.0.0.0 - 20191001
 ";
         // 백버퍼 그리기
         public event PaintBackbufferEventHandler PaintBackBuffer;
+        protected void OnPaintBackBuffer(IntPtr buf, int bw, int bh) {
+            if (PaintBackBuffer != null)
+                PaintBackBuffer(this, buf, bw, bh);
+        }
 
         // 디스플레이용 버퍼
         private int dispBW;
@@ -303,11 +307,6 @@ v0.0.0.0 - 20191001
             CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, (Int64)PanX, (Int64)PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), BufIsFloat);
             var t1 = Util.GetTimeMs();
 
-            if (PaintBackBuffer != null) {
-                PaintBackBuffer(this, dispBuf, dispBW, dispBH);
-            }
-            var t2 = Util.GetTimeMs();
-
             var bmpG = Graphics.FromImage(dispBmp);
             var bmpIG = new ImageGraphics(this, bmpG);
 
@@ -325,22 +324,24 @@ v0.0.0.0 - 20191001
                         DrawPixelValueBitmap(unifont);
                 }
             }
-            var t3 = Util.GetTimeMs();
+            var t2 = Util.GetTimeMs();
 
             if (UseDrawCenterLine)
                 DrawCenterLine(bmpIG);
-            var t4 = Util.GetTimeMs();
+            var t3 = Util.GetTimeMs();
 
             if (UseDrawInfo)
                 DrawInfo(bmpIG);
+            var t4 = Util.GetTimeMs();
+
+            OnPaintBackBuffer(dispBuf, dispBW, dispBH);
             var t5 = Util.GetTimeMs();
 
-            bmpG.Dispose();
-
-            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            base.OnPaint(new PaintEventArgs(bmpG, e.ClipRectangle));
             var t6 = Util.GetTimeMs();
 
-            base.OnPaint(e);
+            bmpG.Dispose();
+            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
             var t7 = Util.GetTimeMs();
 
             if (UseDrawDrawTime) {
@@ -366,12 +367,12 @@ ZoomLevelMax : {ZoomLevelMax}
 
 == Draw time ==
 ZoomImage : {t1 - t0:0.0}ms
-PaintBackBuffer : {t2 - t1:0.0}ms
-PixelValue : {t3 - t2:0.0}ms
-CenterLine : {t4 - t3:0.0}ms
-CursorInfo : {t5 - t4:0.0}ms
-DrawImage : {t6 - t5:0.0}ms
-OnPaint : {t7 - t6:0.0}ms
+PixelValue : {t2 - t1:0.0}ms
+CenterLine : {t3 - t2:0.0}ms
+CursorInfo : {t4 - t3:0.0}ms
+OnPaintBuffer : {t5 - t4:0.0}ms
+OnPaint : {t6 - t5:0.0}ms
+DrawImage : {t7 - t6:0.0}ms
 Total : {t7 - t0:0.0}ms
 ";
                 var ig = new ImageGraphics(this, e.Graphics);
