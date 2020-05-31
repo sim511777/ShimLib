@@ -417,6 +417,7 @@
             this.pbxDraw.ZoomLevelMax = 16;
             this.pbxDraw.ZoomLevelMin = -16;
             this.pbxDraw.PaintBackBuffer += new ShimLib.PaintBackbufferEventHandler(this.pbxDraw_PaintBackBuffer);
+            this.pbxDraw.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragDrop);
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
