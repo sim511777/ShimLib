@@ -32,6 +32,7 @@ v1.0.0.18 - 20200531
 5. FontAscii_5x12, Unifont 삭제
 6. PanX, PanY int 타입으로 변경
 7. PointD 에서 PointF 로 변경
+8. 픽셀값 표시 3자리 정렬
 
 v1.0.0.17 - 20200522
 1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
@@ -691,15 +692,15 @@ Total : {t7 - t0:0.0}ms
             if (ImgBuf == IntPtr.Zero || x < 0 || x >= ImgBW || y < 0 || y >= ImgBH)
                 return "";
 
-            IntPtr ptr = (IntPtr)(ImgBuf.ToInt64() + ((long)ImgBW * y + x) * ImgBytepp);
+            byte* ptr = (byte*)ImgBuf + ((long)ImgBW * y + x) * ImgBytepp;
 
             if (!BufIsFloat) {
                 if (ImgBytepp == 1)
-                    return Marshal.ReadByte(ptr).ToString();
+                    return $"{*ptr,3}";
                 if (ImgBytepp == 2)
-                    return (Marshal.ReadByte(ptr, 1) | Marshal.ReadByte(ptr) << 8).ToString();
+                    return (ptr[1] | ptr[0] << 8).ToString();
                 else
-                    return $"{Marshal.ReadByte(ptr, 2)},{Marshal.ReadByte(ptr, 1)},{Marshal.ReadByte(ptr, 0)}";
+                    return $"{ptr[2]},{ptr[1]},{ptr[0]}";
             } else {
                 if (ImgBytepp == 4)
                     return $"{(*(float*)ptr):f2}";
