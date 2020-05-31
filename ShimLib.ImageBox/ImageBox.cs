@@ -325,14 +325,14 @@ v0.0.0.0 - 20191001
                 DrawCenterLine(bmpIG);
             var t3 = Util.GetTimeMs();
 
-            if (UseDrawInfo)
-                DrawInfo(bmpIG);
+            OnPaintBackBuffer(dispBuf, dispBW, dispBH);
             var t4 = Util.GetTimeMs();
 
-            OnPaintBackBuffer(dispBuf, dispBW, dispBH);
+            base.OnPaint(new PaintEventArgs(bmpG, e.ClipRectangle));
             var t5 = Util.GetTimeMs();
 
-            base.OnPaint(new PaintEventArgs(bmpG, e.ClipRectangle));
+            if (UseDrawInfo)
+                DrawInfo(bmpIG);
             var t6 = Util.GetTimeMs();
 
             bmpG.Dispose();
@@ -364,9 +364,9 @@ ZoomLevelMax : {ZoomLevelMax}
 ZoomImage : {t1 - t0:0.0}ms
 PixelValue : {t2 - t1:0.0}ms
 CenterLine : {t3 - t2:0.0}ms
-CursorInfo : {t4 - t3:0.0}ms
-OnPaintBuffer : {t5 - t4:0.0}ms
-OnPaint : {t6 - t5:0.0}ms
+OnPaintBuffer : {t4 - t3:0.0}ms
+OnPaint : {t5 - t4:0.0}ms
+CursorInfo : {t6 - t5:0.0}ms
 DrawImage : {t7 - t6:0.0}ms
 Total : {t7 - t0:0.0}ms
 ";
