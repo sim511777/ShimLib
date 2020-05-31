@@ -98,8 +98,8 @@ namespace ShimLib {
         public int ZoomLevelMin { get; set; }
         public int ZoomLevelMax { get; set; }
         // 패닝 파라미터
-        public double PanX { get; set; }
-        public double PanY { get; set; }
+        public int PanX { get; set; }
+        public int PanY { get; set; }
         public bool UseMousePanClamp { get; set; }
 
         public void FromImageBox(ImageBox pbx) {

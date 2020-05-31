@@ -399,8 +399,8 @@
             this.pbxDraw.DrawPixelValueMode = ShimLib.PixelValueRenderer.FontAscii_5x8;
             this.pbxDraw.Location = new System.Drawing.Point(0, 0);
             this.pbxDraw.Name = "pbxDraw";
-            this.pbxDraw.PanX = 0D;
-            this.pbxDraw.PanY = 0D;
+            this.pbxDraw.PanX = 0;
+            this.pbxDraw.PanY = 0;
             this.pbxDraw.PixelValueDispFont = new System.Drawing.Font("Arial", 6F);
             this.pbxDraw.PixelValueDispZoomFactor = 16;
             this.pbxDraw.Size = new System.Drawing.Size(712, 609);

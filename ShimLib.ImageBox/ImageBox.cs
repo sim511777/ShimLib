@@ -227,9 +227,9 @@ v0.0.0.0 - 20191001
         }
 
         // 패닝 파라미터
-        private double panX = 0;
-        private double panY = 0;
-        public double PanX {
+        private int panX = 0;
+        private int panY = 0;
+        public int PanX {
             get {
                 return panX;
             }
@@ -238,13 +238,13 @@ v0.0.0.0 - 20191001
                     if (ImgBuf == IntPtr.Zero)
                         panX = 0;
                     else
-                        panX = Util.Clamp(value, -ImgBW * GetZoomFactor(), 0);
+                        panX = Util.Clamp(value, (int)Math.Floor(-ImgBW * GetZoomFactor()), 0);
                 } else {
                     panX = value;
                 }
             }
         }
-        public double PanY {
+        public int PanY {
             get {
                 return panY;
             }
@@ -253,7 +253,7 @@ v0.0.0.0 - 20191001
                     if (ImgBuf == IntPtr.Zero)
                         panY = 0;
                     else
-                        panY = Util.Clamp(value, -ImgBH * GetZoomFactor(), 0);
+                        panY = Util.Clamp(value, (int)Math.Floor(-ImgBH * GetZoomFactor()), 0);
                 } else {
                     panY = value;
                 }
@@ -281,8 +281,8 @@ v0.0.0.0 - 20191001
             double wantedZoomFactor = Math.Min(scale1, scale2);
             ZoomLevel = (int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2)));
             double ZoomFactor = GetZoomFactor();
-            PanX = (ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor;
-            PanY = (ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor;
+            PanX = (int)Math.Floor((ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
+            PanY = (int)Math.Floor((ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
         }
 
         // 줌 리셋
@@ -469,8 +469,8 @@ Total : {t7 - t0:0.0}ms
             var zoomFactorDelta = zoomFactorNew / zoomFactorOld;
             var ptX = (PanX - e.Location.X) * zoomFactorDelta + e.Location.X;
             var ptY = (PanY - e.Location.Y) * zoomFactorDelta + e.Location.Y;
-            PanX = ptX;
-            PanY = ptY;
+            PanX = (int)Math.Floor(ptX);
+            PanY = (int)Math.Floor(ptY);
         }
 
         // 마우스 다운
