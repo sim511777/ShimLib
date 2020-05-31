@@ -83,13 +83,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\unifont.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\FontAscii_4x6.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FontAscii_5x12.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FontAscii_5x8.bmp" />

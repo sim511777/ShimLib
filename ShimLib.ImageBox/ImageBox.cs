@@ -19,8 +19,6 @@ namespace ShimLib {
         GdiPlus,
         FontAscii_4x6,
         FontAscii_5x8,
-        FontAscii_5x12,
-        Unifont,
     }
 
     public class ImageBox : Control {
@@ -31,8 +29,9 @@ v1.0.0.18 - 20200531
 2. Parallel 기능 제거
 3. PaintBackBuffer 이벤트 추가
 4. FontAscii_5x8 추가
-5. PanX, PanY int 타입으로 변경
-6. PointD 에서 PointF 로 변경
+5. FontAscii_5x12, Unifont 삭제
+6. PanX, PanY int 타입으로 변경
+7. PointD 에서 PointF 로 변경
 
 v1.0.0.17 - 20200522
 1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
@@ -156,8 +155,6 @@ v0.0.0.0 - 20191001
         private Bitmap dispBmp;
         private FontRenderer fontAscii4x6;
         private FontRenderer fontAscii5x8;
-        private FontRenderer fontAscii5x12;
-        private FontRenderer unifont;
 
         // 이미지용 버퍼
         [Browsable(false)]
@@ -177,8 +174,6 @@ v0.0.0.0 - 20191001
             DoubleBuffered = true;
             fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6, true);
             fontAscii5x8 = new FontRenderer(Resources.FontAscii_5x8, 5, 8, true);
-            fontAscii5x12 = new FontRenderer(Resources.FontAscii_5x12, 5, 12, true);
-            unifont = new FontRenderer(Resources.unifont, 16, 16, false);
         }
 
         protected override void Dispose(bool disposing) {
@@ -188,7 +183,7 @@ v0.0.0.0 - 20191001
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
-        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.FontAscii_5x12;
+        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.FontAscii_5x8;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
@@ -320,10 +315,6 @@ v0.0.0.0 - 20191001
                         DrawPixelValueBitmap(fontAscii4x6);
                     if (DrawPixelValueMode == PixelValueRenderer.FontAscii_5x8)
                         DrawPixelValueBitmap(fontAscii5x8);
-                    if (DrawPixelValueMode == PixelValueRenderer.FontAscii_5x12)
-                        DrawPixelValueBitmap(fontAscii5x12);
-                    if (DrawPixelValueMode == PixelValueRenderer.Unifont)
-                        DrawPixelValueBitmap(unifont);
                 }
             }
             var t2 = Util.GetTimeMs();

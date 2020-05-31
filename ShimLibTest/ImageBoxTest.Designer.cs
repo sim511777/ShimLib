@@ -396,7 +396,6 @@
             this.pbxDraw.AllowDrop = true;
             this.pbxDraw.BackColor = System.Drawing.Color.Gray;
             this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbxDraw.DrawPixelValueMode = ShimLib.PixelValueRenderer.FontAscii_5x8;
             this.pbxDraw.Location = new System.Drawing.Point(0, 0);
             this.pbxDraw.Name = "pbxDraw";
             this.pbxDraw.PanX = 0;
