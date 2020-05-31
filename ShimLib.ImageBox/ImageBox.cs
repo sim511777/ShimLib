@@ -33,6 +33,7 @@ v1.0.0.18 - 20200531
 6. PanX, PanY int 타입으로 변경
 7. PointD 에서 PointF 로 변경
 8. 픽셀값 표시 3자리 정렬
+9. Pan Clamp 처리시 2pixel 남김
 
 v1.0.0.17 - 20200522
 1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
@@ -236,7 +237,7 @@ v0.0.0.0 - 20191001
                     if (ImgBuf == IntPtr.Zero)
                         panX = 0;
                     else
-                        panX = Util.Clamp(value, (int)Math.Floor(-ImgBW * GetZoomFactor()), 0);
+                        panX = Util.Clamp(value, (int)Math.Floor(-ImgBW * GetZoomFactor()) + 2, 2);
                 } else {
                     panX = value;
                 }
@@ -251,7 +252,7 @@ v0.0.0.0 - 20191001
                     if (ImgBuf == IntPtr.Zero)
                         panY = 0;
                     else
-                        panY = Util.Clamp(value, (int)Math.Floor(-ImgBH * GetZoomFactor()), 0);
+                        panY = Util.Clamp(value, (int)Math.Floor(-ImgBH * GetZoomFactor()) + 2, 2);
                 } else {
                     panY = value;
                 }
