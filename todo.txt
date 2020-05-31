@@ -9,6 +9,16 @@ ok dispBmp 임시 객체로 생성
 ok DrawPixelValue() 에 SKIA 사용 - 렌더링 시간 줄일수 있음
 ok OnPiant 대신에 BufferedGraphics로 할것 => 취소 : 속도향상 미미
 ok WPF PointD 없애고 직접 정의
+ok DrawLine 알고리즘
+ok DrawCircle 알고리즘
+DrawRect 함수
+FillRect 함수
+FillCircle 함수
+DrawEllipse 함수
+FillEllipse 함수
+DrawPolyline 함수
+DrawSpline 함수
+
 PointD 에서 PointF 로 변경
  - 확대시 픽셀값 표시 위치 어긋나는 원인 분석
 1Bit bmp disp, load, save
