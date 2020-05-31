@@ -91,5 +91,8 @@
   <ItemGroup>
     <None Include="Resources\FontAscii_5x12.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FontAscii_5x8.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

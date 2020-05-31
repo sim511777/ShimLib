@@ -18,6 +18,7 @@ namespace ShimLib {
     public enum PixelValueRenderer {
         GdiPlus,
         FontAscii_4x6,
+        FontAscii_5x8,
         FontAscii_5x12,
         Unifont,
     }
@@ -25,10 +26,11 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox for .NET
-v1.0.0.18 - 20200526
+v1.0.0.18 - 20200531
 1. Interpolation 기능 제거
 2. Parallel 기능 제거
 3. PaintBackBuffer 이벤트 추가
+4. FontAscii_5x8 추가
 
 v1.0.0.17 - 20200522
 1. BitmapFont CMD 레스터 폰트 캡쳐한것으로 변경
@@ -147,6 +149,7 @@ v0.0.0.0 - 20191001
         private IntPtr dispBuf;
         private Bitmap dispBmp;
         private FontRenderer fontAscii4x6;
+        private FontRenderer fontAscii5x8;
         private FontRenderer fontAscii5x12;
         private FontRenderer unifont;
 
@@ -167,6 +170,7 @@ v0.0.0.0 - 20191001
         public ImageBox() {
             DoubleBuffered = true;
             fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6, true);
+            fontAscii5x8 = new FontRenderer(Resources.FontAscii_5x8, 5, 8, true);
             fontAscii5x12 = new FontRenderer(Resources.FontAscii_5x12, 5, 12, true);
             unifont = new FontRenderer(Resources.unifont, 16, 16, false);
         }
@@ -313,6 +317,8 @@ v0.0.0.0 - 20191001
                 else {
                     if (DrawPixelValueMode == PixelValueRenderer.FontAscii_4x6)
                         DrawPixelValueBitmap(fontAscii4x6);
+                    if (DrawPixelValueMode == PixelValueRenderer.FontAscii_5x8)
+                        DrawPixelValueBitmap(fontAscii5x8);
                     if (DrawPixelValueMode == PixelValueRenderer.FontAscii_5x12)
                         DrawPixelValueBitmap(fontAscii5x12);
                     if (DrawPixelValueMode == PixelValueRenderer.Unifont)
