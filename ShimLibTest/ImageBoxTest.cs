@@ -354,7 +354,9 @@ namespace ShimLibTest {
                     Drawing.FillCircle(buf, bw, bh, rnd.Next(125, 375), rnd.Next(125, 375), rnd.Next(0, 125), iCol);
                 }
             } else if (lineType == 3) {
-
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.DrawRectangle(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
+                }
             } else if (lineType == 4) {
 
             }

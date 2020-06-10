@@ -92,6 +92,13 @@ namespace ShimLibTest {
             }
         }
 
+        public static unsafe void DrawRectangle(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            DrawLine(buf, bw, bh, x1, y1, x2, y1, iCol);
+            DrawLine(buf, bw, bh, x2, y1, x2, y2, iCol);
+            DrawLine(buf, bw, bh, x2, y2, x1, y2, iCol);
+            DrawLine(buf, bw, bh, x1, y2, x1, y1, iCol);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void DrawPixel(int *ptr, int bw, int bh, int x, int y, int iCol) {
             if (x >= 0 && x < bw && y >= 0 && y < bh)
