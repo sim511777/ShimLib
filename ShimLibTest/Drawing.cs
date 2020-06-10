@@ -34,7 +34,29 @@ namespace ShimLibTest {
             } while (x <= y);
         }
 
-        public static unsafe void DrawLineBresenham(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+        public static unsafe void FillCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol) {
+            int* ptr = (int*)buf;
+            int d = (5 - radius * 4) / 4;
+            int x = 0;
+            int y = radius;
+
+            while (x <= y) {
+                DrawHLine(ptr, bw, bh, cx - x, cx + x, cy + y, iCol);
+                DrawHLine(ptr, bw, bh, cx - x, cx + x, cy - y, iCol);
+                DrawHLine(ptr, bw, bh, cx - y, cx + y, cy + x, iCol);
+                DrawHLine(ptr, bw, bh, cx - y, cx + y, cy - x, iCol);
+
+                if (d < 0) {
+                    d += 2 * x + 1;
+                } else {
+                    d += 2 * (x - y) + 1;
+                    --y;
+                }
+                ++x;
+            }
+        }
+
+        public static unsafe void DrawLine(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
             int dx = (x2 > x1) ? (x2 - x1) : (x1 - x2);
             int dy = (y2 > y1) ? (y2 - y1) : (y1 - y2);
             int sx = (x2 > x1) ? 1 : -1;
@@ -70,98 +92,26 @@ namespace ShimLibTest {
             }
         }
 
-        public static unsafe void DrawLineEquation(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
-            int dx = x2 - x1;
-            int dy = y2 - y1;
-
-            if (dx == 0 && dy == 0)
-                return;
-            if (dy == 0) {
-                DrawHLine(buf, bw, bh, y1, x1, x2, iCol);
-                return;
-            }
-            if (dx == 0) {
-                DrawVLine(buf, bw, bh, x1, y1, y2, iCol);
-                return;
-            }
-
-            int* ptr = (int*)buf;
-            float m = (float)dy / dx;
-            if (m >= -1 && m <= 1) {
-                int step = dx > 0 ? 1 : -1;
-                for (int x = x1; x != x2; x += step) {
-                    float fy = m * (x - x1) + y1;
-                    int y = (int)(fy + 0.5f);
-                    DrawPixel(ptr, bw, bh, x, y, iCol);
-                }
-            } else {
-                int step = dy > 0 ? 1 : -1;
-                m = 1 / m;
-                for (int y = y1; y != y2; y += step) {
-                    float fx = m * (y - y1) + x1;
-                    int x = (int)(fx + 0.5f);
-                    DrawPixel(ptr, bw, bh, x, y, iCol);
-                }
-            }
-        }
-
-        public static unsafe void DrawLineDda(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
-            int dx = x2 - x1;
-            int dy = y2 - y1;
-
-            if (dx == 0 && dy == 0)
-                return;
-            if (dy == 0) {
-                DrawHLine(buf, bw, bh, y1, x1, x2, iCol);
-                return;
-            }
-            if (dx == 0) {
-                DrawVLine(buf, bw, bh, x1, y1, y2, iCol);
-                return;
-            }
-
-            int* ptr = (int*)buf;
-            float m = (float)dy / dx;
-            if (m >= -1 && m <= 1) {
-                int step = dx > 0 ? 1 : -1;
-                m *= step;
-                float fy = y1;
-                for (int x = x1; x != x2; x += step, fy += m) {
-                    int y = (int)(fy + 0.5f);
-                    DrawPixel(ptr, bw, bh, x, y, iCol);
-                }
-            } else {
-                int step = dy > 0 ? 1 : -1;
-                m = 1 / m;
-                m *= step;
-                float fx = x1;
-                for (int y = y1; y != y2; y += step, fx += m) {
-                    int x = (int)(fx + 0.5f);
-                    DrawPixel(ptr, bw, bh, x, y, iCol);
-                }
-            }
-        }
-
-        public static unsafe void DrawHLine(IntPtr buf, int bw, int bh, int y, int x1, int x2, int iCol) {
-            int* ptr = (int*)buf;
-            int step = x2 > x1 ? 1 : -1;
-            for (int x = x1; x != x2; x += step) {
-                DrawPixel(ptr, bw, bh, x, y, iCol);
-            }
-        }
-
-        public static unsafe void DrawVLine(IntPtr buf, int bw, int bh, int x, int y1, int y2, int iCol) {
-            int* ptr = (int*)buf;
-            int step = y2 > y1 ? 1 : -1;
-            for (int y = y1; y != y2; y += step) {
-                DrawPixel(ptr, bw, bh, x, y, iCol);
-            }
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void DrawPixel(int *ptr, int bw, int bh, int x, int y, int iCol) {
             if (x >= 0 && x < bw && y >= 0 && y < bh)
                 *(ptr + bw * y + x) = iCol;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe void DrawHLine(int* ptr, int bw, int bh, int x1, int x2, int y, int iCol) {
+            if (x1 >= bw || x2 < 0 || y < 0)
+                return;
+
+            if (x1 < 0)
+                x1 = 0;
+            if (x2 >= bw)
+                x2 = bw - 1;
+
+            int* ptr1 = ptr + (bw * y) + x1;
+            int size = x2 - x1 + 1;
+            while (size-- > 0)
+                *ptr1++ = iCol;
         }
     }
 }

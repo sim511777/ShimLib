@@ -103,7 +103,7 @@
             this.groupBox5.Controls.Add(this.rlbxLineType);
             this.groupBox5.Location = new System.Drawing.Point(130, 313);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(118, 132);
+            this.groupBox5.Size = new System.Drawing.Size(118, 157);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Drawing";
@@ -142,14 +142,15 @@
             this.rlbxLineType.FormattingEnabled = true;
             this.rlbxLineType.ItemHeight = 14;
             this.rlbxLineType.Items.AddRange(new object[] {
-            "EquationLine",
-            "DDALine",
-            "BresenhamLiIne",
-            "MidpointCircle",
+            "DrawLine",
+            "DrawCircle",
+            "FillCircle",
+            "DrawRectangle",
+            "FillRectangle",
             "None"});
             this.rlbxLineType.Location = new System.Drawing.Point(6, 47);
             this.rlbxLineType.Name = "rlbxLineType";
-            this.rlbxLineType.Size = new System.Drawing.Size(106, 74);
+            this.rlbxLineType.Size = new System.Drawing.Size(106, 102);
             this.rlbxLineType.TabIndex = 5;
             this.rlbxLineType.SelectedIndexChanged += new System.EventHandler(this.rlbxLineType_SelectedIndexChanged);
             // 
@@ -396,6 +397,7 @@
             this.pbxDraw.AllowDrop = true;
             this.pbxDraw.BackColor = System.Drawing.Color.Gray;
             this.pbxDraw.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbxDraw.DrawPixelValueMode = ShimLib.PixelValueRenderer.FontAscii_5x8;
             this.pbxDraw.Location = new System.Drawing.Point(0, 0);
             this.pbxDraw.Name = "pbxDraw";
             this.pbxDraw.PanX = 0;
