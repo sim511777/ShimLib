@@ -358,7 +358,9 @@ namespace ShimLibTest {
                     Drawing.DrawRectangle(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
                 }
             } else if (lineType == 4) {
-
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.FillRectangle(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
+                }
             }
         }
 
