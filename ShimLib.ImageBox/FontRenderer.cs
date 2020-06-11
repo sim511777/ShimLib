@@ -77,6 +77,35 @@ namespace ShimLib {
             }
         }
 
+        public Size MeasureString(string text) {
+            int maxX = 0;
+            int maxY = 0;
+            int x = 0;
+            int y = 0;
+            foreach (char ch in text) {
+                if (ch == '\r') {
+                    continue;
+                }
+                if (ch == '\n') {
+                    x = 0;
+                    y += fontBH;
+                    if (x > maxX) maxX = x;
+                    if (y > maxY) maxY = y;
+                    continue;
+                }
+                if (isAscii) {
+                    x += fontBW;
+                } else {
+                    int fontBW2 = charHalfs[ch] ? fontBW / 2 : fontBW;
+                    x += fontBW2;
+                }
+                if (x > maxX) maxX = x;
+            }
+            y += fontBH;
+
+            return new Size(maxX, maxY);
+        }
+
         private unsafe void DrawChar(int fontImgX, int fontImgY, int fontBW2, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
             for (int y = 0; y < fontBH; y++) {
                 if (dy + y < 0 || dy + y >= dispBH)

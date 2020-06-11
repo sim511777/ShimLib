@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShimLibTest {
+namespace ShimLib {
     public class Drawing {
         public static void DrawCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol) {
             MidpointCircle(buf, bw, bh, cx, cy, radius, iCol, false);
