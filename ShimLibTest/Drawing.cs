@@ -10,11 +10,11 @@ namespace ShimLibTest {
         public static unsafe void DrawCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol) {
             int* ptr = (int*)buf;
 
-            int d = (5 - radius * 4) / 4;
             int x = 0;
             int y = radius;
+            int d = 1 - radius;
 
-            do {
+            while (x <= y) {
                 DrawPixel(ptr, bw, bh, cx + x, cy + y, iCol);
                 DrawPixel(ptr, bw, bh, cx + x, cy - y, iCol);
                 DrawPixel(ptr, bw, bh, cx - x, cy + y, iCol);
@@ -24,21 +24,22 @@ namespace ShimLibTest {
                 DrawPixel(ptr, bw, bh, cx - y, cy + x, iCol);
                 DrawPixel(ptr, bw, bh, cx - y, cy - x, iCol);
 
+                ++x;
                 if (d < 0) {
                     d += 2 * x + 1;
                 } else {
-                    d += 2 * (x - y) + 1;
                     --y;
+                    d += 2 * (x - y) + 3;
                 }
-                ++x;
-            } while (x <= y);
+            }
         }
 
         public static unsafe void FillCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol) {
             int* ptr = (int*)buf;
-            int d = (5 - radius * 4) / 4;
+
             int x = 0;
             int y = radius;
+            int d = 1 - radius;
 
             while (x <= y) {
                 DrawHLine(ptr, bw, bh, cx - x, cx + x, cy + y, iCol);
@@ -46,13 +47,13 @@ namespace ShimLibTest {
                 DrawHLine(ptr, bw, bh, cx - y, cx + y, cy + x, iCol);
                 DrawHLine(ptr, bw, bh, cx - y, cx + y, cy - x, iCol);
 
+                ++x;
                 if (d < 0) {
                     d += 2 * x + 1;
                 } else {
-                    d += 2 * (x - y) + 1;
                     --y;
+                    d += 2 * (x - y) + 3;
                 }
-                ++x;
             }
         }
 
