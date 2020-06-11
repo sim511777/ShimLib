@@ -125,7 +125,7 @@ namespace ShimLibTest {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void DrawHLine(int* ptr, int bw, int bh, int x1, int x2, int y, int iCol) {
-            if (x1 >= bw || x2 < 0 || y < 0)
+            if (y < 0 || y >= bh || x1 >= bw || x2 < 0)
                 return;
 
             if (x1 < 0)
