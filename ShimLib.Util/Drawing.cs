@@ -83,6 +83,7 @@ namespace ShimLib {
                     }
                 }
             }
+            DrawPixel(ptr, bw, bh, x2, y2, iCol); // 끝점도 찍음
         }
 
         public static unsafe void DrawRectangle(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
