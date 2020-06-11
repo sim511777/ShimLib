@@ -346,19 +346,27 @@ namespace ShimLibTest {
                     Drawing.DrawLine(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
                 }
             } else if (lineType == 1) {
-                int step = 80;
-                for (int y = 0; y < 1000; y += step) {
-                    for (int x = 0; x < 1000; x += step) {
-                        Drawing.DrawCircle(buf, bw, bh, x, y, step / 2, iCol);
-                    }
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.DrawCircle(buf, bw, bh, rnd.Next(125, 375), rnd.Next(125, 375), rnd.Next(0, 125), iCol);
                 }
+
+                //int step = 80;
+                //for (int y = 0; y < 1000; y += step) {
+                //    for (int x = 0; x < 1000; x += step) {
+                //        Drawing.DrawCircle(buf, bw, bh, x, y, step / 2, iCol);
+                //    }
+                //}
             } else if (lineType == 2) {
-                int step = 80;
-                for (int y = 0; y < 1000; y += step) {
-                    for (int x = 0; x < 1000; x += step) {
-                        Drawing.FillCircle(buf, bw, bh, x, y, step / 2, iCol);
-                    }
+                for (int i = 0; i < numLine; i++) {
+                    Drawing.FillCircle(buf, bw, bh, rnd.Next(125, 375), rnd.Next(125, 375), rnd.Next(0, 125), iCol);
                 }
+
+                //int step = 80;
+                //for (int y = 0; y < 1000; y += step) {
+                //    for (int x = 0; x < 1000; x += step) {
+                //        Drawing.FillCircle(buf, bw, bh, x, y, step / 2, iCol);
+                //    }
+                //}
             } else if (lineType == 3) {
                 for (int i = 0; i < numLine; i++) {
                     Drawing.DrawRectangle(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
