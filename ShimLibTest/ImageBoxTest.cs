@@ -305,7 +305,7 @@ namespace ShimLibTest {
 
         private void btnZoomReset_Click(object sender, EventArgs e) {
             pbxDraw.ZoomReset();
-            pbxDraw.Invalidate();
+            pbxDraw.Redraw();
         }
 
         private void btnZoomToImage_Click(object sender, EventArgs e) {
@@ -313,7 +313,7 @@ namespace ShimLibTest {
                 pbxDraw.ZoomReset();
             else
                 pbxDraw.ZoomToRect(0, 0, pbxDraw.ImgBW, pbxDraw.ImgBH);
-            pbxDraw.Invalidate();
+            pbxDraw.Redraw();
         }
 
         private void btnImmediateDraw_Click(object sender, EventArgs e) {
@@ -323,11 +323,11 @@ namespace ShimLibTest {
         }
 
         private void chkRetainedDraw_CheckedChanged(object sender, EventArgs e) {
-            pbxDraw.Invalidate();
+            pbxDraw.Redraw();
         }
 
         private void rlbxRetainedDraw_SelectedIndexChanged(object sender, EventArgs e) {
-            pbxDraw.Invalidate();
+            pbxDraw.Redraw();
         }
 
         private void btnAboutImageBox_Click(object sender, EventArgs e) {
@@ -379,11 +379,11 @@ namespace ShimLibTest {
         }
 
         private void rlbxLineType_SelectedIndexChanged(object sender, EventArgs e) {
-            pbxDraw.Invalidate();
+            pbxDraw.Redraw();
         }
 
         private void numLineNum_ValueChanged(object sender, EventArgs e) {
-            pbxDraw.Invalidate();
+            pbxDraw.Redraw();
         }
     }
 }

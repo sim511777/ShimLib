@@ -16,11 +16,9 @@ ok DrawCircle 알고리즘
 ok DrawRect 함수
 ok FillRect 함수
 ok FillCircle 함수
-
-EraseBackground 어떻게 동작하고 성능을 떨어뜨리는지
-BufferdGraphics 사용
+ok EraseBackground 아무것도 안하도록 재정의
+ok BufferdGraphics 사용 속도 증가 14ms -> 10ms
 1Bit bmp disp, load, save
-
 
 DrawEllipse 함수
 FillEllipse 함수

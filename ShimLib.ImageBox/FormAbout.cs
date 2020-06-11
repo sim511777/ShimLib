@@ -31,7 +31,7 @@ namespace ShimLib {
         private void FormAbout_FormClosed(object sender, FormClosedEventArgs e) {
             if (this.DialogResult == DialogResult.Cancel) {
                 optBackup.ToImageBox(pbx);
-                pbx.Refresh();
+                pbx.Redraw();
                 return;
             }
         }

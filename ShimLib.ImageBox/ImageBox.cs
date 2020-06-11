@@ -24,6 +24,10 @@ namespace ShimLib {
     public class ImageBox : Control {
         public const string VersionHistory =
 @"ImageBox for .NET
+v1.0.0.19 - 20200611
+1. EraseBackground 아무것도 안하도록 재정의
+2. BufferdGraphics 사용 속도 증가 14ms -> 10ms
+
 v1.0.0.18 - 20200531
 1. Interpolation 기능 제거
 2. Parallel 기능 제거
@@ -155,6 +159,7 @@ v0.0.0.0 - 20191001
         private int dispBH;
         private IntPtr dispBuf;
         private Bitmap dispBmp;
+        private BufferedGraphics buffGfx;
         private FontRenderer fontAscii4x6;
         private FontRenderer fontAscii5x8;
 
@@ -173,7 +178,7 @@ v0.0.0.0 - 20191001
 
         // 생성자
         public ImageBox() {
-            DoubleBuffered = true;
+            //DoubleBuffered = true;
             fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6, true);
             fontAscii5x8 = new FontRenderer(Resources.FontAscii_5x8, 5, 8, true);
         }
@@ -270,7 +275,7 @@ v0.0.0.0 - 20191001
             BufIsFloat = bufIsFloat;
 
             if (bInvalidate)
-                Invalidate();
+                Redraw();
         }
 
         // 사각형을 피팅 되도록 줌 변경
@@ -296,14 +301,12 @@ v0.0.0.0 - 20191001
             base.OnLayout(e);
 
             AllocDispBuf();
-            Invalidate();
+            Redraw();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs pevent) {
-        }
+        public void Redraw() {
+            var dispRect = new Rectangle(0, 0, dispBW, dispBH);
 
-        // 페인트 할때
-        protected override void OnPaint(PaintEventArgs e) {
             var t0 = Util.GetTimeMs();
 
             CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PanX, PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), BufIsFloat);
@@ -331,7 +334,7 @@ v0.0.0.0 - 20191001
             OnPaintBackBuffer(dispBuf, dispBW, dispBH);
             var t4 = Util.GetTimeMs();
 
-            base.OnPaint(new PaintEventArgs(bmpG, e.ClipRectangle));
+            base.OnPaint(new PaintEventArgs(bmpG, dispRect));
             var t5 = Util.GetTimeMs();
 
             if (UseDrawInfo)
@@ -339,7 +342,7 @@ v0.0.0.0 - 20191001
             var t6 = Util.GetTimeMs();
 
             bmpG.Dispose();
-            e.Graphics.DrawImageUnscaledAndClipped(dispBmp, new Rectangle(0, 0, dispBW, dispBH));
+            buffGfx.Graphics.DrawImageUnscaledAndClipped(dispBmp, dispRect);
             var t7 = Util.GetTimeMs();
 
             if (UseDrawDrawTime) {
@@ -373,9 +376,18 @@ CursorInfo : {t6 - t5:0.0}ms
 DrawImage : {t7 - t6:0.0}ms
 Total : {t7 - t0:0.0}ms
 ";
-                var ig = new ImageGraphics(this, e.Graphics);
+                var ig = new ImageGraphics(this, buffGfx.Graphics);
                 DrawDrawTime(ig, info);
             }
+            buffGfx.Render();
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs pevent) {
+        }
+
+        // 페인트 할때
+        protected override void OnPaint(PaintEventArgs e) {
+            Redraw();
         }
 
         // 이미지 버퍼를 디스플레이 버퍼에 복사
@@ -443,7 +455,7 @@ Total : {t7 - t0:0.0}ms
                 bool fixPanning = (Control.ModifierKeys == Keys.Alt);
                 WheelZoom(e, fixPanning);
             }
-            Invalidate();
+            Redraw();
         }
 
         // 휠 스크롤
@@ -490,7 +502,7 @@ Total : {t7 - t0:0.0}ms
             if (UseMouseMove && mouseDown) {
                 PanX += e.Location.X - ptMouseLast.X;
                 PanY += e.Location.Y - ptMouseLast.Y;
-                Invalidate();
+                Redraw();
             }
             ptMouseLast = e.Location;
 
@@ -533,6 +545,7 @@ Total : {t7 - t0:0.0}ms
             dispBH = Math.Max(ClientSize.Height, 64);
             dispBuf = Util.AllocBuffer(dispBW * dispBH * 4);
             dispBmp = new Bitmap(dispBW, dispBH, dispBW * 4, PixelFormat.Format32bppPArgb, dispBuf);
+            buffGfx = BufferedGraphicsManager.Current.Allocate(this.CreateGraphics(), new Rectangle(0, 0, dispBW, dispBH));
         }
 
         // 표시 버퍼 해제
@@ -541,6 +554,8 @@ Total : {t7 - t0:0.0}ms
                 dispBmp.Dispose();
             if (dispBuf != IntPtr.Zero)
                 Util.FreeBuffer(ref dispBuf);
+            if (buffGfx != null)
+                buffGfx.Dispose();
         }
 
         // 중심선 표시
