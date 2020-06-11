@@ -299,6 +299,9 @@ v0.0.0.0 - 20191001
             Invalidate();
         }
 
+        protected override void OnPaintBackground(PaintEventArgs pevent) {
+        }
+
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
             var t0 = Util.GetTimeMs();
