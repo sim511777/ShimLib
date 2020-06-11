@@ -325,25 +325,21 @@ v0.0.0.0 - 20191001
                         DrawPixelValueBitmap(fontAscii5x8);
                 }
             }
-            var t2 = Util.GetTimeMs();
-
             if (UseDrawCenterLine)
                 DrawCenterLine(bmpIG);
-            var t3 = Util.GetTimeMs();
-
-            OnPaintBackBuffer(dispBuf, dispBW, dispBH);
-            var t4 = Util.GetTimeMs();
-
-            base.OnPaint(new PaintEventArgs(bmpG, dispRect));
-            var t5 = Util.GetTimeMs();
-
             if (UseDrawInfo)
                 DrawInfo(bmpIG);
-            var t6 = Util.GetTimeMs();
+            var t2 = Util.GetTimeMs();
+
+            OnPaintBackBuffer(dispBuf, dispBW, dispBH);
+            var t3 = Util.GetTimeMs();
+
+            base.OnPaint(new PaintEventArgs(bmpG, dispRect));
+            var t4 = Util.GetTimeMs();
 
             bmpG.Dispose();
             buffGfx.Graphics.DrawImageUnscaledAndClipped(dispBmp, dispRect);
-            var t7 = Util.GetTimeMs();
+            var t5 = Util.GetTimeMs();
 
             if (UseDrawDrawTime) {
                 string info =
@@ -368,20 +364,20 @@ ZoomLevelMax : {ZoomLevelMax}
 
 == Draw time ==
 ZoomImage : {t1 - t0:0.0}ms
-PixelValue : {t2 - t1:0.0}ms
-CenterLine : {t3 - t2:0.0}ms
-OnPaintBuffer : {t4 - t3:0.0}ms
-OnPaint : {t5 - t4:0.0}ms
-CursorInfo : {t6 - t5:0.0}ms
-DrawImage : {t7 - t6:0.0}ms
-Total : {t7 - t0:0.0}ms
+DrawInfo : {t2 - t1:0.0}ms
+OnPaintBuffer : {t3 - t2:0.0}ms
+OnPaint : {t4 - t3:0.0}ms
+DrawImage : {t5 - t4:0.0}ms
+Total : {t5 - t0:0.0}ms
 ";
                 var ig = new ImageGraphics(this, buffGfx.Graphics);
                 DrawDrawTime(ig, info);
             }
+
             buffGfx.Render();
         }
 
+        // 백그라운 처리에서 아무것도 안하도록 함
         protected override void OnPaintBackground(PaintEventArgs pevent) {
         }
 
