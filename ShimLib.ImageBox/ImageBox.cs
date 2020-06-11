@@ -162,6 +162,13 @@ v0.0.0.0 - 20191001
         private BufferedGraphics buffGfx;
         private FontRenderer fontAscii4x6;
         private FontRenderer fontAscii5x8;
+        public FontRenderer FontRender {
+            get {
+                if (DrawPixelValueMode == PixelValueRenderer.FontAscii_4x6)
+                    return fontAscii4x6;
+                return fontAscii5x8;
+            }
+        }
 
         // 이미지용 버퍼
         [Browsable(false)]
@@ -314,15 +321,13 @@ v0.0.0.0 - 20191001
 
             var bmpG = Graphics.FromImage(dispBmp);
             var bmpIG = new ImageGraphics(this, bmpG);
+            var imgDraw = new ImageDrawing(this, dispBuf, dispBW, dispBH);
 
             if (UseDrawPixelValue) {
                 if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
                     DrawPixelValue(bmpIG);
                 else {
-                    if (DrawPixelValueMode == PixelValueRenderer.FontAscii_4x6)
-                        DrawPixelValueBitmap(fontAscii4x6);
-                    if (DrawPixelValueMode == PixelValueRenderer.FontAscii_5x8)
-                        DrawPixelValueBitmap(fontAscii5x8);
+                    DrawPixelValueBitmap(imgDraw);
                 }
             }
             if (UseDrawCenterLine)
@@ -633,7 +638,7 @@ Total : {t5 - t0:0.0}ms
             brush.Dispose();
         }
 
-        private void DrawPixelValueBitmap(FontRenderer fontRnd) {
+        private void DrawPixelValueBitmap(ImageDrawing imgDrw) {
             double ZoomFactor = GetZoomFactor();
             double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
             if (BufIsFloat)
@@ -655,9 +660,8 @@ Total : {t5 - t0:0.0}ms
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     PointF ptImg = new PointF(imgX, imgY);
-                    PointF ptDisp = this.ImgToDisp(ptImg);
                     var color = pseudo[pixelVal / 32];
-                    fontRnd.DrawString(pixelValText, dispBuf, dispBW, dispBH, (int)ptDisp.X, (int)ptDisp.Y, color);
+                    imgDrw.DrawString(pixelValText, ptImg, color);
                 }
             }
         }

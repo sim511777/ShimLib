@@ -124,5 +124,45 @@ namespace ShimLib {
             while (size-- > 0)
                 *ptr1++ = iCol;
         }
+
+        public static unsafe void DrawImage(IntPtr dbuf, int dw, int dh, IntPtr sbuf, int sw, int sh, int x0, int y0) {
+            if (x0 >= dw || x0 <= -sw || y0 >= dh || y0 <= -sh)
+	            return;
+
+            int dx1 = x0;
+            int dx2 = x0 + sw;
+            int sx1 = 0;
+            int sx2 = sw;
+
+            if (dx1 < 0) {
+	            sx1 -= dx1;
+	            dx1 = 0;
+            }
+            if (dx2 > dw) {
+	            sx2 -= dx2 - dw;;
+	            dx2 = dw;
+            }
+            int copyw = dx2 - dx1;
+
+            int dy1 = y0;
+            int dy2 = y0 + sh;
+            int sy1 = 0;
+            int sy2 = sh;
+
+            if (dy1 < 0) {
+	            sy1 -= dy1;
+	            dy1 = 0;
+            }
+            if (dy2 > dh) {
+	            sy2 -= dy2 - dh;
+	            dy2 = dh;
+            }
+
+            for (int dy = dy1, sy = sy1; dy < dy2; dy++, sy++) {
+                int* dptr = (int*)dbuf + dw * dy + dx1;
+                int* sptr = (int*)sbuf + sw * sy + sx1;
+                Util.Memcpy((IntPtr)dptr, (IntPtr)sptr, copyw * 4);
+            }
+        }
     }
 }
