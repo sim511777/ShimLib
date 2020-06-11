@@ -50,6 +50,12 @@ v20200330
             return GetTime() * 1000.0;
         }
 
+        public static void Swap<T>(ref T a, ref T b) {
+            T temp = a;
+            a = b;
+            b = temp;
+        }
+
         // 범위 제한 함수
         public static T Clamp<T>(T value, T min, T max) where T : IComparable {
             if (value.CompareTo(min) < 0) return min;
