@@ -104,7 +104,7 @@ namespace ShimLib {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe void DrawPixel(int *ptr, int bw, int bh, int x, int y, int iCol) {
+        public static unsafe void DrawPixel(int *ptr, int bw, int bh, int x, int y, int iCol) {
             if (x >= 0 && x < bw && y >= 0 && y < bh)
                 *(ptr + bw * y + x) = iCol;
         }
