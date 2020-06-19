@@ -16,7 +16,6 @@ namespace ShimLib {
     public delegate void PaintBackbufferEventHandler(object sender, IntPtr buf, int bw, int bh);
 
     public enum PixelValueRenderer {
-        GdiPlus,
         FontAscii_4x6,
         FontAscii_5x8,
     }
@@ -319,26 +318,19 @@ v0.0.0.0 - 20191001
             CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PanX, PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), BufIsFloat);
             var t1 = Util.GetTimeMs();
 
-            var bmpG = Graphics.FromImage(dispBmp);
-            var bmpIG = new ImageGraphics(this, bmpG);
             var imgDraw = new ImageDrawing(this, dispBuf, dispBW, dispBH);
 
             if (UseDrawPixelValue) {
-                if (DrawPixelValueMode == PixelValueRenderer.GdiPlus)
-                    DrawPixelValue(bmpIG);
-                else {
-                    DrawPixelValueBitmap(imgDraw);
-                }
+                DrawPixelValueBitmap(imgDraw);
             }
             if (UseDrawCenterLine)
-                DrawCenterLine(bmpIG);
-            if (UseDrawInfo)
-                DrawInfo(bmpIG);
+                DrawCenterLine(imgDraw);
             var t2 = Util.GetTimeMs();
 
             OnPaintBackBuffer(dispBuf, dispBW, dispBH);
             var t3 = Util.GetTimeMs();
 
+            var bmpG = Graphics.FromImage(dispBmp);
             base.OnPaint(new PaintEventArgs(bmpG, dispRect));
             var t4 = Util.GetTimeMs();
 
@@ -346,6 +338,9 @@ v0.0.0.0 - 20191001
             buffGfx.Graphics.DrawImageUnscaledAndClipped(dispBmp, dispRect);
             var t5 = Util.GetTimeMs();
 
+            var ig = new ImageGraphics(this, buffGfx.Graphics);
+            if (UseDrawInfo)
+                DrawInfo(ig);
             if (UseDrawDrawTime) {
                 string info =
 $@"== Image ==
@@ -375,7 +370,6 @@ OnPaint : {t4 - t3:0.0}ms
 DrawImage : {t5 - t4:0.0}ms
 Total : {t5 - t0:0.0}ms
 ";
-                var ig = new ImageGraphics(this, buffGfx.Graphics);
                 DrawDrawTime(ig, info);
             }
 
@@ -560,41 +554,13 @@ Total : {t5 - t0:0.0}ms
         }
 
         // 중심선 표시
-        private void DrawCenterLine(ImageGraphics ig) {
+        private void DrawCenterLine(ImageDrawing id) {
             if (ImgBuf == IntPtr.Zero)
                 return;
 
-            Pen pen = new Pen(Color.Yellow) {
-                DashStyle = DashStyle.Dot
-            };
-
-            PointF ptLeft = new PointF(0, ImgBH / 2);
-            PointF ptRight = new PointF(ImgBW, ImgBH / 2);
-            Point ptdLeft = ImgToDisp(ptLeft);
-            Point ptdRight = ImgToDisp(ptRight);
-
-            int ClientWidth = ClientSize.Width;
-            int ClientHeight = ClientSize.Height;
-            if (ptdLeft.Y >= 0 && ptdLeft.Y < ClientHeight && ptdRight.X >= 0 && ptdLeft.X < ClientWidth) {
-                ptdLeft.X = Util.Clamp(ptdLeft.X, 0, ClientWidth);
-                ptdRight.X = Util.Clamp(ptdRight.X, 0, ClientWidth);
-                ptLeft = DispToImg(ptdLeft);
-                ptRight = DispToImg(ptdRight);
-                ig.DrawLine(ptLeft, ptRight, pen);
-            }
-
-            PointF ptTop = new PointF(ImgBW / 2, 0);
-            PointF ptBottom = new PointF(ImgBW / 2, ImgBH);
-            Point ptdTop = ImgToDisp(ptTop);
-            Point ptdBottom = ImgToDisp(ptBottom);
-
-            if (ptdTop.X >= 0 && ptdTop.X < ClientWidth && ptdBottom.Y >= 0 && ptTop.Y < ClientHeight) {
-                ptdTop.Y = Util.Clamp(ptdTop.Y, 0, ClientHeight);
-                ptdBottom.Y = Util.Clamp(ptdBottom.Y, 0, ClientHeight);
-                ptTop = DispToImg(ptdTop);
-                ptBottom = DispToImg(ptdBottom);
-                ig.DrawLine(ptTop, ptBottom, pen);
-            }
+            Color color = Color.Yellow;
+            id.DrawLine(0, ImgBH / 2, ImgBW, ImgBH / 2, color);
+            id.DrawLine(ImgBW / 2, 0, ImgBW / 2, ImgBH, color);
         }
 
         // 이미지 픽셀값 표시
@@ -608,35 +574,6 @@ Total : {t5 - t0:0.0}ms
             Color.Red    ,    // 192~223
             Color.Black,      // 224~255
         };
-
-        private void DrawPixelValue(ImageGraphics ig) {
-            double ZoomFactor = GetZoomFactor();
-            double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
-            if (BufIsFloat)
-                pixeValFactor *= 0.6;
-            if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
-                return;
-
-            var ptDisp1 = new Point(0, 0);
-            var ptDisp2 = new Point(ClientSize.Width, ClientSize.Height);
-            var ptImg1 = DispToImg(ptDisp1);
-            var ptImg2 = DispToImg(ptDisp2);
-            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW - 1);
-            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH - 1);
-            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
-            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
-
-            SolidBrush brush = new SolidBrush(Color.Black);
-            for (int imgY = imgY1; imgY <= imgY2; imgY++) {
-                for (int imgX = imgX1; imgX <= imgX2; imgX++) {
-                    string pixelValText = GetImagePixelValueText(imgX, imgY);
-                    int pixelVal = GetImagePixelValueAverage(imgX, imgY);
-                    brush.Color = pseudo[pixelVal / 32];
-                    ig.DrawString(pixelValText, new PointF(imgX, imgY), PixelValueDispFont, brush, null);
-                }
-            }
-            brush.Dispose();
-        }
 
         private void DrawPixelValueBitmap(ImageDrawing imgDrw) {
             double ZoomFactor = GetZoomFactor();
