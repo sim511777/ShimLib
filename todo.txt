@@ -18,6 +18,7 @@ ok FillRect 함수
 ok FillCircle 함수
 ok EraseBackground 아무것도 안하도록 재정의
 ok BufferdGraphics 사용 속도 증가 14ms -> 10ms
+이미지 좌표계 변경, 0,0 이 첫번째 픽셀의 가운데가 되도록
 1Bit bmp disp, load, save
 
 DrawEllipse 함수
