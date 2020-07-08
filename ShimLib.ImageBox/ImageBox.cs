@@ -123,7 +123,7 @@ namespace ShimLib {
                     if (ImgBuf == IntPtr.Zero)
                         panX = 0;
                     else
-                        panX = Util.Clamp(value, (int)Math.Floor(-ImgBW * GetZoomFactor()) + 2, 2);
+                        panX = Util.Clamp(value, (int)Math.Round(-ImgBW * GetZoomFactor()) + 2, 2);
                 } else {
                     panX = value;
                 }
@@ -138,7 +138,7 @@ namespace ShimLib {
                     if (ImgBuf == IntPtr.Zero)
                         panY = 0;
                     else
-                        panY = Util.Clamp(value, (int)Math.Floor(-ImgBH * GetZoomFactor()) + 2, 2);
+                        panY = Util.Clamp(value, (int)Math.Round(-ImgBH * GetZoomFactor()) + 2, 2);
                 } else {
                     panY = value;
                 }
@@ -164,10 +164,10 @@ namespace ShimLib {
             double scale1 = (double)ClientRectangle.Width / width;
             double scale2 = (double)ClientRectangle.Height / height;
             double wantedZoomFactor = Math.Min(scale1, scale2);
-            ZoomLevel = (int)Math.Floor(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2)));
+            ZoomLevel = (int)Math.Round(Math.Log(wantedZoomFactor) / Math.Log(Math.Sqrt(2)));
             double ZoomFactor = GetZoomFactor();
-            PanX = (int)Math.Floor((ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
-            PanY = (int)Math.Floor((ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
+            PanX = (int)Math.Round((ClientRectangle.Width - width * ZoomFactor) / 2 - x * ZoomFactor);
+            PanY = (int)Math.Round((ClientRectangle.Height - height * ZoomFactor) / 2 - y * ZoomFactor);
         }
 
         // 줌 리셋
@@ -349,8 +349,8 @@ Total : {t5 - t0:0.0}ms
             var zoomFactorDelta = zoomFactorNew / zoomFactorOld;
             var ptX = (PanX - e.Location.X) * zoomFactorDelta + e.Location.X;
             var ptY = (PanY - e.Location.Y) * zoomFactorDelta + e.Location.Y;
-            PanX = (int)Math.Floor(ptX);
-            PanY = (int)Math.Floor(ptY);
+            PanX = (int)Math.Round(ptX);
+            PanY = (int)Math.Round(ptY);
         }
 
         // 마우스 다운
@@ -434,8 +434,8 @@ Total : {t5 - t0:0.0}ms
                 return;
 
             Color color = Color.Yellow;
-            id.DrawLine(0, ImgBH / 2, ImgBW, ImgBH / 2, color);
-            id.DrawLine(ImgBW / 2, 0, ImgBW / 2, ImgBH, color);
+            id.DrawLine(-0.5f, ImgBH / 2.0f - 0.5f, ImgBW - 0.5f, ImgBH / 2.0f - 0.5f, color);
+            id.DrawLine(ImgBW / 2.0f - 0.5f, -0.5f, ImgBW / 2.0f - 0.5f, ImgBH - 0.5f, color);
         }
 
         // 이미지 픽셀값 표시
@@ -462,16 +462,16 @@ Total : {t5 - t0:0.0}ms
             var ptDisp2 = new Point(ClientSize.Width, ClientSize.Height);
             var ptImg1 = DispToImg(ptDisp1);
             var ptImg2 = DispToImg(ptDisp2);
-            int imgX1 = Util.Clamp((int)Math.Floor(ptImg1.X), 0, ImgBW - 1);
-            int imgY1 = Util.Clamp((int)Math.Floor(ptImg1.Y), 0, ImgBH - 1);
-            int imgX2 = Util.Clamp((int)Math.Floor(ptImg2.X), 0, ImgBW - 1);
-            int imgY2 = Util.Clamp((int)Math.Floor(ptImg2.Y), 0, ImgBH - 1);
+            int imgX1 = Util.Clamp((int)Math.Round(ptImg1.X), 0, ImgBW - 1);
+            int imgY1 = Util.Clamp((int)Math.Round(ptImg1.Y), 0, ImgBH - 1);
+            int imgX2 = Util.Clamp((int)Math.Round(ptImg2.X), 0, ImgBW - 1);
+            int imgY2 = Util.Clamp((int)Math.Round(ptImg2.Y), 0, ImgBH - 1);
 
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
-                    PointF ptImg = new PointF(imgX, imgY);
+                    PointF ptImg = new PointF(imgX - 0.5f, imgY - 0.5f);
                     var color = pseudo[pixelVal / 32];
                     imgDrw.DrawString(pixelValText, ptImg, color);
                 }
@@ -482,8 +482,8 @@ Total : {t5 - t0:0.0}ms
         private void DrawInfo(ImageGraphics ig) {
             Point ptCur = ptMouseLast;
             PointF ptImg = DispToImg(ptCur);
-            int imgX = (int)Math.Floor(ptImg.X);
-            int imgY = (int)Math.Floor(ptImg.Y);
+            int imgX = (int)Math.Round(ptImg.X);
+            int imgY = (int)Math.Round(ptImg.Y);
             string pixelVal = GetImagePixelValueText(imgX, imgY);
             string info = $"zoom={GetZoomText()} ({imgX},{imgY})={pixelVal}";
 
@@ -505,17 +505,17 @@ Total : {t5 - t0:0.0}ms
         // 표시 픽셀 좌표를 이미지 좌표로 변환
         public PointF DispToImg(Point pt) {
             double ZoomFactor = GetZoomFactor();
-            double x = (pt.X - PanX) / ZoomFactor;
-            double y = (pt.Y - PanY) / ZoomFactor;
+            double x = (pt.X - PanX) / ZoomFactor - 0.5;
+            double y = (pt.Y - PanY) / ZoomFactor - 0.5;
             return new PointF((float)x, (float)y);
         }
 
         // 이미지 좌표를 표시 픽셀 좌표로 변환
         public Point ImgToDisp(PointF pt) {
             double ZoomFactor = GetZoomFactor();
-            double x = Math.Floor(pt.X * ZoomFactor + PanX);
-            double y = Math.Floor(pt.Y * ZoomFactor + PanY);
-            return new Point((int)Math.Floor(x), (int)Math.Floor(y));
+            double x = (pt.X + 0.5) * ZoomFactor + PanX;
+            double y = (pt.Y + 0.5) * ZoomFactor + PanY;
+            return new Point((int)Math.Round(x), (int)Math.Round(y));
         }
 
         // 이미지 픽셀값 문자열 리턴
