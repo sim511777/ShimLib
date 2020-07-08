@@ -58,6 +58,9 @@
     <Compile Include="FormAbout.Designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageBox.Info.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ImageDrawing.cs" />
     <Compile Include="ImageGraphics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
