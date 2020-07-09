@@ -527,7 +527,7 @@ Total : {t5 - t0:0.0}ms
 
             if (!BufIsFloat) {
                 if (ImgBytepp == 1)
-                    return $"{*ptr,3}";
+                    return $"{*ptr}";
                 if (ImgBytepp == 2)
                     return (ptr[1] | ptr[0] << 8).ToString();
                 else
