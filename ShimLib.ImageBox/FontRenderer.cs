@@ -8,31 +8,38 @@ using System.Threading.Tasks;
 
 namespace ShimLib {
     public class FontRenderer {
-        private ImageBuffer fontImage;
-        private int fontBW;
-        private int fontBH;
+        private IntPtr fontBuf;
+        private int fontBw;
+        private int fontBh;
+        private int fw;
+        private int fh;
         private bool isAscii;
         private bool[] charHalfs;
-        public FontRenderer(Bitmap bmp, int _fontBW, int _fontBH, bool _isAscii) {
-            fontImage = new ImageBuffer(bmp);
-            fontBW = _fontBW;
-            fontBH = _fontBH;
+        public FontRenderer(Bitmap bmp, int _fw, int _fh, bool _isAscii) {
+            int bytepp = 0;
+            Util.BitmapToImageBuffer(bmp, ref fontBuf, ref fontBw, ref fontBh, ref bytepp);
+            fw = _fw;
+            fh = _fh;
             isAscii = _isAscii;
             if (!isAscii) {
                 GetCharHalfs();
             }
         }
+        
+        ~FontRenderer() {
+            Util.FreeBuffer(ref fontBuf);
+        }
 
         private unsafe void GetCharHalfs() {
             charHalfs = new bool[65536];
             for (int ch = 0; ch < 65536; ch++) {
-                int fontX = ch * fontBW;
-                int fontImgY = fontX / fontImage.bw;
-                int fontImgX = fontX % fontImage.bw + fontBW / 2;
+                int fontX = ch * fw;
+                int fontImgY = fontX / fontBw;
+                int fontImgX = fontX % fontBw + fw / 2;
                 bool hasBlackPixel = false;
-                for (int y = 0; y < fontBH; y++) {
-                    byte* ptr = (byte*)fontImage.buf + (fontImgY + y) * fontImage.bw + fontImgX;
-                    for (int x = 0; x < fontBW / 2; x++, ptr++) {
+                for (int y = 0; y < fh; y++) {
+                    byte* ptr = (byte*)fontBuf + (fontImgY + y) * fontBw + fontImgX;
+                    for (int x = 0; x < fw / 2; x++, ptr++) {
                         if (*ptr == 0) {
                             hasBlackPixel = true;
                             break;
@@ -55,22 +62,22 @@ namespace ShimLib {
                 }
                 if (ch == '\n') {
                     x = dx;
-                    y += fontBH;
+                    y += fh;
                     continue;
                 }
                 if (isAscii) {
                     if (ch >= 32 && ch <= 128) {
-                        int fontX = (ch - 32) * fontBW;
-                        int fontImgY = fontX / fontImage.bw;
-                        int fontImgX = fontX % fontImage.bw;
-                        DrawChar(fontImgX, fontImgY, fontBW, dispBuf, dispBW, dispBH, x, y, icolor);
+                        int fontX = (ch - 32) * fw;
+                        int fontImgY = fontX / fontBw;
+                        int fontImgX = fontX % fontBw;
+                        DrawChar(fontImgX, fontImgY, fw, dispBuf, dispBW, dispBH, x, y, icolor);
                     }
-                    x += fontBW;
+                    x += fw;
                 } else {
-                    int fontX = ch * fontBW;
-                    int fontImgY = fontX / fontImage.bw * fontBH;
-                    int fontImgX = fontX % fontImage.bw;
-                    int fontBW2 = charHalfs[ch] ? fontBW / 2 : fontBW;
+                    int fontX = ch * fw;
+                    int fontImgY = fontX / fontBw * fh;
+                    int fontImgX = fontX % fontBw;
+                    int fontBW2 = charHalfs[ch] ? fw / 2 : fw;
                     DrawChar(fontImgX, fontImgY, fontBW2, dispBuf, dispBW, dispBH, x, y, icolor);
                     x += fontBW2;
                 }
@@ -88,30 +95,30 @@ namespace ShimLib {
                 }
                 if (ch == '\n') {
                     x = 0;
-                    y += fontBH;
+                    y += fh;
                     if (x > maxX) maxX = x;
                     if (y > maxY) maxY = y;
                     continue;
                 }
                 if (isAscii) {
-                    x += fontBW;
+                    x += fw;
                 } else {
-                    int fontBW2 = charHalfs[ch] ? fontBW / 2 : fontBW;
+                    int fontBW2 = charHalfs[ch] ? fw / 2 : fw;
                     x += fontBW2;
                 }
                 if (x > maxX) maxX = x;
             }
-            y += fontBH;
+            y += fh;
 
             return new Size(maxX, maxY);
         }
 
         private unsafe void DrawChar(int fontImgX, int fontImgY, int fontBW2, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
-            for (int y = 0; y < fontBH; y++) {
+            for (int y = 0; y < fh; y++) {
                 if (dy + y < 0 || dy + y >= dispBH)
                     continue;
                 int* dst = (int*)dispBuf + dispBW * (dy + y) + dx;
-                byte* src = (byte*)fontImage.buf + fontImage.bw * (fontImgY + y) + fontImgX;
+                byte* src = (byte*)fontBuf + fontBw * (fontImgY + y) + fontImgX;
                 for (int x = 0; x < fontBW2; x++, src++, dst++) {
                     if (dx + x < 0 || dx + x >= dispBW)
                         continue;
