@@ -76,7 +76,10 @@ namespace ShimLib {
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
         public Font PixelValueDispFont { get; set; } = new Font("Arial", 6);
-        public int PixelValueDispZoomFactor { get; set; } = 16;
+        public int PixelValueDispZoomFactorGray8 { get; set; } = 16;
+        public int PixelValueDispZoomFactorGray16 { get; set; } = 32;
+        public int PixelValueDispZoomFactorRgb { get; set; } = 32;
+        public int PixelValueDispZoomFactorFloat { get; set; } = 48;
 
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; } = true;
@@ -452,11 +455,20 @@ Total : {t5 - t0:0.0}ms
 
         private void DrawPixelValueBitmap(ImageDrawing imgDrw) {
             double ZoomFactor = GetZoomFactor();
-            double pixeValFactor = Util.Clamp(ImgBytepp, 1, 3);
-            if (BufIsFloat)
-                pixeValFactor *= 0.6f;
-            if (ZoomFactor < PixelValueDispZoomFactor * pixeValFactor)
-                return;
+            if (BufIsFloat) {
+                if (ZoomFactor < PixelValueDispZoomFactorFloat)
+                    return;
+            } else {
+                if (ImgBytepp == 1)
+                if (ZoomFactor < PixelValueDispZoomFactorGray8)
+                    return;
+                if (ImgBytepp == 2)
+                if (ZoomFactor < PixelValueDispZoomFactorGray16)
+                    return;
+                if (ImgBytepp == 3 || ImgBytepp == 4)
+                if (ZoomFactor < PixelValueDispZoomFactorRgb)
+                    return;
+            }
 
             var ptDisp1 = new Point(0, 0);
             var ptDisp2 = new Point(ClientSize.Width, ClientSize.Height);
@@ -470,6 +482,9 @@ Total : {t5 - t0:0.0}ms
             for (int imgY = imgY1; imgY <= imgY2; imgY++) {
                 for (int imgX = imgX1; imgX <= imgX2; imgX++) {
                     string pixelValText = GetImagePixelValueText(imgX, imgY);
+                    if (!BufIsFloat && ImgBytepp == 3 || ImgBytepp == 4)
+                        pixelValText = pixelValText.Replace(",", "\r\n");
+
                     int pixelVal = GetImagePixelValueAverage(imgX, imgY);
                     PointF ptImg = new PointF(imgX - 0.5f, imgY - 0.5f);
                     var color = pseudo[pixelVal / 32];

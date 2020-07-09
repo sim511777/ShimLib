@@ -11,6 +11,8 @@ namespace ShimLib {
 v1.0.0.20 - 20200708
 1. VersionHistory partial class로 분리
 2. 이미지 좌표계 변경, 0,0 이 첫번째 픽셀의 가운데가 되도록 수정
+3. 픽셀값 표시시 3자리 맞추던것 안맞춤으로 원복
+4. PIxelValue 표시 최소 배율 이미지 포멧별로 다르게 설정
 
 v1.0.0.19 - 20200611
 1. EraseBackground 아무것도 안하도록 재정의

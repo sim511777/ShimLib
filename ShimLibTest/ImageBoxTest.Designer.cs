@@ -403,7 +403,7 @@
             this.pbxDraw.PanX = 0;
             this.pbxDraw.PanY = 0;
             this.pbxDraw.PixelValueDispFont = new System.Drawing.Font("Arial", 6F);
-            this.pbxDraw.PixelValueDispZoomFactor = 16;
+            this.pbxDraw.PixelValueDispZoomFactorGray8 = 16;
             this.pbxDraw.Size = new System.Drawing.Size(712, 609);
             this.pbxDraw.TabIndex = 3;
             this.pbxDraw.Text = "imageBox1";

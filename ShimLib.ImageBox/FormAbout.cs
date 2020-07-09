@@ -89,7 +89,10 @@ namespace ShimLib {
         public Color BackColor { get; set; }
         public Font Font { get; set; }
         public Font PixelValueDispFont { get; set; }
-        public int PixelValueDispZoomFactor { get; set; }
+        public int PixelValueDispZoomFactorGray8 { get; set; }
+        public int PixelValueDispZoomFactorGray16 { get; set; }
+        public int PixelValueDispZoomFactorRgb { get; set; }
+        public int PixelValueDispZoomFactorFloat { get; set; }
         // 마우스 동작 옵션
         public bool UseMouseMove { get; set; }
         public bool UseMouseWheelZoom { get; set; }
@@ -112,7 +115,10 @@ namespace ShimLib {
             this.BackColor = pbx.BackColor;
             this.Font = pbx.Font;
             this.PixelValueDispFont = pbx.PixelValueDispFont;
-            this.PixelValueDispZoomFactor = pbx.PixelValueDispZoomFactor;
+            this.PixelValueDispZoomFactorGray8 = pbx.PixelValueDispZoomFactorGray8;
+            this.PixelValueDispZoomFactorGray16 = pbx.PixelValueDispZoomFactorGray16;
+            this.PixelValueDispZoomFactorRgb = pbx.PixelValueDispZoomFactorRgb;
+            this.PixelValueDispZoomFactorFloat = pbx.PixelValueDispZoomFactorFloat;
 
             this.UseMouseMove = pbx.UseMouseMove;
             this.UseMouseWheelZoom = pbx.UseMouseWheelZoom;
@@ -136,7 +142,10 @@ namespace ShimLib {
             pbx.BackColor = this.BackColor;
             pbx.Font = this.Font;
             pbx.PixelValueDispFont = this.PixelValueDispFont;
-            pbx.PixelValueDispZoomFactor = this.PixelValueDispZoomFactor;
+            pbx.PixelValueDispZoomFactorGray8 = this.PixelValueDispZoomFactorGray8;
+            pbx.PixelValueDispZoomFactorGray16 = this.PixelValueDispZoomFactorGray16;
+            pbx.PixelValueDispZoomFactorRgb = this.PixelValueDispZoomFactorRgb;
+            pbx.PixelValueDispZoomFactorFloat = this.PixelValueDispZoomFactorFloat;
 
             pbx.UseMouseMove = this.UseMouseMove;
             pbx.UseMouseWheelZoom = this.UseMouseWheelZoom;
