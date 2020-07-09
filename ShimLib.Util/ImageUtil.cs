@@ -50,11 +50,11 @@ namespace ShimLib {
 
         // 8bit bmp 파일 버퍼에 로드
         public unsafe static T StreamReadStructure<T>(Stream sr) {
-            int size = Marshal.SizeOf<T>();
+            int size = Marshal.SizeOf(typeof(T));
             byte[] buf = new byte[size];
             sr.Read(buf, 0, size);
             fixed (byte* ptr = buf) {
-                T obj = Marshal.PtrToStructure<T>((IntPtr)ptr);
+                T obj = (T)Marshal.PtrToStructure((IntPtr)ptr, typeof(T));
                 return obj;
             }
         }
@@ -106,10 +106,10 @@ namespace ShimLib {
         // 8bit 버퍼 bmp 파일에 저장
         static readonly byte[] grayPalette = Enumerable.Range(0, 1024).Select(i => i % 4 == 3 ? (byte)0xff : (byte)(i / 4)).ToArray();
         public unsafe static void StreamWriteStructure<T>(Stream sr, T obj) {
-            int size = Marshal.SizeOf<T>();
+            int size = Marshal.SizeOf(typeof(T));
             byte[] buf = new byte[size];
             fixed (byte* ptr = buf) {
-                Marshal.StructureToPtr<T>(obj, (IntPtr)ptr, false);
+                Marshal.StructureToPtr(obj, (IntPtr)ptr, false);
             }
             sr.Write(buf, 0, size);
         }
