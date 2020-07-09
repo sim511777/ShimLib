@@ -60,8 +60,8 @@ namespace ShimLib {
         // 생성자
         public ImageBox() {
             //DoubleBuffered = true;
-            fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6, true);
-            fontAscii5x8 = new FontRenderer(Resources.FontAscii_5x8, 5, 8, true);
+            fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6);
+            fontAscii5x8 = new FontRenderer(Resources.FontAscii_5x8, 5, 8);
         }
 
         protected override void Dispose(bool disposing) {

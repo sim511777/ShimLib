@@ -15,6 +15,7 @@ v1.0.0.20 - 20200709
 4. PIxelValue 표시 최소 배율 이미지 포멧별로 다르게 설정
 5. ImageBuffer 클래스 삭제
 6. ImageUtil 클래스 분리
+7. MeasureString 버그 수정
 
 v1.0.0.19 - 20200611
 1. EraseBackground 아무것도 안하도록 재정의

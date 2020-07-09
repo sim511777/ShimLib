@@ -13,43 +13,15 @@ namespace ShimLib {
         private int fontBh;
         private int fw;
         private int fh;
-        private bool isAscii;
-        private bool[] charHalfs;
-        public FontRenderer(Bitmap bmp, int _fw, int _fh, bool _isAscii) {
+        public FontRenderer(Bitmap bmp, int _fw, int _fh) {
             int bytepp = 0;
             ImageUtil.BitmapToImageBuffer(bmp, ref fontBuf, ref fontBw, ref fontBh, ref bytepp);
             fw = _fw;
             fh = _fh;
-            isAscii = _isAscii;
-            if (!isAscii) {
-                GetCharHalfs();
-            }
         }
         
         ~FontRenderer() {
             Util.FreeBuffer(ref fontBuf);
-        }
-
-        private unsafe void GetCharHalfs() {
-            charHalfs = new bool[65536];
-            for (int ch = 0; ch < 65536; ch++) {
-                int fontX = ch * fw;
-                int fontImgY = fontX / fontBw;
-                int fontImgX = fontX % fontBw + fw / 2;
-                bool hasBlackPixel = false;
-                for (int y = 0; y < fh; y++) {
-                    byte* ptr = (byte*)fontBuf + (fontImgY + y) * fontBw + fontImgX;
-                    for (int x = 0; x < fw / 2; x++, ptr++) {
-                        if (*ptr == 0) {
-                            hasBlackPixel = true;
-                            break;
-                        }
-                    }
-                    if (hasBlackPixel)
-                        break;
-                }
-                charHalfs[ch] = !hasBlackPixel;
-            }
         }
 
         public void DrawString(string text, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, Color color) {
@@ -65,22 +37,13 @@ namespace ShimLib {
                     y += fh;
                     continue;
                 }
-                if (isAscii) {
-                    if (ch >= 32 && ch <= 128) {
-                        int fontX = (ch - 32) * fw;
-                        int fontImgY = fontX / fontBw;
-                        int fontImgX = fontX % fontBw;
-                        DrawChar(fontImgX, fontImgY, fw, dispBuf, dispBW, dispBH, x, y, icolor);
-                    }
-                    x += fw;
-                } else {
-                    int fontX = ch * fw;
-                    int fontImgY = fontX / fontBw * fh;
+                if (ch >= 32 && ch <= 128) {
+                    int fontX = (ch - 32) * fw;
+                    int fontImgY = fontX / fontBw;
                     int fontImgX = fontX % fontBw;
-                    int fontBW2 = charHalfs[ch] ? fw / 2 : fw;
-                    DrawChar(fontImgX, fontImgY, fontBW2, dispBuf, dispBW, dispBH, x, y, icolor);
-                    x += fontBW2;
+                    DrawChar(fontImgX, fontImgY, fw, dispBuf, dispBW, dispBH, x, y, icolor);
                 }
+                x += fw;
             }
         }
 
@@ -96,19 +59,12 @@ namespace ShimLib {
                 if (ch == '\n') {
                     x = 0;
                     y += fh;
-                    if (x > maxX) maxX = x;
-                    if (y > maxY) maxY = y;
                     continue;
                 }
-                if (isAscii) {
-                    x += fw;
-                } else {
-                    int fontBW2 = charHalfs[ch] ? fw / 2 : fw;
-                    x += fontBW2;
-                }
-                if (x > maxX) maxX = x;
+                maxX = Math.Max(maxX, x + fw);
+                maxY = Math.Max(maxY, y + fh);
+                x += fw;
             }
-            y += fh;
 
             return new Size(maxX, maxY);
         }
