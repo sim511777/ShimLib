@@ -179,61 +179,63 @@ namespace ShimLibTest {
         }
 
         private void UserDrawTest(Graphics g) {
-            var st = Stopwatch.GetTimestamp();
-
-            Random Rnd = new Random();
-            int step = 20;
-            if (rlbxRetainedDraw.SelectedIndex == 0) {
-                Pen pen = new Pen(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
-                for (int y = 0; y < 1000; y += step) {
-                    for (int x = 0; x < 1000; x += step) {
-                        g.DrawEllipse(pen, x, y, step, step);
+            ImageGraphics ig = new ImageGraphics(pbxDraw, g);
+            Pen pen = Pens.Red;
+            Brush br = Brushes.Red;
+            float size = 0.9f;
+            int selIdx = rlbxRetainedDraw.SelectedIndex;
+            if (selIdx >= 0 && selIdx < 5) {
+                for (int i = 0; i < 100; i++) {
+                    for (int j = 0; j < 100; j++) {
+                        float y = i;
+                        float x = j;
+                        if (selIdx == 0)
+                            ig.DrawCircle(x, y, size, pen, false);
+                        else if (selIdx == 1)
+                            ig.DrawCircle(x, y, size, pen, false, true, br);
+                        else if (selIdx == 2)
+                            ig.DrawSquare(x, y, size, pen, false);
+                        else if (selIdx == 3)
+                            ig.DrawSquare(x, y, size, pen, false, true, br);
+                        else if (selIdx == 4)
+                            ig.DrawString($"{x},{y}", x, y, null, br, null);
                     }
                 }
-                pen.Dispose();
-            } else if (rlbxRetainedDraw.SelectedIndex == 1) {
-                Brush br = new SolidBrush(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
-                for (int y = 0; y < 1000; y += step) {
-                    for (int x = 0; x < 1000; x += step) {
-                        g.FillEllipse(br, x, y, step, step);
-                    }
-                }
-                br.Dispose();
-            } else if (rlbxRetainedDraw.SelectedIndex == 2) {
-                Brush br = new SolidBrush(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
-                for (int y = 0; y < 1000; y += step) {
-                    for (int x = 0; x < 1000; x += step) {
-                        g.DrawString("128", this.Font, br, x, y);
-                    }
-                }
-                br.Dispose();
-            } else if (rlbxRetainedDraw.SelectedIndex == 3) {
-                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
-                ig.DrawLine(1, 1, 2, 2, Pens.Lime);
-                ig.DrawLine(1, 2, 2, 1, Pens.Red);
-                ig.DrawRectangle(2, 2, 3, 3, Pens.Red, true, Brushes.Lime);
-                ig.DrawRectangle(2, 2, 3, 3, Pens.Red, false, Brushes.Red);
-                ig.DrawEllipse(3, 3, 4, 4, Pens.Red, true, Brushes.Lime);
-                ig.DrawEllipse(3, 3, 4, 4, Pens.Red, false, Brushes.Red);
-                ig.DrawCross(10, 10, 20, Pens.Lime, false);
-                ig.DrawPlus(10, 10, 20, Pens.Red, true);
-            } else if (rlbxRetainedDraw.SelectedIndex == 4) {
-                ImageGraphics ig = new ImageGraphics(pbxDraw, g);
-                Pen pen = new Pen(Color.FromArgb(Rnd.Next(256), Rnd.Next(256), Rnd.Next(256)));
-                for (int y = 0; y < 100; y++) {
-                    for (int x = 0; x < 100; x++) {
-                        ig.DrawEllipse(x, y, x + 1, y + 1, pen);
-                    }
-                }
-                pen.Dispose();
             }
+            else if (selIdx == 5) {
+                ig.DrawLine(0, 0, 64, 64, pen);
+                ig.DrawLine(0, 64, 64, 0, pen);
+            }
+        }
 
-            var et = Stopwatch.GetTimestamp();
-            var ms = (et - st) * 1000.0 / Stopwatch.Frequency;
-            var text = $"DrawTime : {ms:0.00}";
-            var size = g.MeasureString(text, this.Font);
-            g.FillRectangle(Brushes.White, 255, 2, size.Width, size.Height);
-            g.DrawString(text, pbxDraw.Font, Brushes.Black, 255, 2);
+        private void UserDrawTest(IntPtr buf, int bw, int bh) {
+            ImageDrawing id = new ImageDrawing(pbxDraw, buf, bw, bh);
+            Color col = Color.Red;
+            float size = 0.9f;
+            float r = size * 0.5f;
+            int selIdx = rlbxRetainedDraw.SelectedIndex;
+            if (selIdx >= 0 && selIdx < 5) {
+                for (int i = 0; i < 100; i++) {
+                    for (int j = 0; j < 100; j++) {
+                        float y = i;
+                        float x = j;
+                        if (selIdx == 0)
+                            id.DrawCircle(x, y, r, col, false);
+                        else if (selIdx == 1)
+                            id.DrawCircle(x, y, r, col, true);
+                        else if (selIdx == 2)
+                            id.DrawSquare(x, y, size, col, false);
+                        else if (selIdx == 3)
+                            id.DrawSquare(x, y, size, col, false, true);
+                        else if (selIdx == 4)
+                            id.DrawString($"{x},{y}", x, y, col);
+                    }
+                }
+            }
+            else if (selIdx == 5) {
+                id.DrawLine(0, 0, 64, 64, col);
+                id.DrawLine(0, 64, 64, 0, col);
+            }
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e) {
@@ -330,59 +332,12 @@ namespace ShimLibTest {
             pbxDraw.Redraw();
         }
 
-        private void btnAboutImageBox_Click(object sender, EventArgs e) {
-            pbxDraw.ShowAbout();
-        }
-
         private void pbxDraw_PaintBackBuffer(object sender, IntPtr buf, int bw, int bh) {
-            var iCol = Color.Red.ToArgb();
-            
-            int numLine = (int)numLineNum.Value;
-            int lineType = rlbxLineType.SelectedIndex;
-
-            Random rnd = new Random(0);
-            if (lineType == 0) {
-                for (int i = 0; i < numLine; i++) {
-                    Drawing.DrawLine(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
-                }
-            } else if (lineType == 1) {
-                for (int i = 0; i < numLine; i++) {
-                    Drawing.DrawCircle(buf, bw, bh, rnd.Next(125, 375), rnd.Next(125, 375), rnd.Next(0, 125), iCol);
-                }
-
-                //int step = 80;
-                //for (int y = 0; y < 1000; y += step) {
-                //    for (int x = 0; x < 1000; x += step) {
-                //        Drawing.DrawCircle(buf, bw, bh, x, y, step / 2, iCol);
-                //    }
-                //}
-            } else if (lineType == 2) {
-                for (int i = 0; i < numLine; i++) {
-                    Drawing.FillCircle(buf, bw, bh, rnd.Next(125, 375), rnd.Next(125, 375), rnd.Next(0, 125), iCol);
-                }
-
-                //int step = 80;
-                //for (int y = 0; y < 1000; y += step) {
-                //    for (int x = 0; x < 1000; x += step) {
-                //        Drawing.FillCircle(buf, bw, bh, x, y, step / 2, iCol);
-                //    }
-                //}
-            } else if (lineType == 3) {
-                for (int i = 0; i < numLine; i++) {
-                    Drawing.DrawRectangle(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
-                }
-            } else if (lineType == 4) {
-                for (int i = 0; i < numLine; i++) {
-                    Drawing.FillRectangle(buf, bw, bh, rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), rnd.Next(0, 499), iCol);
-                }
-            }
+            if (chkDrawBuffer.Checked)
+                UserDrawTest(buf, bw, bh);
         }
 
-        private void rlbxLineType_SelectedIndexChanged(object sender, EventArgs e) {
-            pbxDraw.Redraw();
-        }
-
-        private void numLineNum_ValueChanged(object sender, EventArgs e) {
+        private void chkDrawBuffer_CheckedChanged(object sender, EventArgs e) {
             pbxDraw.Redraw();
         }
     }

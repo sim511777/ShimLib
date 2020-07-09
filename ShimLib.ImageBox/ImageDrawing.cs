@@ -47,7 +47,7 @@ namespace ShimLib {
             if (!fill)
                 Drawing.DrawCircle(buf, bw, bh, ptd.X, ptd.Y, rd, col.ToArgb());
             else
-                Drawing.DrawCircle(buf, bw, bh, ptd.X, ptd.Y, rd, col.ToArgb());
+                Drawing.FillCircle(buf, bw, bh, ptd.X, ptd.Y, rd, col.ToArgb());
         }
 
         public void DrawCircle(float x, float y, float r, Color col, bool fill = false) {
