@@ -17,7 +17,7 @@ namespace ShimLib {
         private bool[] charHalfs;
         public FontRenderer(Bitmap bmp, int _fw, int _fh, bool _isAscii) {
             int bytepp = 0;
-            Util.BitmapToImageBuffer(bmp, ref fontBuf, ref fontBw, ref fontBh, ref bytepp);
+            ImageUtil.BitmapToImageBuffer(bmp, ref fontBuf, ref fontBw, ref fontBh, ref bytepp);
             fw = _fw;
             fh = _fh;
             isAscii = _isAscii;

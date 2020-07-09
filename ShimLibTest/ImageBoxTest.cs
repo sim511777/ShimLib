@@ -37,7 +37,7 @@ namespace ShimLibTest {
             if (ext == ".hra") {
                 if (imgBuf != IntPtr.Zero)
                     Util.FreeBuffer(ref imgBuf);
-                Util.LoadHraFile(fileName, ref imgBuf, ref bw, ref bh, ref bytepp);
+                ImageUtil.LoadHraFile(fileName, ref imgBuf, ref bw, ref bh, ref bytepp);
                 pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
             } else {
                 var bmp = new Bitmap(fileName);
@@ -47,7 +47,7 @@ namespace ShimLibTest {
         }
 
         private void SaveImageFile(string fileName) {
-            var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
+            var bmp = ImageUtil.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
             bmp.Save(fileName, ImageFormat.Bmp);
             bmp.Dispose();
         }
@@ -69,7 +69,7 @@ namespace ShimLibTest {
             if (imgBuf == null)
                 return;
             
-            var bmp = Util.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
+            var bmp = ImageUtil.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
             Clipboard.SetImage(bmp);
             bmp.Dispose();
         }
@@ -111,14 +111,14 @@ namespace ShimLibTest {
         private void LoadBitmap(Bitmap bmp) {
             if (imgBuf != IntPtr.Zero)
                 Util.FreeBuffer(ref imgBuf);
-            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+            ImageUtil.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private unsafe void LoadBitmapFloat(Bitmap bmp) {
             if (imgBuf != IntPtr.Zero)
                 Util.FreeBuffer(ref imgBuf);
-            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+            ImageUtil.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
 
             // byte -> float convert
             IntPtr floatBuf = Util.AllocBuffer(bw * bh * sizeof(float));
@@ -140,7 +140,7 @@ namespace ShimLibTest {
         private unsafe void LoadBitmapDouble(Bitmap bmp) {
             if (imgBuf != IntPtr.Zero)
                 Util.FreeBuffer(ref imgBuf);
-            Util.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+            ImageUtil.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
 
             // byte -> double convert
             IntPtr doubleBuf = Util.AllocBuffer(bw * bh * sizeof(double));

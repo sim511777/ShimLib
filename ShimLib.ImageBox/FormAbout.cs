@@ -51,7 +51,7 @@ namespace ShimLib {
             if (ok != DialogResult.OK)
                 return;
 
-            var bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
+            var bmp = ImageUtil.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
             string filePath = dlgSaveFile.FileName;
             bmp.Save(filePath, ImageFormat.Bmp);
             bmp.Dispose();
@@ -66,7 +66,7 @@ namespace ShimLib {
                 return;
             }
 
-            var bmp = Util.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
+            var bmp = ImageUtil.ImageBufferToBitmap(pbx.ImgBuf, pbx.ImgBW, pbx.ImgBH, pbx.ImgBytepp);
             Clipboard.SetImage(bmp);
             bmp.Dispose();
         }
