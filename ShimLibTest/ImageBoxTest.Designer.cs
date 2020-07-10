@@ -25,9 +25,10 @@
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chkDrawBuffer = new System.Windows.Forms.CheckBox();
-            this.rlbxRetainedDraw = new ShimLib.RadioListBox();
-            this.chkRetainedDraw = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rlbxTestMode = new ShimLib.RadioListBox();
+            this.rlbxTestItem = new ShimLib.RadioListBox();
             this.btnImmediateDraw = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnZoomToImage = new System.Windows.Forms.Button();
@@ -68,57 +69,70 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.chkDrawBuffer);
-            this.groupBox3.Controls.Add(this.rlbxRetainedDraw);
-            this.groupBox3.Controls.Add(this.chkRetainedDraw);
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.rlbxTestMode);
+            this.groupBox3.Controls.Add(this.rlbxTestItem);
             this.groupBox3.Controls.Add(this.btnImmediateDraw);
             this.groupBox3.Location = new System.Drawing.Point(130, 90);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(118, 205);
+            this.groupBox3.Size = new System.Drawing.Size(118, 261);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Test";
             // 
-            // chkDrawBuffer
+            // label2
             // 
-            this.chkDrawBuffer.AutoSize = true;
-            this.chkDrawBuffer.Location = new System.Drawing.Point(6, 71);
-            this.chkDrawBuffer.Name = "chkDrawBuffer";
-            this.chkDrawBuffer.Size = new System.Drawing.Size(116, 16);
-            this.chkDrawBuffer.TabIndex = 3;
-            this.chkDrawBuffer.Text = "Backbuffer Draw";
-            this.chkDrawBuffer.UseVisualStyleBackColor = true;
-            this.chkDrawBuffer.CheckedChanged += new System.EventHandler(this.chkDrawBuffer_CheckedChanged);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 136);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 12);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Test Item";
             // 
-            // rlbxRetainedDraw
+            // label1
             // 
-            this.rlbxRetainedDraw.BackColor = System.Drawing.SystemColors.Window;
-            this.rlbxRetainedDraw.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.rlbxRetainedDraw.FormattingEnabled = true;
-            this.rlbxRetainedDraw.ItemHeight = 14;
-            this.rlbxRetainedDraw.Items.AddRange(new object[] {
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 54);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 12);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Test Mode";
+            // 
+            // rlbxTestMode
+            // 
+            this.rlbxTestMode.BackColor = System.Drawing.SystemColors.Window;
+            this.rlbxTestMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.rlbxTestMode.FormattingEnabled = true;
+            this.rlbxTestMode.ItemHeight = 14;
+            this.rlbxTestMode.Items.AddRange(new object[] {
+            "None",
+            "OnPaint",
+            "OnPaintBack"});
+            this.rlbxTestMode.Location = new System.Drawing.Point(6, 70);
+            this.rlbxTestMode.Name = "rlbxTestMode";
+            this.rlbxTestMode.Size = new System.Drawing.Size(106, 46);
+            this.rlbxTestMode.TabIndex = 3;
+            this.rlbxTestMode.SelectedIndexChanged += new System.EventHandler(this.rlbxTestMode_SelectedIndexChanged);
+            // 
+            // rlbxTestItem
+            // 
+            this.rlbxTestItem.BackColor = System.Drawing.SystemColors.Window;
+            this.rlbxTestItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.rlbxTestItem.FormattingEnabled = true;
+            this.rlbxTestItem.ItemHeight = 14;
+            this.rlbxTestItem.Items.AddRange(new object[] {
             "Draw Circle",
             "Fill Circle",
             "Draw Rectangle",
             "Fill Rectangle",
             "Draw String",
             "Draw 2 Lines"});
-            this.rlbxRetainedDraw.Location = new System.Drawing.Point(6, 93);
-            this.rlbxRetainedDraw.Name = "rlbxRetainedDraw";
-            this.rlbxRetainedDraw.Size = new System.Drawing.Size(106, 102);
-            this.rlbxRetainedDraw.TabIndex = 2;
-            this.rlbxRetainedDraw.SelectedIndexChanged += new System.EventHandler(this.rlbxRetainedDraw_SelectedIndexChanged);
-            // 
-            // chkRetainedDraw
-            // 
-            this.chkRetainedDraw.AutoSize = true;
-            this.chkRetainedDraw.Location = new System.Drawing.Point(6, 49);
-            this.chkRetainedDraw.Name = "chkRetainedDraw";
-            this.chkRetainedDraw.Size = new System.Drawing.Size(106, 16);
-            this.chkRetainedDraw.TabIndex = 1;
-            this.chkRetainedDraw.Text = "Retained Draw";
-            this.chkRetainedDraw.UseVisualStyleBackColor = true;
-            this.chkRetainedDraw.CheckedChanged += new System.EventHandler(this.chkRetainedDraw_CheckedChanged);
+            this.rlbxTestItem.Location = new System.Drawing.Point(6, 151);
+            this.rlbxTestItem.Name = "rlbxTestItem";
+            this.rlbxTestItem.Size = new System.Drawing.Size(106, 102);
+            this.rlbxTestItem.TabIndex = 2;
+            this.rlbxTestItem.SelectedIndexChanged += new System.EventHandler(this.rlbxTestItem_SelectedIndexChanged);
             // 
             // btnImmediateDraw
             // 
@@ -372,8 +386,7 @@
         private ShimLib.ImageBox pbxDraw;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private ShimLib.RadioListBox rlbxRetainedDraw;
-        private System.Windows.Forms.CheckBox chkRetainedDraw;
+        private ShimLib.RadioListBox rlbxTestItem;
         private System.Windows.Forms.Button btnImmediateDraw;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnZoomToImage;
@@ -394,6 +407,8 @@
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
         private System.Windows.Forms.SaveFileDialog dlgSaveFile;
-        private System.Windows.Forms.CheckBox chkDrawBuffer;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private ShimLib.RadioListBox rlbxTestMode;
     }
 }

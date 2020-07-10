@@ -174,7 +174,7 @@ namespace ShimLibTest {
         }
 
         private void pbxDraw_Paint(object sender, PaintEventArgs e) {
-            if (chkRetainedDraw.Checked)
+            if (rlbxTestMode.SelectedIndex == 1)
                 UserDrawTest(e.Graphics);
         }
 
@@ -183,7 +183,7 @@ namespace ShimLibTest {
             Pen pen = Pens.Red;
             Brush br = Brushes.Red;
             float size = 0.9f;
-            int selIdx = rlbxRetainedDraw.SelectedIndex;
+            int selIdx = rlbxTestItem.SelectedIndex;
             if (selIdx >= 0 && selIdx < 5) {
                 for (int i = 0; i < 100; i++) {
                     for (int j = 0; j < 100; j++) {
@@ -208,12 +208,17 @@ namespace ShimLibTest {
             }
         }
 
+        private void pbxDraw_PaintBackBuffer(object sender, IntPtr buf, int bw, int bh) {
+            if (rlbxTestMode.SelectedIndex == 2)
+                UserDrawTest(buf, bw, bh);
+        }
+
         private void UserDrawTest(IntPtr buf, int bw, int bh) {
             ImageDrawing id = new ImageDrawing(pbxDraw, buf, bw, bh);
             Color col = Color.Red;
             float size = 0.9f;
             float r = size * 0.5f;
-            int selIdx = rlbxRetainedDraw.SelectedIndex;
+            int selIdx = rlbxTestItem.SelectedIndex;
             if (selIdx >= 0 && selIdx < 5) {
                 for (int i = 0; i < 100; i++) {
                     for (int j = 0; j < 100; j++) {
@@ -324,20 +329,11 @@ namespace ShimLibTest {
             }
         }
 
-        private void chkRetainedDraw_CheckedChanged(object sender, EventArgs e) {
+        private void rlbxTestItem_SelectedIndexChanged(object sender, EventArgs e) {
             pbxDraw.Redraw();
         }
 
-        private void rlbxRetainedDraw_SelectedIndexChanged(object sender, EventArgs e) {
-            pbxDraw.Redraw();
-        }
-
-        private void pbxDraw_PaintBackBuffer(object sender, IntPtr buf, int bw, int bh) {
-            if (chkDrawBuffer.Checked)
-                UserDrawTest(buf, bw, bh);
-        }
-
-        private void chkDrawBuffer_CheckedChanged(object sender, EventArgs e) {
+        private void rlbxTestMode_SelectedIndexChanged(object sender, EventArgs e) {
             pbxDraw.Redraw();
         }
     }
