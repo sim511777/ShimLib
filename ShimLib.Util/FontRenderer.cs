@@ -41,7 +41,7 @@ namespace ShimLib {
                     int fontX = (ch - 32) * fw;
                     int fontImgY = fontX / fontBw;
                     int fontImgX = fontX % fontBw;
-                    DrawChar(fontImgX, fontImgY, fw, dispBuf, dispBW, dispBH, x, y, icolor);
+                    DrawChar(fontImgX, fontImgY, dispBuf, dispBW, dispBH, x, y, icolor);
                 }
                 x += fw;
             }
@@ -69,13 +69,13 @@ namespace ShimLib {
             return new Size(maxX, maxY);
         }
 
-        private unsafe void DrawChar(int fontImgX, int fontImgY, int fontBW2, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
+        private unsafe void DrawChar(int fontImgX, int fontImgY, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
             for (int y = 0; y < fh; y++) {
                 if (dy + y < 0 || dy + y >= dispBH)
                     continue;
                 int* dst = (int*)dispBuf + dispBW * (dy + y) + dx;
                 byte* src = (byte*)fontBuf + fontBw * (fontImgY + y) + fontImgX;
-                for (int x = 0; x < fontBW2; x++, src++, dst++) {
+                for (int x = 0; x < fw; x++, src++, dst++) {
                     if (dx + x < 0 || dx + x >= dispBW)
                         continue;
                     if (*src == 0) {
