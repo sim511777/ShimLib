@@ -90,6 +90,11 @@ namespace ShimLib {
         }
 
         public static unsafe void DrawRectangle(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            if (x1 > x2) Util.Swap(ref x1, ref x2);
+            if (y1 > y2) Util.Swap(ref y1, ref y2);
+            if (x1 >= bw || x2 < 0 || y1 >= bh || y2 < 0)
+                return;
+
             DrawLine(buf, bw, bh, x1, y1, x2, y1, iCol);
             DrawLine(buf, bw, bh, x2, y1, x2, y2, iCol);
             DrawLine(buf, bw, bh, x2, y2, x1, y2, iCol);
@@ -97,10 +102,13 @@ namespace ShimLib {
         }
 
         public static unsafe void FillRectangle(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
-            int* ptr = (int*)buf;
-
             if (x1 > x2) Util.Swap(ref x1, ref x2);
             if (y1 > y2) Util.Swap(ref y1, ref y2);
+            if (x1 >= bw || x2 < 0 || y1 >= bh || y2 < 0)
+                return;
+
+            int* ptr = (int*)buf;
+
             for (int y = y1; y <= y2; y++) {
                 DrawHLine(ptr, bw, bh, x1, x2, y, iCol);
             }
