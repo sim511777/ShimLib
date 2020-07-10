@@ -16,6 +16,13 @@ namespace ShimLib {
         }
 
         private static unsafe void MidpointCircle(IntPtr buf, int bw, int bh, int cx, int cy, int radius, int iCol, bool fill) {
+            int x1 = cx - radius;
+            int x2 = cx + radius;
+            int y1 = cy - radius;
+            int y2 = cy + radius;
+            if (x1 >= bw || x2 < 0 || y1 >= bh || y2 < 0)
+                return;
+
             int* ptr = (int*)buf;
 
             int x = 0;
