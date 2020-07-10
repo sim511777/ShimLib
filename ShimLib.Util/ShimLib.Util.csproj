@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing.cs" />
+    <Compile Include="FontRenderer.cs" />
     <Compile Include="ImageUtil.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
