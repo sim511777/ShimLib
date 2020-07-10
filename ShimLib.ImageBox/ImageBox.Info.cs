@@ -20,6 +20,7 @@ v1.0.0.20 - 20200709
 9. Drawing 함수들 성능 향상 위해서 clipping
 10. CopyImageBufferZoom 함수 Drawing.DrawImageZoom 으로 이동
 11. FontRenderer 클래스 ShimLib.Util 어셈블리로 이동
+12. FontRenderer.DrawChar 함수 clipping
 
 v1.0.0.19 - 20200611
 1. EraseBackground 아무것도 안하도록 재정의

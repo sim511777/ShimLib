@@ -70,6 +70,13 @@ namespace ShimLib {
         }
 
         private unsafe void DrawChar(int fontImgX, int fontImgY, IntPtr dispBuf, int dispBW, int dispBH, int dx, int dy, int icolor) {
+            int x1 = dx;
+            int y1 = dy;
+            int x2 = dx + fw - 1;
+            int y2 = dy + fh - 1;
+            if (x1 >= dispBW || x2 < 0 || y1 >= dispBH || y2 < 0)
+                return;
+
             for (int y = 0; y < fh; y++) {
                 if (dy + y < 0 || dy + y >= dispBH)
                     continue;
