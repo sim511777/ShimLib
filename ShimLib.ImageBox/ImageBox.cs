@@ -193,7 +193,7 @@ namespace ShimLib {
 
             var t0 = Util.GetTimeMs();
 
-            CopyImageBufferZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PanX, PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), BufIsFloat);
+            Drawing.DrawImageZoom(ImgBuf, ImgBW, ImgBH, dispBuf, dispBW, dispBH, PanX, PanY, GetZoomFactor(), ImgBytepp, this.BackColor.ToArgb(), BufIsFloat);
             var t1 = Util.GetTimeMs();
 
             var imgDraw = new ImageDrawing(this, dispBuf, dispBW, dispBH);
@@ -261,56 +261,6 @@ Total : {t5 - t0:0.0}ms
         // 페인트 할때
         protected override void OnPaint(PaintEventArgs e) {
             Redraw();
-        }
-
-        // 이미지 버퍼를 디스플레이 버퍼에 복사
-        private static unsafe void CopyImageBufferZoom(IntPtr sbuf, int sbw, int sbh, IntPtr dbuf, int dbw, int dbh, Int64 panx, Int64 pany, double zoom, int bytepp, int bgColor, bool bufIsFloat) {
-            // 인덱스 버퍼 생성
-            int[] siys = new int[dbh];
-            int[] sixs = new int[dbw];
-            for (int y = 0; y < dbh; y++) {
-                int siy = (int)Math.Floor((y - pany) / zoom);
-                siys[y] = (sbuf == IntPtr.Zero || siy < 0 || siy >= sbh) ? -1 : siy;
-            }
-            for (int x = 0; x < dbw; x++) {
-                int six = (int)Math.Floor((x - panx) / zoom);
-                sixs[x] = (sbuf == IntPtr.Zero || six < 0 || six >= sbw) ? -1 : six;
-            }
-
-            for (int y = 0; y < dbh; y++) {
-                int siy = siys[y];
-                byte* sptr = (byte*)sbuf + (Int64)sbw * siy * bytepp;
-                int* dp = (int*)dbuf + (Int64)dbw * y;
-                for (int x = 0; x < dbw; x++, dp++) {
-                    int six = sixs[x];
-                    if (siy == -1 || six == -1) {   // out of boundary of image
-                        *dp = bgColor;
-                    } else {
-                        byte* sp = &sptr[six * bytepp];
-                        if (bufIsFloat) {
-                            if (bytepp == 4) {
-                                int v = (int)*(float*)sp;
-                                *dp = v | v << 8 | v << 16 | 0xff << 24;
-                            } else if (bytepp == 8) {
-                                int v = (int)*(double*)sp;
-                                *dp = v | v << 8 | v << 16 | 0xff << 24;
-                            }
-                        } else {
-                            if (bytepp == 1) {          // 8bit gray
-                                int v = sp[0];
-                                *dp = v | v << 8 | v << 16 | 0xff << 24;
-                            } else if (bytepp == 2) {   // 16bit gray (*.hra)
-                                int v = sp[0];
-                                *dp = v | v << 8 | v << 16 | 0xff << 24;
-                            } else if (bytepp == 3) {   // 24bit bgr
-                                *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
-                            } else if (bytepp == 4) {   // 32bit bgra
-                                *dp = sp[0] | sp[1] << 8 | sp[2] << 16 | 0xff << 24;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         // 마우스 휠

@@ -16,6 +16,9 @@ v1.0.0.20 - 20200709
 5. ImageBuffer 클래스 삭제
 6. ImageUtil 클래스 분리
 7. MeasureString 버그 수정
+8. 대상프레임워크 .net 4.5로 변경
+9. Drawing 함수들 성능 향상 위해서 clipping
+10. CopyImageBufferZoom 함수 Drawing.DrawImageZoom 으로 이동
 
 v1.0.0.19 - 20200611
 1. EraseBackground 아무것도 안하도록 재정의
