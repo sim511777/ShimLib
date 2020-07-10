@@ -50,6 +50,9 @@ namespace ShimLib {
         }
 
         public static unsafe void DrawLine(IntPtr buf, int bw, int bh, int x1, int y1, int x2, int y2, int iCol) {
+            if ((x1 < 0 && x2 < 0) || (x1 >= bw && x2 > bw) || (y1 < 0 && y2 < 0) ||(y1 >= bh && y2 >= bh))
+                return;
+
             int dx = (x2 > x1) ? (x2 - x1) : (x1 - x2);
             int dy = (y2 > y1) ? (y2 - y1) : (y1 - y2);
             int sx = (x2 > x1) ? 1 : -1;
