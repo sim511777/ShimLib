@@ -74,6 +74,13 @@ v20200330
             return _Dst;
         }
 
+        public static unsafe IntPtr Memset4(IntPtr _Dst, int _Val, Int64 _Size) {
+            int* pdst = (int *)_Dst;
+            while (_Size-- > 0)
+                *pdst++ = _Val;
+            return _Dst;
+        }
+
         // free and set null
         public static void FreeBuffer(ref IntPtr buf) {
             if (buf != IntPtr.Zero) {
