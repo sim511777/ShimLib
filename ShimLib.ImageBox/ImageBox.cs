@@ -510,15 +510,15 @@ Total : {t5 - t0:0.0}ms
             if (ImgBuf == IntPtr.Zero || x < 0 || x >= ImgBW || y < 0 || y >= ImgBH)
                 return 0;
 
-            IntPtr ptr = (IntPtr)(ImgBuf.ToInt64() + ((long)ImgBW * y + x) * ImgBytepp);
+            byte* ptr = (byte*)ImgBuf + ((long)ImgBW * y + x) * ImgBytepp;
 
             if (!BufIsFloat) {
                 if (ImgBytepp == 1)
-                    return Marshal.ReadByte(ptr);
+                    return *ptr;
                 if (ImgBytepp == 2)
-                    return Marshal.ReadByte(ptr);
+                    return *ptr;
                 else
-                    return ((int)Marshal.ReadByte(ptr, 2) + (int)Marshal.ReadByte(ptr, 1) + (int)Marshal.ReadByte(ptr, 0)) / 3;
+                    return (ptr[2] + ptr[1] + ptr[0]) / 3;
             } else {
                 if (ImgBytepp == 4)
                     return Util.Clamp((int)*(float*)ptr, 0, 255);
