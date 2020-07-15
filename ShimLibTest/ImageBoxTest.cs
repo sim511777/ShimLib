@@ -35,8 +35,7 @@ namespace ShimLibTest {
         private void LoadImageFile(string fileName) {
             var ext = Path.GetExtension(fileName).ToLower();
             if (ext == ".hra") {
-                if (imgBuf != IntPtr.Zero)
-                    Util.FreeBuffer(ref imgBuf);
+                Util.FreeBuffer(ref imgBuf);
                 ImageUtil.LoadHraFile(fileName, ref imgBuf, ref bw, ref bh, ref bytepp);
                 pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
             } else {
@@ -109,15 +108,13 @@ namespace ShimLibTest {
         }
 
         private void LoadBitmap(Bitmap bmp) {
-            if (imgBuf != IntPtr.Zero)
-                Util.FreeBuffer(ref imgBuf);
+            Util.FreeBuffer(ref imgBuf);
             ImageUtil.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private unsafe void LoadBitmapFloat(Bitmap bmp) {
-            if (imgBuf != IntPtr.Zero)
-                Util.FreeBuffer(ref imgBuf);
+            Util.FreeBuffer(ref imgBuf);
             ImageUtil.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
 
             // byte -> float convert
@@ -138,8 +135,7 @@ namespace ShimLibTest {
         }
 
         private unsafe void LoadBitmapDouble(Bitmap bmp) {
-            if (imgBuf != IntPtr.Zero)
-                Util.FreeBuffer(ref imgBuf);
+            Util.FreeBuffer(ref imgBuf);
             ImageUtil.BitmapToImageBuffer(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
 
             // byte -> double convert
@@ -160,8 +156,7 @@ namespace ShimLibTest {
         }
 
         private unsafe void GenerateBitmap(int bw, int bh) {
-            if (imgBuf != IntPtr.Zero)
-                Util.FreeBuffer(ref imgBuf);
+            Util.FreeBuffer(ref imgBuf);
             long cb = (long)bw * bh;
             imgBuf = Util.AllocBuffer(cb);
             for (long y = 0; y < bh; y++) {
