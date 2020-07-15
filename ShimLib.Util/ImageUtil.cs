@@ -333,6 +333,64 @@ namespace ShimLib {
             return;
         }
 
+        public unsafe static void SaveBmpFile(string filePath, IntPtr imgBuf, int bw, int bh, int bytepp) {
+            // 파일 오픈
+            FileStream hFile;
+            try {
+                hFile = File.OpenWrite(filePath);
+            } catch {
+                return;
+            }
+
+            int bstep = bw * bytepp;
+            int fstep = (bstep + 3) / 4 * 4;
+
+            // 파일 헤더
+            BITMAPFILEHEADER fh;
+            fh.bfType = 0x4d42;  // Magic NUMBER "BM"
+            fh.bfOffBits = (uint)(Marshal.SizeOf(typeof(BITMAPFILEHEADER)) + Marshal.SizeOf(typeof(BITMAPINFOHEADER)) + (bytepp == 1 ? grayPalette.Length : 0));   // offset to bitmap buffer from start
+            fh.bfSize = fh.bfOffBits + (uint)(fstep * bh);  // file size
+            fh.bfReserved1 = 0;
+            fh.bfReserved2 = 0;
+            StreamWriteStructure(hFile, fh);
+
+            // 정보 헤더
+            BITMAPINFOHEADER ih;
+            ih.biSize = (uint)Marshal.SizeOf(typeof(BITMAPINFOHEADER));   // struct of BITMAPINFOHEADER
+            ih.biWidth = bw; // widht
+            ih.biHeight = bh; // height
+            ih.biPlanes = 1;
+            ih.biBitCount = (ushort)(8 * bytepp);
+            ih.biCompression = 0;
+            ih.biSizeImage = (uint)(fstep * bh);
+            ih.biXPelsPerMeter = 3780;  // pixels-per-meter
+            ih.biYPelsPerMeter = 3780;  // pixels-per-meter
+            ih.biClrUsed = (bytepp == 1) ? (uint)256 : 0;   // grayPalette count
+            ih.biClrImportant = (bytepp == 1) ? (uint)256 : 0;   // grayPalette count
+            StreamWriteStructure(hFile, ih);
+
+            // RGB Palette
+            if (bytepp == 1)
+                hFile.Write(grayPalette, 0, grayPalette.Length);
+
+            // bmp파일은 파일 저장시 라인당 4byte padding을 한다.
+            // bstep가 4로 나눠 떨어지지 않을경우 padding처리 해야 함
+            int paddingSize = fstep - bstep;
+            byte[] paddingBuf = { 0, 0, 0, 0 };
+
+            byte[] fbuf = new byte[bh * fstep];
+            // bmp파일은 위아래가 뒤집혀 있으므로 버퍼 아래라인 부터 읽어서 파일에 쓴다
+            for (int y = bh - 1; y >= 0; y--) {
+                Marshal.Copy(imgBuf + y * bstep, fbuf, (bh - y - 1) * fstep, bstep);
+                if (paddingSize > 0)
+                    Array.Copy(paddingBuf, 0, fbuf, (bh - y - 1) * fstep + bstep, paddingSize);
+            }
+            hFile.Write(fbuf, 0, bh * fstep);
+
+            hFile.Dispose();
+            return;
+        }
+
         // hra Lolad
         public unsafe static void LoadHraFile(string fileName, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
             Stream sr = null;

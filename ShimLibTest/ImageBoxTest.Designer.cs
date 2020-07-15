@@ -44,8 +44,6 @@
             this.btnLenna4 = new System.Windows.Forms.Button();
             this.btnLenna = new System.Windows.Forms.Button();
             this.btnPaste = new System.Windows.Forms.Button();
-            this.btnCopy = new System.Windows.Forms.Button();
-            this.btnSaveFile = new System.Windows.Forms.Button();
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
@@ -187,19 +185,17 @@
             this.groupBox1.Controls.Add(this.btnLenna4);
             this.groupBox1.Controls.Add(this.btnLenna);
             this.groupBox1.Controls.Add(this.btnPaste);
-            this.groupBox1.Controls.Add(this.btnCopy);
-            this.groupBox1.Controls.Add(this.btnSaveFile);
             this.groupBox1.Controls.Add(this.btnOpenFile);
             this.groupBox1.Location = new System.Drawing.Point(6, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(118, 400);
+            this.groupBox1.Size = new System.Drawing.Size(118, 340);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "File";
             // 
             // btnWideImage
             // 
-            this.btnWideImage.Location = new System.Drawing.Point(6, 368);
+            this.btnWideImage.Location = new System.Drawing.Point(6, 310);
             this.btnWideImage.Name = "btnWideImage";
             this.btnWideImage.Size = new System.Drawing.Size(106, 23);
             this.btnWideImage.TabIndex = 12;
@@ -209,7 +205,7 @@
             // 
             // bntLongImage
             // 
-            this.bntLongImage.Location = new System.Drawing.Point(6, 339);
+            this.bntLongImage.Location = new System.Drawing.Point(6, 281);
             this.bntLongImage.Name = "bntLongImage";
             this.bntLongImage.Size = new System.Drawing.Size(106, 23);
             this.bntLongImage.TabIndex = 11;
@@ -219,7 +215,7 @@
             // 
             // btnGradient
             // 
-            this.btnGradient.Location = new System.Drawing.Point(6, 310);
+            this.btnGradient.Location = new System.Drawing.Point(6, 252);
             this.btnGradient.Name = "btnGradient";
             this.btnGradient.Size = new System.Drawing.Size(106, 23);
             this.btnGradient.TabIndex = 10;
@@ -229,7 +225,7 @@
             // 
             // btnChess
             // 
-            this.btnChess.Location = new System.Drawing.Point(6, 281);
+            this.btnChess.Location = new System.Drawing.Point(6, 223);
             this.btnChess.Name = "btnChess";
             this.btnChess.Size = new System.Drawing.Size(106, 23);
             this.btnChess.TabIndex = 9;
@@ -239,7 +235,7 @@
             // 
             // btnCoinsDouble
             // 
-            this.btnCoinsDouble.Location = new System.Drawing.Point(6, 252);
+            this.btnCoinsDouble.Location = new System.Drawing.Point(6, 194);
             this.btnCoinsDouble.Name = "btnCoinsDouble";
             this.btnCoinsDouble.Size = new System.Drawing.Size(106, 23);
             this.btnCoinsDouble.TabIndex = 8;
@@ -249,7 +245,7 @@
             // 
             // btnCoinsFloat
             // 
-            this.btnCoinsFloat.Location = new System.Drawing.Point(6, 223);
+            this.btnCoinsFloat.Location = new System.Drawing.Point(6, 165);
             this.btnCoinsFloat.Name = "btnCoinsFloat";
             this.btnCoinsFloat.Size = new System.Drawing.Size(106, 23);
             this.btnCoinsFloat.TabIndex = 7;
@@ -259,7 +255,7 @@
             // 
             // btnCoins
             // 
-            this.btnCoins.Location = new System.Drawing.Point(6, 194);
+            this.btnCoins.Location = new System.Drawing.Point(6, 136);
             this.btnCoins.Name = "btnCoins";
             this.btnCoins.Size = new System.Drawing.Size(106, 23);
             this.btnCoins.TabIndex = 6;
@@ -269,7 +265,7 @@
             // 
             // btnLenna4
             // 
-            this.btnLenna4.Location = new System.Drawing.Point(6, 165);
+            this.btnLenna4.Location = new System.Drawing.Point(6, 107);
             this.btnLenna4.Name = "btnLenna4";
             this.btnLenna4.Size = new System.Drawing.Size(106, 23);
             this.btnLenna4.TabIndex = 5;
@@ -279,7 +275,7 @@
             // 
             // btnLenna
             // 
-            this.btnLenna.Location = new System.Drawing.Point(6, 136);
+            this.btnLenna.Location = new System.Drawing.Point(6, 78);
             this.btnLenna.Name = "btnLenna";
             this.btnLenna.Size = new System.Drawing.Size(106, 23);
             this.btnLenna.TabIndex = 4;
@@ -289,33 +285,13 @@
             // 
             // btnPaste
             // 
-            this.btnPaste.Location = new System.Drawing.Point(6, 107);
+            this.btnPaste.Location = new System.Drawing.Point(6, 49);
             this.btnPaste.Name = "btnPaste";
             this.btnPaste.Size = new System.Drawing.Size(106, 23);
             this.btnPaste.TabIndex = 3;
-            this.btnPaste.Text = "Paste";
+            this.btnPaste.Text = "Clipboard Paste";
             this.btnPaste.UseVisualStyleBackColor = true;
             this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
-            // 
-            // btnCopy
-            // 
-            this.btnCopy.Location = new System.Drawing.Point(6, 78);
-            this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(106, 23);
-            this.btnCopy.TabIndex = 2;
-            this.btnCopy.Text = "Copy";
-            this.btnCopy.UseVisualStyleBackColor = true;
-            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
-            // 
-            // btnSaveFile
-            // 
-            this.btnSaveFile.Location = new System.Drawing.Point(6, 49);
-            this.btnSaveFile.Name = "btnSaveFile";
-            this.btnSaveFile.Size = new System.Drawing.Size(106, 23);
-            this.btnSaveFile.TabIndex = 1;
-            this.btnSaveFile.Text = "Save File";
-            this.btnSaveFile.UseVisualStyleBackColor = true;
-            this.btnSaveFile.Click += new System.EventHandler(this.btnSaveFile_Click);
             // 
             // btnOpenFile
             // 
@@ -402,8 +378,6 @@
         private System.Windows.Forms.Button btnLenna4;
         private System.Windows.Forms.Button btnLenna;
         private System.Windows.Forms.Button btnPaste;
-        private System.Windows.Forms.Button btnCopy;
-        private System.Windows.Forms.Button btnSaveFile;
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
         private System.Windows.Forms.SaveFileDialog dlgSaveFile;

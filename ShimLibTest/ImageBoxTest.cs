@@ -57,12 +57,6 @@ namespace ShimLibTest {
             pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
-        private void SaveImageFile(string fileName) {
-            var bmp = ImageUtil.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
-            bmp.Save(fileName, ImageFormat.Bmp);
-            bmp.Dispose();
-        }
-
         private void PasteFromClipboard() {
             var img = Clipboard.GetImage();
             if (img == null)
@@ -74,15 +68,6 @@ namespace ShimLibTest {
 
             bmp.Dispose();
             img.Dispose();
-        }
-
-        private void CopyToClipboard() {
-            if (imgBuf == null)
-                return;
-            
-            var bmp = ImageUtil.ImageBufferToBitmap(imgBuf, bw, bh, bytepp);
-            Clipboard.SetImage(bmp);
-            bmp.Dispose();
         }
 
         private string GetDragDataImageFile(IDataObject data) {
@@ -257,24 +242,6 @@ namespace ShimLibTest {
 
             string filePath = dlgOpenFile.FileName;
             LoadImageFile(filePath);
-        }
-
-        private void btnSaveFile_Click(object sender, EventArgs e) {
-            if (imgBuf == IntPtr.Zero) {
-                MessageBox.Show(this, "imgBuf == IntPtr.Zero");
-                return;
-            }
-
-            var ok = dlgSaveFile.ShowDialog(this);
-            if (ok != DialogResult.OK)
-                return;
-
-            string filePath = dlgSaveFile.FileName;
-            SaveImageFile(filePath);
-        }
-
-        private void btnCopy_Click(object sender, EventArgs e) {
-            CopyToClipboard();
         }
 
         private void btnPaste_Click(object sender, EventArgs e) {
