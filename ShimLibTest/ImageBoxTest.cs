@@ -36,11 +36,19 @@ namespace ShimLibTest {
             var ext = Path.GetExtension(fileName).ToLower();
             if (ext == ".hra") {
                 LoadHraFile(fileName);
+            } else if (ext == ".bmp") {
+                LoadBmpFile(fileName);
             } else {
                 var bmp = new Bitmap(fileName);
                 LoadBitmap(bmp);
                 bmp.Dispose();
             }
+        }
+
+        private void LoadBmpFile(string fileName) {
+            Util.FreeBuffer(ref imgBuf);
+            ImageUtil.LoadBmpFile(fileName, ref imgBuf, ref bw, ref bh, ref bytepp);
+            pbxDraw.SetImgBuf(imgBuf, bw, bh, bytepp, true);
         }
 
         private void LoadHraFile(string fileName) {

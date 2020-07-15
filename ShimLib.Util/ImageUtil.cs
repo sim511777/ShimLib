@@ -287,6 +287,52 @@ namespace ShimLib {
             return bmp;
         }
 
+        public unsafe static void LoadBmpFile(string filePath, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
+            // 파일 오픈
+            FileStream hFile;
+            try {
+                hFile = File.OpenRead(filePath);
+            } catch {
+                return;
+            }
+
+            // 파일 헤더
+            BITMAPFILEHEADER fh = StreamReadStructure<BITMAPFILEHEADER>(hFile);
+
+            // 정보 헤더
+            BITMAPINFOHEADER ih = StreamReadStructure<BITMAPINFOHEADER>(hFile);
+            
+            if (ih.biBitCount == 1) {
+                hFile.Dispose();
+                var bmp = new Bitmap(filePath);
+                BitmapToImageBuffer1Bit(bmp, ref imgBuf, ref bw, ref bh, ref bytepp);
+                bmp.Dispose();
+                return;
+            }
+
+            bw = ih.biWidth;
+            bh = ih.biHeight;
+            bytepp = ih.biBitCount / 8;
+            int bstep = bw * bytepp;
+            imgBuf = Marshal.AllocHGlobal(bstep * bh);
+
+
+            // bmp파일은 파일 저장시 라인당 4byte padding을 한다.
+            // bstep가 4로 나눠 떨어지지 않을경우 padding처리 해야 함
+            int fstep = (bstep + 3) / 4 * 4;
+            byte[] fbuf = new byte[fstep * bh];
+            hFile.Seek(fh.bfOffBits, SeekOrigin.Begin);
+            hFile.Read(fbuf, 0, bh * fstep);
+
+            // bmp파일은 위아래가 뒤집혀 있으므로 파일에서 아래 라인부터 읽어서 버퍼에 쓴다
+            for (int y = 0; y < bh; y++) {
+                Marshal.Copy(fbuf, (bh - y - 1) * fstep, imgBuf + bstep * y, bstep);
+            }
+
+            hFile.Dispose();
+            return;
+        }
+
         // hra Lolad
         public unsafe static void LoadHraFile(string fileName, ref IntPtr imgBuf, ref int bw, ref int bh, ref int bytepp) {
             Stream sr = null;
