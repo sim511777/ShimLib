@@ -324,9 +324,12 @@ namespace ShimLibTest {
         }
 
         private void btnImmediateDraw_Click(object sender, EventArgs e) {
+            var st = DateTime.Now;
             using (Graphics g = pbxDraw.CreateGraphics()) {
                 UserDrawTest(g);
             }
+            var dt = DateTime.Now - st;
+            tbxLog.Text = $"Immedate Draw Test : {dt.TotalMilliseconds:F0}ms";
         }
 
         private void rlbxTestItem_SelectedIndexChanged(object sender, EventArgs e) {

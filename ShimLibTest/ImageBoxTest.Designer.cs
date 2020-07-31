@@ -48,6 +48,7 @@
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.pbxDraw = new ShimLib.ImageBox();
+            this.tbxLog = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -56,6 +57,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.tbxLog);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
@@ -341,6 +343,14 @@
             this.pbxDraw.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbxDraw_DragEnter);
             this.pbxDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxDraw_Paint);
             // 
+            // tbxLog
+            // 
+            this.tbxLog.Location = new System.Drawing.Point(6, 366);
+            this.tbxLog.Multiline = true;
+            this.tbxLog.Name = "tbxLog";
+            this.tbxLog.Size = new System.Drawing.Size(242, 222);
+            this.tbxLog.TabIndex = 3;
+            // 
             // ImageBoxTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -350,6 +360,7 @@
             this.Name = "ImageBoxTest";
             this.Size = new System.Drawing.Size(969, 609);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -385,5 +396,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private ShimLib.RadioListBox rlbxTestMode;
+        private System.Windows.Forms.TextBox tbxLog;
     }
 }
