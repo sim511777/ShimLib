@@ -197,6 +197,19 @@ namespace ShimLibTest {
             else if (selIdx == 5) {
                 ig.DrawLine(0, 0, 64, 64, pen);
                 ig.DrawLine(0, 64, 64, 0, pen);
+            } else if (selIdx == 6) {
+                Random rnd = new Random();
+                for (int i = 0; i < 10000; i++) {
+                    double[] thetas = {
+                        i * Math.PI / 180,
+                        (i + 120) * Math.PI / 180,
+                        (i + 240) * Math.PI / 180,
+                    };
+                    float rad = 200;
+                    PointF[] triangle = thetas.Select(theta => new PointF(rad * (float)Math.Cos(theta) + rad, rad * (float)Math.Sin(theta) + rad)).ToArray();
+                    Pen pn = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)));
+                    ig.DrawPolygon(triangle, pn);
+                }
             }
         }
 
@@ -232,6 +245,19 @@ namespace ShimLibTest {
             else if (selIdx == 5) {
                 id.DrawLine(0, 0, 64, 64, col);
                 id.DrawLine(0, 64, 64, 0, col);
+            } else if (selIdx == 6) {
+                Random rnd = new Random();
+                for (int i = 0; i < 10000; i++) {
+                    double[] thetas = {
+                        i * Math.PI / 180,
+                        (i + 120) * Math.PI / 180,
+                        (i + 240) * Math.PI / 180,
+                    };
+                    float rad = 200;
+                    PointF[] triangle = thetas.Select(theta => new PointF(rad * (float)Math.Cos(theta) + rad, rad * (float)Math.Sin(theta) + rad)).ToArray();
+                    Color clr = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                    id.DrawPolygon(triangle, clr);
+                }
             }
         }
 

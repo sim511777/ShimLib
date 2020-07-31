@@ -145,5 +145,10 @@ namespace ShimLib {
         public void DrawStringWnd(string text, int x, int y, Font font, Brush fontBrush, Brush fillBrush) {
             DrawStringWnd(text, new Point(x, y), font, fontBrush, fillBrush);
         }
+
+        public void DrawPolygon(PointF[] pts, Pen pen) {
+            var dispPts = pts.Select(pt => imgBox.ImgToDisp(pt)).ToArray();
+            g.DrawPolygon(pen, dispPts);
+        }
     }
 }

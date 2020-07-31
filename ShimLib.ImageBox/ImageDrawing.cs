@@ -133,6 +133,18 @@ namespace ShimLib {
             DrawStringWnd(text, new Point(x, y), col, fillCol);
         }
 
+        public void DrawPolygon(PointF[] pts, Color col) {
+            if (pts.Length < 2)
+                return;
+
+            for (int i = 0; i < pts.Length - 1; i++) {
+                var pt1 = pts[i];
+                var pt2 = pts[i + 1];
+                DrawLine(pt1, pt2, col);
+            }
+            DrawLine(pts.Last(), pts.First(), col);
+        }
+
         public void DrawImage(IntPtr imgBuf, int imgBW, int imgBH, int x0, int y0) {
             Drawing.DrawImage(buf, bw, bh, imgBuf, imgBW, imgBH, x0, y0);
         }

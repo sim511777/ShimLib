@@ -125,7 +125,8 @@
             "Draw Rectangle",
             "Fill Rectangle",
             "Draw String",
-            "Draw 2 Lines"});
+            "Draw 2 Lines",
+            "Polygon Test"});
             this.rlbxTestItem.Location = new System.Drawing.Point(6, 151);
             this.rlbxTestItem.Name = "rlbxTestItem";
             this.rlbxTestItem.Size = new System.Drawing.Size(106, 102);
