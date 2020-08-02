@@ -13,11 +13,11 @@ namespace ShimLib {
         private int fontBh;
         private int fw;
         private int fh;
-        public FontRenderer(Bitmap bmp, int _fw, int _fh) {
-            int bytepp = 0;
+        private int bytepp;
+        public FontRenderer(Bitmap bmp) {
             ImageUtil.BitmapToImageBuffer(bmp, ref fontBuf, ref fontBw, ref fontBh, ref bytepp);
-            fw = _fw;
-            fh = _fh;
+            fw = fontBw / 32;
+            fh = fontBh / 3;
         }
         
         ~FontRenderer() {
@@ -81,8 +81,8 @@ namespace ShimLib {
                 if (dy + y < 0 || dy + y >= dispBH)
                     continue;
                 int* dst = (int*)dispBuf + dispBW * (dy + y) + dx;
-                byte* src = (byte*)fontBuf + fontBw * (fontImgY + y) + fontImgX;
-                for (int x = 0; x < fw; x++, src++, dst++) {
+                byte* src = (byte*)fontBuf + (fontBw * (fontImgY + y) + fontImgX) * bytepp;
+                for (int x = 0; x < fw; x++, src += bytepp, dst++) {
                     if (dx + x < 0 || dx + x >= dispBW)
                         continue;
                     if (*src == 0) {

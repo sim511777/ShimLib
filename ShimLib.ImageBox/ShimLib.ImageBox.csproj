@@ -87,10 +87,55 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FontAscii_4x6.bmp" />
+    <None Include="Resources\Raster_04x06.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FontAscii_5x8.bmp" />
+    <None Include="Resources\Raster_05x08.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_05x12.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_06x08.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_06x13.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_07x12.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_08x08.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_08x12.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_08x16.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_08x18.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_10x18.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_10x20.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_10x22.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_12x16.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_12x27.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_16x08.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Raster_16x12.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

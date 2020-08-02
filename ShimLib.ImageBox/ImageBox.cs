@@ -16,11 +16,46 @@ namespace ShimLib {
     public delegate void PaintBackbufferEventHandler(object sender, IntPtr buf, int bw, int bh);
 
     public enum PixelValueRenderer {
-        FontAscii_4x6,
-        FontAscii_5x8,
+        Raster_04x06,
+        Raster_05x08,
+        Raster_05x12,
+        Raster_06x08,
+        Raster_06x13,
+        Raster_07x12,
+        Raster_08x08,
+        Raster_08x12,
+        Raster_08x16,
+        Raster_08x18,
+        Raster_10x18,
+        Raster_10x20,
+        Raster_10x22,
+        Raster_12x16,
+        Raster_12x27,
+        Raster_16x08,
+        Raster_16x12,
     }
 
     public partial class ImageBox : Control {
+        Bitmap[] fontBmps = {
+            Resources.Raster_04x06,
+            Resources.Raster_05x08,
+            Resources.Raster_05x12,
+            Resources.Raster_06x08,
+            Resources.Raster_06x13,
+            Resources.Raster_07x12,
+            Resources.Raster_08x08,
+            Resources.Raster_08x12,
+            Resources.Raster_08x16,
+            Resources.Raster_08x18,
+            Resources.Raster_10x18,
+            Resources.Raster_10x20,
+            Resources.Raster_10x22,
+            Resources.Raster_12x16,
+            Resources.Raster_12x27,
+            Resources.Raster_16x08,
+            Resources.Raster_16x12,
+        };
+
         // 백버퍼 그리기
         public event PaintBackbufferEventHandler PaintBackBuffer;
         protected void OnPaintBackBuffer(IntPtr buf, int bw, int bh) {
@@ -34,13 +69,10 @@ namespace ShimLib {
         private IntPtr dispBuf;
         private Bitmap dispBmp;
         private BufferedGraphics buffGfx;
-        private FontRenderer fontAscii4x6;
-        private FontRenderer fontAscii5x8;
+        private FontRenderer[] fontRenderer;
         public FontRenderer FontRender {
             get {
-                if (DrawPixelValueMode == PixelValueRenderer.FontAscii_4x6)
-                    return fontAscii4x6;
-                return fontAscii5x8;
+                return fontRenderer[(int)DrawPixelValueMode];
             }
         }
 
@@ -59,11 +91,14 @@ namespace ShimLib {
 
         // 생성자
         public ImageBox() {
-            //DoubleBuffered = true;
-            fontAscii4x6 = new FontRenderer(Resources.FontAscii_4x6, 4, 6);
-            fontAscii5x8 = new FontRenderer(Resources.FontAscii_5x8, 5, 8);
+            Bitmap[] bmps = {
+            };
+            var enums = Enum.GetValues(typeof(PixelValueRenderer));
+            fontRenderer = new FontRenderer[enums.Length];
+            foreach (var e in enums) {
+                fontRenderer[(int)e] = new FontRenderer(fontBmps[(int)e]);
+            }
         }
-
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
             FreeDispBuf();
@@ -71,7 +106,7 @@ namespace ShimLib {
 
         // 화면 표시 옵션
         public bool UseDrawPixelValue { get; set; } = true;
-        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.FontAscii_5x8;
+        public PixelValueRenderer DrawPixelValueMode { get; set; } = PixelValueRenderer.Raster_05x08;
         public bool UseDrawInfo { get; set; } = true;
         public bool UseDrawCenterLine { get; set; } = true;
         public bool UseDrawDrawTime { get; set; } = false;
