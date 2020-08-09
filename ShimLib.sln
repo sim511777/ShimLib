@@ -8,11 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		todo.txt = todo.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.ImageBox", "ShimLib.ImageBox\ShimLib.ImageBox.csproj", "{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{09CB1389-0344-43F5-9B6B-58AFD91A71D6} = {09CB1389-0344-43F5-9B6B-58AFD91A71D6}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.Util", "ShimLib.Util\ShimLib.Util.csproj", "{09CB1389-0344-43F5-9B6B-58AFD91A71D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLib.Controls", "ShimLib.Controls\ShimLib.Controls.csproj", "{5A452842-C463-487E-A18B-F8B16C9223BC}"
@@ -22,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShimLibTest", "ShimLibTest\
 		{5A452842-C463-487E-A18B-F8B16C9223BC} = {5A452842-C463-487E-A18B-F8B16C9223BC}
 		{09CB1389-0344-43F5-9B6B-58AFD91A71D6} = {09CB1389-0344-43F5-9B6B-58AFD91A71D6}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageBoxTest", "ImageBoxTest\ImageBoxTest.csproj", "{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,18 +28,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|x64.Build.0 = Debug|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Debug|x86.Build.0 = Debug|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|x64.ActiveCfg = Release|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|x64.Build.0 = Release|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|x86.ActiveCfg = Release|Any CPU
-		{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}.Release|x86.Build.0 = Release|Any CPU
 		{09CB1389-0344-43F5-9B6B-58AFD91A71D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09CB1389-0344-43F5-9B6B-58AFD91A71D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09CB1389-0344-43F5-9B6B-58AFD91A71D6}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -83,18 +64,6 @@ Global
 		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x64.Build.0 = Release|Any CPU
 		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x86.ActiveCfg = Release|Any CPU
 		{46D807CA-D440-444B-9DE9-CC600B1B44EF}.Release|x86.Build.0 = Release|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Debug|x64.Build.0 = Debug|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Debug|x86.Build.0 = Debug|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Release|x64.ActiveCfg = Release|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Release|x64.Build.0 = Release|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Release|x86.ActiveCfg = Release|Any CPU
-		{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
