@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ShimLib;
-using System.IO;
-using System.Drawing.Imaging;
-using System.Diagnostics;
 
-namespace ShimLibTest {
-    public partial class ImageBoxTest : UserControl {
+namespace ImageBoxTest {
+    public partial class FormMain : Form {
         static string[] extList = { ".bmp", ".jpg", ".png", ".hra", ".tif" };
         private IntPtr imgBuf;
         private int bw;
         private int bh;
         private int bytepp;
 
-        public ImageBoxTest() {
+        public FormMain() {
             InitializeComponent();
         }
 

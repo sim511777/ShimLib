@@ -25,80 +25,83 @@
         private void InitializeComponent() {
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.radioListBoxTest1 = new ShimLibTest.RadioListBoxTest();
-            this.imageBoxTest1 = new ShimLibTest.ImageBoxTest();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.radioListBox1 = new ShimLib.RadioListBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // dlgSaveFile
             // 
             this.dlgSaveFile.Filter = "Bmp File(*.bmp)|*.bmp";
             // 
-            // tabControl1
+            // radioListBox1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(958, 535);
-            this.tabControl1.TabIndex = 3;
+            this.radioListBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.radioListBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.radioListBox1.FormattingEnabled = true;
+            this.radioListBox1.ItemHeight = 18;
+            this.radioListBox1.Items.AddRange(new object[] {
+            "Item0",
+            "Item1",
+            "Item2",
+            "Item3",
+            "Item4"});
+            this.radioListBox1.Location = new System.Drawing.Point(12, 12);
+            this.radioListBox1.Name = "radioListBox1";
+            this.radioListBox1.Size = new System.Drawing.Size(120, 112);
+            this.radioListBox1.TabIndex = 19;
             // 
-            // tabPage1
+            // button2
             // 
-            this.tabPage1.Controls.Add(this.imageBoxTest1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(950, 509);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "ImageBox";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.button2.Location = new System.Drawing.Point(138, 68);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 18;
+            this.button2.Text = "Set";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // tabPage2
+            // button1
             // 
-            this.tabPage2.Controls.Add(this.radioListBoxTest1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(950, 509);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "RadioListBox";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(138, 39);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Get";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // radioListBoxTest1
+            // numericUpDown1
             // 
-            this.radioListBoxTest1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radioListBoxTest1.Location = new System.Drawing.Point(3, 3);
-            this.radioListBoxTest1.Name = "radioListBoxTest1";
-            this.radioListBoxTest1.Size = new System.Drawing.Size(944, 503);
-            this.radioListBoxTest1.TabIndex = 0;
-            // 
-            // imageBoxTest1
-            // 
-            this.imageBoxTest1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBoxTest1.Location = new System.Drawing.Point(3, 3);
-            this.imageBoxTest1.Name = "imageBoxTest1";
-            this.imageBoxTest1.Size = new System.Drawing.Size(944, 503);
-            this.imageBoxTest1.TabIndex = 0;
+            this.numericUpDown1.Location = new System.Drawing.Point(138, 12);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 21);
+            this.numericUpDown1.TabIndex = 16;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(958, 535);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.radioListBox1);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.numericUpDown1);
             this.Name = "FormMain";
-            this.Text = "ImageBox Test";
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.Text = "ShimLib Test";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -106,11 +109,10 @@
         #endregion
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
         private System.Windows.Forms.SaveFileDialog dlgSaveFile;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private RadioListBoxTest radioListBoxTest1;
-        private ImageBoxTest imageBoxTest1;
+        private ShimLib.RadioListBox radioListBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 

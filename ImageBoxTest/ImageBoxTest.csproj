@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{46D807CA-D440-444B-9DE9-CC600B1B44EF}</ProjectGuid>
+    <ProjectGuid>{EE12F9A4-C375-4D4A-8BCB-82D4B6A821DD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ShimLibTest</RootNamespace>
-    <AssemblyName>ShimLibTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>ImageBoxTest</RootNamespace>
+    <AssemblyName>ImageBoxTest</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,7 +22,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -34,7 +32,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -86,13 +83,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Lenna.png" />
+    <ProjectReference Include="..\ShimLib.Controls\ShimLib.Controls.csproj">
+      <Project>{5A452842-C463-487E-A18B-F8B16C9223BC}</Project>
+      <Name>ShimLib.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShimLib.ImageBox\ShimLib.ImageBox.csproj">
+      <Project>{EE2AD7FF-4482-4623-9488-9CDBE3A90E1E}</Project>
+      <Name>ShimLib.ImageBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShimLib.Util\ShimLib.Util.csproj">
+      <Project>{09cb1389-0344-43f5-9b6b-58afd91a71d6}</Project>
+      <Name>ShimLib.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Chess.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Lenna4.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Coins.bmp" />
@@ -101,18 +106,10 @@
     <None Include="Resources\gardient_8bit.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShimLib.Controls\ShimLib.Controls.csproj">
-      <Project>{5a452842-c463-487e-a18b-f8b16c9223bc}</Project>
-      <Name>ShimLib.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ShimLib.ImageBox\ShimLib.ImageBox.csproj">
-      <Project>{ee2ad7ff-4482-4623-9488-9cdbe3a90e1e}</Project>
-      <Name>ShimLib.ImageBox</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ShimLib.Util\ShimLib.Util.csproj">
-      <Project>{09cb1389-0344-43f5-9b6b-58afd91a71d6}</Project>
-      <Name>ShimLib.Util</Name>
-    </ProjectReference>
+    <None Include="Resources\Lenna.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lenna4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
